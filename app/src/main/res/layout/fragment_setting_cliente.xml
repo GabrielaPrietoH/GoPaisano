@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".settingCliente">
+
+    <RelativeLayout
+        android:id="@+id/settingC"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textSettingCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="242dp"
+            android:layout_marginTop="68dp"
+            android:layout_marginEnd="28dp"
+            android:text="Setting "
+            android:textAlignment="center"
+            android:textColor="#FFC107"
+            android:textSize="34sp" />
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="219dp"
+            android:layout_height="188dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="187dp"
+            android:src="@drawable/paisano" />
+
+        <EditText
+            android:id="@+id/editTextTextPasswordSettingC"
+            android:layout_width="316dp"
+            android:layout_height="57dp"
+            android:layout_below="@+id/imageView7"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="62dp"
+            android:ems="10"
+            android:hint="Modificar Password"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/editTextTextEmailC"
+            android:layout_width="351dp"
+            android:layout_height="62dp"
+            android:layout_below="@+id/editTextTextPasswordSettingC"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="27dp"
+            android:ems="10"
+            android:hint="Modificar Email"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/editTextPhoneC"
+            android:layout_width="264dp"
+            android:layout_height="61dp"
+            android:layout_below="@+id/editTextTextEmailC"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="113dp"
+            android:ems="10"
+            android:hint="Modificar Telefono"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/editTextAddressC"
+            android:layout_width="wrap_content"
+            android:layout_height="65dp"
+            android:layout_below="@+id/editTextPhoneC"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="168dp"
+            android:ems="10"
+            android:hint="Modificar Codigo Postal"
+            android:inputType="textEmailAddress" />
+
+        <Button
+            android:id="@+id/buttonGuardarCambiosC"
+            android:layout_width="191dp"
+            android:layout_height="68dp"
+            android:layout_below="@+id/editTextAddressC"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="101dp"
+            android:layout_marginTop="38dp"
+            android:layout_marginEnd="118dp"
+            android:backgroundTint="#03A9F4"
+            android:text="Guardar Cambios"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+</FrameLayout>

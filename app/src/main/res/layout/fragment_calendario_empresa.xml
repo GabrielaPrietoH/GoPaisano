@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/calendarioEmpresa"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".calendarioEmpresa">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="175dp"
+            android:layout_height="144dp"
+            android:layout_above="@+id/calendarCliente"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="79dp"
+            android:text="Calendario Citas Empresa"
+            android:textAlignment="center"
+            android:textColor="@color/purple_700"
+            android:textSize="34sp" />
+
+        <ImageView
+            android:id="@+id/imageView10"
+            android:layout_width="wrap_content"
+            android:layout_height="164dp"
+            android:layout_above="@+id/calendarCliente"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="196dp"
+            android:layout_marginBottom="43dp"
+            android:src="@drawable/paisano" />
+
+        <CalendarView
+            android:id="@+id/calendarEmpresa"
+            android:layout_width="368dp"
+            android:layout_height="414dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="23dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="52dp" />
+    </RelativeLayout>
+</FrameLayout>

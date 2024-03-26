@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".registroEmpresa">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="177dp"
+            android:layout_height="118dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="212dp"
+            android:src="@drawable/paisano" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="199dp"
+            android:layout_marginTop="33dp"
+            android:layout_marginEnd="22dp"
+            android:text="Registro Empresas"
+            android:textAlignment="center"
+            android:textColor="#065CA1"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/editTextCifEmpresa"
+            android:layout_width="309dp"
+            android:layout_height="55dp"
+            android:layout_below="@+id/imageView5"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="-1dp"
+            android:layout_marginEnd="69dp"
+            android:ems="10"
+            android:hint="CIF"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/editTextNomEmpresa"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_below="@+id/editTextCifEmpresa"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="78dp"
+            android:ems="10"
+            android:hint="Nombre Empresa"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/editTextUsuarioEmpresa"
+            android:layout_width="wrap_content"
+            android:layout_height="59dp"
+            android:layout_below="@+id/editTextNomEmpresa"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="81dp"
+            android:ems="10"
+            android:hint="Usuario"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/editTextDireccionEmpresa"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_below="@+id/editTextUsuarioEmpresa"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="27dp"
+            android:ems="10"
+            android:hint="Direccion"
+            android:inputType="textPostalAddress" />
+
+        <EditText
+            android:id="@+id/editTextCpEmpresa"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_below="@+id/editTextDireccionEmpresa"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="155dp"
+            android:ems="10"
+            android:hint="Codigo Postal"
+            android:inputType="textPostalAddress" />
+
+        <EditText
+            android:id="@+id/editTextTelefonoEmpresa"
+            android:layout_width="wrap_content"
+            android:layout_height="57dp"
+            android:layout_below="@+id/editTextCpEmpresa"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="96dp"
+            android:ems="10"
+            android:hint="Telefono"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/editTextEmailEmpresa"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:layout_below="@+id/editTextTelefonoEmpresa"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="35dp"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/editTextTextPassword3"
+            android:layout_width="285dp"
+            android:layout_height="56dp"
+            android:layout_below="@+id/editTextEmailEmpresa"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="-4dp"
+            android:layout_marginEnd="93dp"
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/editTextConfPassEmpresa"
+            android:layout_width="wrap_content"
+            android:layout_height="59dp"
+            android:layout_below="@+id/editTextTextPassword3"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="92dp"
+            android:ems="10"
+            android:hint="Confirmar Password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/buttonRegistroEmpresa"
+            android:layout_width="wrap_content"
+            android:layout_height="59dp"
+            android:layout_below="@+id/editTextConfPassEmpresa"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="94dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="117dp"
+            android:layout_marginBottom="22dp"
+            android:backgroundTint="#03A9F4"
+            android:text="REGISTRARSE"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+</FrameLayout>
