@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "963803934525",
+    "project_id": "paisanogo",
+    "storage_bucket": "paisanogo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963803934525:android:6db912e7f3b703a8c95f54",
+        "android_client_info": {
+          "package_name": "com.example.proyectopaisanogo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaYFQo8cLV2tNIHiQj66_hnFyJn1G9G4A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
