@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_1"
+    app:startDestination="@id/login">
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.appprueba.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/login"
+        android:name="com.example.appprueba.FragmentLogin"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_login_to_mainActivity"
+            app:destination="@id/mainActivity" />
+        <action
+            android:id="@+id/action_login_to_loginCliente2"
+            app:destination="@id/loginCliente" />
+        <action
+            android:id="@+id/action_login_to_loginEmpresa2"
+            app:destination="@id/loginEmpresa" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginCliente"
+        android:name="com.example.appprueba.loginCliente"
+        android:label="fragment_login_cliente"
+        tools:layout="@layout/fragment_login_cliente" >
+        <action
+            android:id="@+id/action_loginCliente_to_mainCliente2"
+            app:destination="@id/mainCliente" />
+        <action
+            android:id="@+id/action_loginCliente_to_registroCliente"
+            app:destination="@id/registroCliente" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginEmpresa"
+        android:name="com.example.appprueba.loginEmpresa"
+        android:label="fragment_login_empresa"
+        tools:layout="@layout/fragment_login_empresa" >
+        <action
+            android:id="@+id/action_loginEmpresa_to_mainEmpresa"
+            app:destination="@id/mainEmpresa" />
+        <action
+            android:id="@+id/action_loginEmpresa_to_registroEmpresa"
+            app:destination="@id/registroEmpresa" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainCliente"
+        android:name="com.example.appprueba.mainCliente"
+        android:label="fragment_main_cliente"
+        tools:layout="@layout/fragment_main_cliente" />
+    <fragment
+        android:id="@+id/mainEmpresa"
+        android:name="com.example.appprueba.mainEmpresa"
+        android:label="fragment_main_empresa"
+        tools:layout="@layout/fragment_main_empresa" />
+    <fragment
+        android:id="@+id/registroCliente"
+        android:name="com.example.appprueba.registroCliente"
+        android:label="fragment_registro_cliente"
+        tools:layout="@layout/fragment_registro_cliente" >
+        <action
+            android:id="@+id/action_registroCliente_to_mainCliente"
+            app:destination="@id/mainCliente" />
+    </fragment>
+    <fragment
+        android:id="@+id/registroEmpresa"
+        android:name="com.example.appprueba.registroEmpresa"
+        android:label="fragment_registro_empresa"
+        tools:layout="@layout/fragment_registro_empresa" >
+        <action
+            android:id="@+id/action_registroEmpresa_to_mainEmpresa"
+            app:destination="@id/mainEmpresa" />
+    </fragment>
+</navigation>

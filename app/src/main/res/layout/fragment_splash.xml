@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:foregroundTint="@color/purple_700"
     tools:context=".Splash">
 
     <RelativeLayout
@@ -21,7 +20,7 @@
             android:layout_marginStart="13dp"
             android:layout_marginTop="18dp"
             android:layout_marginEnd="15dp"
-            android:src="@drawable/paisano_go" />
+            android:src="@drawable/paisano" />
 
         <ProgressBar
             android:id="@+id/progressBar2"

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loginEmpresa"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".loginEmpresa">
 
     <RelativeLayout
-        android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -30,27 +29,26 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="63dp"
-            android:layout_marginEnd="60dp"
-            android:layout_marginBottom="254dp"
+            android:layout_marginStart="57dp"
+            android:layout_marginEnd="66dp"
+            android:layout_marginBottom="366dp"
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword" />
 
         <EditText
-            android:id="@+id/editTextTextUsuario"
+            android:id="@+id/editTextText"
             android:layout_width="284dp"
             android:layout_height="61dp"
             android:layout_below="@+id/imageView"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="103dp"
-            android:layout_marginEnd="62dp"
+            android:layout_marginStart="59dp"
+            android:layout_marginTop="166dp"
+            android:layout_marginEnd="68dp"
             android:ems="10"
             android:hint="Usuario"
             android:inputType="text"
-            android:textColor="@color/purple_700"
             android:textColorHighlight="#0353F4" />
 
         <TextView
@@ -75,9 +73,9 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="101dp"
-            android:layout_marginEnd="100dp"
-            android:layout_marginBottom="152dp"
+            android:layout_marginStart="93dp"
+            android:layout_marginEnd="108dp"
+            android:layout_marginBottom="165dp"
             android:backgroundTint="#03A9F4"
             android:text="LOGIN"
             android:textColor="@color/white"
@@ -90,28 +88,28 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="112dp"
-            android:layout_marginEnd="112dp"
-            android:layout_marginBottom="104dp"
+            android:layout_marginStart="102dp"
+            android:layout_marginEnd="122dp"
+            android:layout_marginBottom="116dp"
             android:text="Si no tienes cuenta"
             android:textAlignment="center"
             android:textColor="#FFC107"
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/textViewRegistrarseE"
-            android:layout_width="133dp"
-            android:layout_height="40dp"
+            android:id="@+id/textViewRegistroE"
+            android:layout_width="178dp"
+            android:layout_height="50dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="132dp"
-            android:layout_marginEnd="144dp"
-            android:layout_marginBottom="46dp"
+            android:layout_marginStart="107dp"
+            android:layout_marginEnd="126dp"
+            android:layout_marginBottom="54dp"
             android:text="Registrarse"
             android:textAlignment="center"
-            android:textColor="@color/purple_700"
-            android:textSize="24sp" />
+            android:textColor="#3F51B5"
+            android:textSize="34sp" />
 
     </RelativeLayout>
 </FrameLayout>
