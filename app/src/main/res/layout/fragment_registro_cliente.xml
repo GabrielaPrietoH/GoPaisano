@@ -32,7 +32,7 @@
             android:layout_marginStart="213dp"
             android:layout_marginTop="-108dp"
             android:layout_marginEnd="27dp"
-            android:text="Registro Clientes"
+            android:text="@string/registro_clientes"
             android:textAlignment="center"
             android:textColor="#FFC107"
             android:textSize="20sp" />
@@ -48,7 +48,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="48dp"
             android:ems="10"
-            android:hint="Usuario"
+            android:hint="@string/usuario"
             android:inputType="text" />
 
         <EditText
@@ -62,7 +62,7 @@
             android:layout_marginTop="14dp"
             android:layout_marginEnd="51dp"
             android:ems="10"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword" />
 
         <EditText
@@ -76,7 +76,7 @@
             android:layout_marginTop="22dp"
             android:layout_marginEnd="49dp"
             android:ems="10"
-            android:hint="Confirmar Password"
+            android:hint="@string/confirmar_password"
             android:inputType="textPassword" />
 
         <EditText
@@ -90,7 +90,7 @@
             android:layout_marginTop="18dp"
             android:layout_marginEnd="37dp"
             android:ems="10"
-            android:hint="Telefono"
+            android:hint="@string/telefono"
             android:inputType="phone" />
 
         <EditText
@@ -104,7 +104,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="22dp"
             android:ems="10"
-            android:hint="Email"
+            android:hint="@string/email"
             android:inputType="textEmailAddress" />
 
         <EditText
@@ -118,7 +118,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="122dp"
             android:ems="10"
-            android:hint="Codigo Postal"
+            android:hint="@string/codigo_postal"
             android:inputType="textPostalAddress" />
 
         <Button
@@ -132,7 +132,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="107dp"
             android:backgroundTint="#03A9F4"
-            android:text="REGISTRARSE"
+            android:text="@string/registrarse"
             android:textColor="@color/white"
             android:textSize="24sp" />
 

@@ -53,12 +53,26 @@
         android:id="@+id/mainCliente"
         android:name="com.example.appprueba.mainCliente"
         android:label="fragment_main_cliente"
-        tools:layout="@layout/fragment_main_cliente" />
+        tools:layout="@layout/fragment_main_cliente" >
+        <action
+            android:id="@+id/action_mainCliente_to_calendarioCliente"
+            app:destination="@id/calendarioCliente" />
+        <action
+            android:id="@+id/action_mainCliente_to_settingCliente"
+            app:destination="@id/settingCliente" />
+    </fragment>
     <fragment
         android:id="@+id/mainEmpresa"
         android:name="com.example.appprueba.mainEmpresa"
         android:label="fragment_main_empresa"
-        tools:layout="@layout/fragment_main_empresa" />
+        tools:layout="@layout/fragment_main_empresa" >
+        <action
+            android:id="@+id/action_mainEmpresa_to_calendarioEmpresa2"
+            app:destination="@id/calendarioEmpresa" />
+        <action
+            android:id="@+id/action_mainEmpresa_to_settingEmpresa"
+            app:destination="@id/settingEmpresa" />
+    </fragment>
     <fragment
         android:id="@+id/registroCliente"
         android:name="com.example.appprueba.registroCliente"
@@ -77,4 +91,24 @@
             android:id="@+id/action_registroEmpresa_to_mainEmpresa"
             app:destination="@id/mainEmpresa" />
     </fragment>
+    <fragment
+        android:id="@+id/calendarioCliente"
+        android:name="com.example.proyectopaisanogo.calendarioCliente"
+        android:label="fragment_calendario_cliente"
+        tools:layout="@layout/fragment_calendario_cliente" />
+    <fragment
+        android:id="@+id/settingCliente"
+        android:name="com.example.proyectopaisanogo.settingCliente"
+        android:label="fragment_setting_cliente"
+        tools:layout="@layout/fragment_setting_cliente" />
+    <fragment
+        android:id="@+id/calendarioEmpresa"
+        android:name="com.example.proyectopaisanogo.calendarioEmpresa"
+        android:label="fragment_calendario_empresa"
+        tools:layout="@layout/fragment_calendario_empresa" />
+    <fragment
+        android:id="@+id/settingEmpresa"
+        android:name="com.example.proyectopaisanogo.settingEmpresa"
+        android:label="fragment_setting_empresa"
+        tools:layout="@layout/fragment_setting_empresa" />
 </navigation>

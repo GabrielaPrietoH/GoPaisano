@@ -16,12 +16,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class mainCliente extends Fragment {
+import java.util.ArrayList;
 
+public class mainCliente extends Fragment {
+    RecyclerView recyclerView;
+    ArrayList images, names;
     private MainClienteViewModel mViewModel;
 
     //FIREBASE AUTHENTICATOR. logout
@@ -33,26 +39,13 @@ public class mainCliente extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main_cliente, container, false);
-
-        //Logout
-        mAuth = FirebaseAuth.getInstance();
-
-
-        //********Comunicación entre activities
-        String nombre = getIntent().getStringExtra("nombre");
-        //TextView etiquetaNomUser = findViewById(R.id.cajaCorreo);
-        if (nombre != null && !nombre.isEmpty()) {
-            Toast.makeText(MainActivity.this, "Hola " + nombre, Toast.LENGTH_SHORT).show();
-        }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
     }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Infla los elementos del menú en la barra de opciones
         inflater.inflate(R.menu.menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -60,20 +53,72 @@ public class mainCliente extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.inicio) {
-            // Maneja el clic en el elemento "Settings"
-            // Realiza las acciones relacionadas con la configuración
-            return true;
-        }else if (item.getItemId() == R.id.logout){
+        if(id == R.id.logout){
             mAuth.signOut();
-            //Vuelta al login
-            //startActivity(new Intent(MainActivity.this, Login.class));
-            finish(); //finalizo la main
+            // Crear un nuevo fragmento y transacción
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, loginCliente.class, null)
+                    .setReorderingAllowed(true)
+                    .addToBackStack("nombre") // El nombre puede ser nulo
+                    .commit();
 
-            return true;
-        }else return super.onOptionsItemSelected(item);
+        }else if(id == R.id.setting){
+            // Crear un nuevo fragmento y transacción
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, settingCliente.class, null)
+                    .setReorderingAllowed(true)
+                    .addToBackStack("nombre") // El nombre puede ser nulo
+                    .commit();
+
+        }else if(id == R.id.calendar){
+            // Crear un nuevo fragmento y transacción
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, calendarioCliente.class, null)
+                    .setReorderingAllowed(true)
+                    .addToBackStack("nombre") // El nombre puede ser nulo
+                    .commit();
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_main_cliente, container, false);
+        recyclerView = view.findViewById(R.id.recyclerViewEmpresas);
+        images = new ArrayList();
+        names = new ArrayList();
+
+        for(int i=0; i<Data.names.length; i++){
+            images.add(Data.images);
+            names.add(Data.names);
+        }
+
+        HelperAdapter helperAdapter = new HelperAdapter(getContext(), images, names);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(helperAdapter);
+
+        return view;
+
+        //Logout
+       // mAuth = FirebaseAuth.getInstance();
+
+/**
+        //********Comunicación entre activities
+        String nombre = getIntent().getStringExtra("nombre");
+        //TextView etiquetaNomUser = findViewById(R.id.cajaCorreo);
+        if (nombre != null && !nombre.isEmpty()) {
+            Toast.makeText(MainActivity.this, "Hola " + nombre, Toast.LENGTH_SHORT).show();
+        }
+*/
+    }
 
 
     @Override

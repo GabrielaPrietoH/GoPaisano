@@ -4,23 +4,13 @@
     android:id="@+id/mainCliente"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.appprueba.mainCliente">
+    tools:context="com.example.proyectopaisanogo.mainCliente">
 
-    <RelativeLayout
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="701dp">
+        android:layout_height="wrap_content"
+        android:id="@+id/recyclerViewEmpresas">
+    </androidx.recyclerview.widget.RecyclerView>
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="208dp"
-            android:layout_height="195dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="92dp"
-            android:layout_marginTop="65dp"
-            android:layout_marginEnd="111dp"
-            android:src="@drawable/paisano" />
 
-    </RelativeLayout>
 </FrameLayout>

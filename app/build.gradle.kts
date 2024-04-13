@@ -38,6 +38,10 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("androidx.recyclerview:recyclerview-selection:1.1.0")
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+
 
 // Java language implementation
     //noinspection UseTomlInstead
@@ -48,6 +52,7 @@ dependencies {
     // Feature module Support
     //noinspection UseTomlInstead
     implementation("androidx.navigation:navigation-dynamic-features-fragment:2.8.0-alpha05")
+    implementation(libs.play.services.maps)
 
     // Testing Navigation
     //noinspection UseTomlInstead

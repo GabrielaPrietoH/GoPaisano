@@ -32,7 +32,7 @@
             android:layout_marginStart="199dp"
             android:layout_marginTop="33dp"
             android:layout_marginEnd="22dp"
-            android:text="Registro Empresas"
+            android:text="@string/registro_empresas"
             android:textAlignment="center"
             android:textColor="#065CA1"
             android:textSize="24sp" />
@@ -48,7 +48,7 @@
             android:layout_marginTop="-1dp"
             android:layout_marginEnd="69dp"
             android:ems="10"
-            android:hint="CIF"
+            android:hint="@string/cif"
             android:inputType="text" />
 
         <EditText
@@ -62,7 +62,7 @@
             android:layout_marginTop="1dp"
             android:layout_marginEnd="78dp"
             android:ems="10"
-            android:hint="Nombre Empresa"
+            android:hint="@string/nombre_empresa"
             android:inputType="text" />
 
         <EditText
@@ -76,7 +76,7 @@
             android:layout_marginTop="0dp"
             android:layout_marginEnd="81dp"
             android:ems="10"
-            android:hint="Usuario"
+            android:hint="@string/usuario"
             android:inputType="text" />
 
         <EditText
@@ -90,7 +90,7 @@
             android:layout_marginTop="0dp"
             android:layout_marginEnd="27dp"
             android:ems="10"
-            android:hint="Direccion"
+            android:hint="@string/direccion"
             android:inputType="textPostalAddress" />
 
         <EditText
@@ -104,7 +104,7 @@
             android:layout_marginTop="3dp"
             android:layout_marginEnd="155dp"
             android:ems="10"
-            android:hint="Codigo Postal"
+            android:hint="@string/codigo_postal"
             android:inputType="textPostalAddress" />
 
         <EditText
@@ -118,7 +118,7 @@
             android:layout_marginTop="1dp"
             android:layout_marginEnd="96dp"
             android:ems="10"
-            android:hint="Telefono"
+            android:hint="@string/telefono"
             android:inputType="phone" />
 
         <EditText
@@ -132,7 +132,7 @@
             android:layout_marginTop="1dp"
             android:layout_marginEnd="35dp"
             android:ems="10"
-            android:hint="Email"
+            android:hint="@string/email"
             android:inputType="textEmailAddress" />
 
         <EditText
@@ -146,7 +146,7 @@
             android:layout_marginTop="-4dp"
             android:layout_marginEnd="93dp"
             android:ems="10"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword" />
 
         <EditText
@@ -160,7 +160,7 @@
             android:layout_marginTop="3dp"
             android:layout_marginEnd="92dp"
             android:ems="10"
-            android:hint="Confirmar Password"
+            android:hint="@string/confirmar_password"
             android:inputType="textPassword" />
 
         <Button
@@ -176,7 +176,7 @@
             android:layout_marginEnd="117dp"
             android:layout_marginBottom="22dp"
             android:backgroundTint="#03A9F4"
-            android:text="REGISTRARSE"
+            android:text="@string/registrarse"
             android:textColor="@color/white"
             android:textSize="20sp" />
 

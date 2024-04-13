@@ -14,6 +14,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -25,11 +26,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mainCliente recycleviewfragment = new mainCliente();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction1 = fragmentManager.beginTransaction();
+        fragmentTransaction1.add(R.id.fragment_container, recycleviewfragment); // Reemplaza "fragment_container" con el ID de tu contenedor de fragmentos
+        fragmentTransaction1.commit();
+
 // En tu MainActivity
         FragmentLogin login =  new FragmentLogin();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, login); // Reemplaza "fragment_container" con el ID de tu contenedor de fragmentos
         fragmentTransaction.commit();
+
+
+
 
     }
 

@@ -22,7 +22,7 @@
             android:layout_marginEnd="49dp"
             android:layout_marginBottom="268dp"
             android:forceDarkAllowed="true"
-            android:text="eres_empresa_o_cliente"
+            android:text="@string/eres_empresa_o_cliente"
             android:textAlignment="center"
             android:textColor="#EAC029"
             android:textSize="38sp" />
@@ -38,9 +38,8 @@
             android:layout_marginEnd="78dp"
             android:layout_marginBottom="163dp"
             android:backgroundTint="#03A9F4"
-            android:text="empresa"
+            android:text="@string/empresa"
             android:textColor="@color/white"
-            android:onClick="chanseFragment"
             android:textSize="24sp" />
 
         <Button
@@ -54,8 +53,7 @@
             android:layout_marginEnd="79dp"
             android:layout_marginBottom="60dp"
             android:backgroundTint="#03A9F4"
-            android:text="cliente"
-            android:onClick="chanseFragment"
+            android:text="@string/cliente"
             android:textColor="@color/white"
             android:textSize="24sp" />
 
