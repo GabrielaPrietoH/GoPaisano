@@ -43,6 +43,9 @@ public class mainCliente extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        //FIREBASE Logout
+        mAuth = FirebaseAuth.getInstance();
+
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

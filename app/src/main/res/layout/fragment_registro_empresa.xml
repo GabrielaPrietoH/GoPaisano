@@ -49,7 +49,8 @@
             android:layout_marginEnd="69dp"
             android:ems="10"
             android:hint="@string/cif"
-            android:inputType="text" />
+            android:inputType="text"
+            android:autofillHints="" />
 
         <EditText
             android:id="@+id/editTextNomEmpresa"
@@ -63,35 +64,23 @@
             android:layout_marginEnd="78dp"
             android:ems="10"
             android:hint="@string/nombre_empresa"
-            android:inputType="text" />
-
-        <EditText
-            android:id="@+id/editTextUsuarioEmpresa"
-            android:layout_width="wrap_content"
-            android:layout_height="59dp"
-            android:layout_below="@+id/editTextNomEmpresa"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="34dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="81dp"
-            android:ems="10"
-            android:hint="@string/usuario"
-            android:inputType="text" />
+            android:inputType="text"
+            android:autofillHints="" />
 
         <EditText
             android:id="@+id/editTextDireccionEmpresa"
             android:layout_width="wrap_content"
             android:layout_height="56dp"
-            android:layout_below="@+id/editTextUsuarioEmpresa"
+            android:layout_below="@+id/editTextNomEmpresa"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="34dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="27dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="29dp"
             android:ems="10"
             android:hint="@string/direccion"
-            android:inputType="textPostalAddress" />
+            android:inputType="textPostalAddress"
+            android:autofillHints="" />
 
         <EditText
             android:id="@+id/editTextCpEmpresa"
@@ -105,7 +94,8 @@
             android:layout_marginEnd="155dp"
             android:ems="10"
             android:hint="@string/codigo_postal"
-            android:inputType="textPostalAddress" />
+            android:inputType="textPostalAddress"
+            android:autofillHints="" />
 
         <EditText
             android:id="@+id/editTextTelefonoEmpresa"
@@ -119,7 +109,8 @@
             android:layout_marginEnd="96dp"
             android:ems="10"
             android:hint="@string/telefono"
-            android:inputType="phone" />
+            android:inputType="phone"
+            android:autofillHints="" />
 
         <EditText
             android:id="@+id/editTextEmailEmpresa"
@@ -133,7 +124,8 @@
             android:layout_marginEnd="35dp"
             android:ems="10"
             android:hint="@string/email"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:autofillHints="" />
 
         <EditText
             android:id="@+id/editTextTextPassword3"
@@ -147,34 +139,21 @@
             android:layout_marginEnd="93dp"
             android:ems="10"
             android:hint="@string/password"
-            android:inputType="textPassword" />
-
-        <EditText
-            android:id="@+id/editTextConfPassEmpresa"
-            android:layout_width="wrap_content"
-            android:layout_height="59dp"
-            android:layout_below="@+id/editTextTextPassword3"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="34dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="92dp"
-            android:ems="10"
-            android:hint="@string/confirmar_password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:autofillHints="" />
 
         <Button
             android:id="@+id/buttonRegistroEmpresa"
             android:layout_width="wrap_content"
-            android:layout_height="59dp"
-            android:layout_below="@+id/editTextConfPassEmpresa"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextTextPassword3"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="94dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="46dp"
             android:layout_marginEnd="117dp"
-            android:layout_marginBottom="22dp"
+            android:layout_marginBottom="78dp"
             android:backgroundTint="#03A9F4"
             android:text="@string/registrarse"
             android:textColor="@color/white"
