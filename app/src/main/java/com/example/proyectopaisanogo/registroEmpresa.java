@@ -57,7 +57,7 @@ public class registroEmpresa extends Fragment {
        // idUser = mAuth.getCurrentUser().getUid();
        // userEmail = mAuth.getCurrentUser().getEmail();
 
-        //Creo la referencia de las cajas
+        //Referencia de las cajas
         cifText = rootView.findViewById(R.id.editTextCifEmpresa);
         nombreText = rootView.findViewById(R.id.editTextNomEmpresa);
         direccionText = rootView.findViewById(R.id.editTextDireccionEmpresa);

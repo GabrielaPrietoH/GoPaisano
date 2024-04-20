@@ -1,5 +1,6 @@
 package com.example.proyectopaisanogo;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -135,7 +136,6 @@ public class loginEmpresa extends Fragment {
                         .commit();
             }
         });
-
 
 
 

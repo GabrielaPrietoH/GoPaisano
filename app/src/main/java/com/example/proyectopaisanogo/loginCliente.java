@@ -31,7 +31,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class loginCliente extends Fragment {
 
-    Button loginC;
+    Button loginC, registroC;
     TextView registro;
     private LoginClienteViewModel mViewModel;
 
@@ -129,43 +129,29 @@ public class loginCliente extends Fragment {
 
         });
 
-        registro = rootView.findViewById(R.id.textViewRegistroC);
-        registro.setOnClickListener(new View.OnClickListener() {
-
+        registroC = rootView.findViewById(R.id.buttonRegistroC);
+        registroC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Crear un nuevo fragmento y transacción
-
-
-                String email = emailText.getText().toString();
-                String password = passText.getText().toString();
-
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
-
-
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-
-                                    //Toast.makeText(loginCliente.this, "Usuario registrado", Toast.LENGTH_SHORT).show();
-                                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                                    fragmentManager.beginTransaction()
-                                            .replace(R.id.fragment_container, registroCliente.class, null)
-                                            .setReorderingAllowed(true)
-                                            .addToBackStack("nombre") // El nombre puede ser nulo
-                                            .commit();
-                                } else {
-                                    // If sign in fails, display a message to the user.
-
-                                    //Toast.makeText(loginCliente.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
-
-                                }
-                            }
-                        });
+                // Crear un nuevo fragmento y transacción para ir al fragmento de registro
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, registroCliente.class, null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack("nombre") // El nombre puede ser nulo
+                        .commit();
             }
         });
-        registro.setPaintFlags(registro.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+
+
+
+
+
+
+
+
+
         return rootView;
     }
 
