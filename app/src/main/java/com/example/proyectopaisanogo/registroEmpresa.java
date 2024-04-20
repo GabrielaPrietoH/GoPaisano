@@ -18,10 +18,23 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class registroEmpresa extends Fragment {
+
+    //Registro empresa
     Button registroE;
     private FirebaseAuth mAuth;
+
+    //Add datos en colección
+    private FirebaseFirestore db;
+    private String idUser, userEmail;
+
     EditText cifText, nombreText, direccionText, cpText, telefonoText, emailText, passwordText;
 
 
@@ -35,6 +48,27 @@ public class registroEmpresa extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_registro_empresa, container, false);
+
+        //REGISTRO
+        mAuth = FirebaseAuth.getInstance();
+
+        //ADD datos a FirebaseFirestore
+        db = FirebaseFirestore.getInstance();
+       // idUser = mAuth.getCurrentUser().getUid();
+       // userEmail = mAuth.getCurrentUser().getEmail();
+
+        //Creo la referencia de las cajas
+        cifText = rootView.findViewById(R.id.editTextCifEmpresa);
+        nombreText = rootView.findViewById(R.id.editTextNomEmpresa);
+        direccionText = rootView.findViewById(R.id.editTextDireccionEmpresa);
+        cpText = rootView.findViewById(R.id.editTextCpEmpresa);
+        telefonoText = rootView.findViewById(R.id.editTextTelefonoEmpresa);
+        emailText = rootView.findViewById(R.id.editTextEmailEmpresa);
+        passwordText = rootView.findViewById(R.id.editTextTextPassword3);
+
+
+
+        /*
         registroE = rootView.findViewById(R.id.buttonRegistroEmpresa);
         registroE.setOnClickListener(new View.OnClickListener() {
 
@@ -50,19 +84,82 @@ public class registroEmpresa extends Fragment {
             }
 
         });
+        */
+
+        //Registro empresa
+        registroE = rootView.findViewById(R.id.buttonRegistroEmpresa);
+        registroE.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+
+                String email = emailText.getText().toString();
+                String password = passwordText.getText().toString();
+
+                //Registro
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+
+                                    //Tras registro, obtener usuario y email.
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    if (user != null) {
+                                        String uid = user.getUid();
+                                        String userEmail = user.getEmail();
+
+                                        // Preparar los datos de la empresa para Firestore
+                                        Map<String, Object> empresa = new HashMap<>();
+                                        empresa.put("cif", cifText.getText().toString().trim());
+                                        empresa.put("nombreEmpresa", nombreText.getText().toString().trim());
+                                        empresa.put("direccion", direccionText.getText().toString().trim());
+                                        empresa.put("cp", cpText.getText().toString().trim());
+                                        empresa.put("telefono", telefonoText.getText().toString().trim());
+                                        empresa.put("email", userEmail); // Usar el email del registro
+                                        empresa.put("userID", uid);  //user ID del registro
+
+
+
+                                        // Agregar información a Firestore con UID como ID del documento
+                                        db.collection("registroEmpresa").document(uid).set(empresa)
+                                                .addOnSuccessListener(aVoid -> {
+                                                    // Datos añadidos correctamente
+                                                    // Toast
+                                                    // Cambiar a otro fragmento/activity después del registro exitoso
+                                                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                                                    fragmentManager.beginTransaction()
+                                                            .replace(R.id.fragment_container, mainEmpresa.class, null)
+                                                            .setReorderingAllowed(true)
+                                                            .addToBackStack("nombre") // El nombre puede ser nulo
+                                                            .commit();
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    // Manejar el error aquí
+                                                    //Toast
+                                                });
+
+
+
+                                    }
+
+                                } else {
+                                        // If sign in fails, display a message to the user.
+
+                                        //Toast fallo auth
+
+                                }
+                            }
+                        });
+            }
+        });
+
+
         return rootView;
 
 
-        //REGISTRO
-        mAuth = FirebaseAuth.getInstance();
-        //Creo la referencia de las cajas
-        cifText = findViewById(R.id.editTextCifEmpresa);
-        nombreText = findViewById(R.id.editTextNomEmpresa);
-        direccionText = findViewById(R.id.editTextDireccionEmpresa);
-        cpText = findViewById(R.id.editTextCpEmpresa);
-        telefonoText = findViewById(R.id.editTextTelefonoEmpresa);
-        emailText = findViewById(R.id.editTextEmailEmpresa);
-        passwordText = findViewById(R.id.editTextTextPassword3);
+
     }
 
     @Override
@@ -73,45 +170,10 @@ public class registroEmpresa extends Fragment {
     }
 
 
-    registroE = findViewById(R.id.buttonRegistroEmpresa");
-    registroE.setOnClickListener(new View.OnClickListener() { //Esto se pod´ria hacer con fn lambda.
-            @Override
-            public void onClick(View v) {
-
-                String cif = cifText.getText().toString();
-                String nombreEmpresa = nombreText.getText().toString();
-                String direccion = direccionText.getText().toString();
-                String cp = cpText.getText().toString();
-                String telefono = telefonoText.getText().toString();
-                String email = emailText.getText().toString();
-                String password = passwordText.getText().toString();
-
-                mAuth.createUserEmpresa(cif, nombreEmpresa, direccion, cp, telefono, email, password)
-                        .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
-
-
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-
-                                   //TOAST
-                                   // Toast.makeText(Login.this, "Usuario registrado", Toast.LENGTH_SHORT).show();
-                                    //ntent intent = new Intent(Login.this, MainActivity.class);
-                                    //startActivity(intent);
-                                } else {
-                                    // If sign in fails, display a message to the user.
-
-                                    //Toast.makeText(Login.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
-
-                                }
-                            }
-                        });
 
 
 
 
-            }
-         });
+
 
 }

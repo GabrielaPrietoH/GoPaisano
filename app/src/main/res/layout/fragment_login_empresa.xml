@@ -96,8 +96,8 @@
             android:textColor="#FFC107"
             android:textSize="24sp" />
 
-        <TextView
-            android:id="@+id/textRegistroE"
+        <Button
+            android:id="@+id/buttonRegistroE"
             android:layout_width="193dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
