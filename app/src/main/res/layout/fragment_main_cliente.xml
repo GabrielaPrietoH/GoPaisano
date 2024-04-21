@@ -12,5 +12,4 @@
         android:id="@+id/recyclerViewEmpresas">
     </androidx.recyclerview.widget.RecyclerView>
 
-
 </FrameLayout>
