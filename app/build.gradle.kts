@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     id("com.google.gms.google-services")
+    id("kotlin-android")
 }
 
 android {
@@ -27,8 +28,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
@@ -38,6 +39,12 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
+    implementation ("com.google.firebase:firebase-core:11.4.0")
+    implementation ("com.google.firebase:firebase-database:11.4.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("androidx.recyclerview:recyclerview-selection:1.1.0")
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+
 
 // Java language implementation
     //noinspection UseTomlInstead
@@ -48,10 +55,15 @@ dependencies {
     // Feature module Support
     //noinspection UseTomlInstead
     implementation("androidx.navigation:navigation-dynamic-features-fragment:2.8.0-alpha05")
+    implementation(libs.play.services.maps)
+    implementation(libs.legacy.support.v4)
+    implementation(libs.lifecycle.livedata.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
 
     // Testing Navigation
     //noinspection UseTomlInstead
     androidTestImplementation("androidx.navigation:navigation-testing:2.8.0-alpha05")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

@@ -4,22 +4,30 @@
     android:id="@+id/menu">
 
     <item android:id="@+id/calendar"
-            android:icon="@drawable/img_1"
-            android:title="Agenda"
+            android:icon="@drawable/calendario"
+            android:title="@string/agenda"
             app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/inicio"
-            android:icon="@drawable/img_2"
-            android:title="Inicio"
+            android:icon="@drawable/casa"
+            android:title="@string/inicio"
             app:showAsAction="ifRoom"/>
 
-    <item android:id="@+id/setting"
-        android:icon="@drawable/img_4"
-        android:title="Setting"
+    <item
+        android:id="@+id/setting"
+        android:icon="@drawable/configuraciones"
+        android:title="@string/setting"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/logout"
+        android:icon="@drawable/acceso"
+        android:title="@string/logout"
         app:showAsAction="ifRoom"/>
+
     <item
         android:id="@+id/app_bar_search"
         android:icon="@drawable/img"
-        android:title="Search"
+        android:title="@string/search"
         app:actionViewClass="android.widget.SearchView" />
 </menu>

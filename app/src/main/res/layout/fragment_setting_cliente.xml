@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".settingCliente">
+    tools:context=".Presentation.settingCliente">
 
     <RelativeLayout
         android:id="@+id/settingC"
@@ -22,7 +22,7 @@
             android:layout_marginStart="242dp"
             android:layout_marginTop="68dp"
             android:layout_marginEnd="28dp"
-            android:text="Setting "
+            android:text="@string/setting"
             android:textAlignment="center"
             android:textColor="#FFC107"
             android:textSize="34sp" />
@@ -50,7 +50,7 @@
             android:layout_marginTop="26dp"
             android:layout_marginEnd="62dp"
             android:ems="10"
-            android:hint="Modificar Password"
+            android:hint="@string/modificar_password"
             android:inputType="textPassword" />
 
         <EditText
@@ -64,7 +64,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="27dp"
             android:ems="10"
-            android:hint="Modificar Email"
+            android:hint="@string/modificar_email"
             android:inputType="textEmailAddress" />
 
         <EditText
@@ -78,7 +78,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="113dp"
             android:ems="10"
-            android:hint="Modificar Telefono"
+            android:hint="@string/modificar_telefono"
             android:inputType="phone" />
 
         <EditText
@@ -92,7 +92,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="168dp"
             android:ems="10"
-            android:hint="Modificar Codigo Postal"
+            android:hint="@string/modificar_codigo_postal"
             android:inputType="textEmailAddress" />
 
         <Button
@@ -106,7 +106,7 @@
             android:layout_marginTop="38dp"
             android:layout_marginEnd="118dp"
             android:backgroundTint="#03A9F4"
-            android:text="Guardar Cambios"
+            android:text="@string/guardar_cambios"
             android:textColor="@color/white" />
 
     </RelativeLayout>

@@ -126,7 +126,7 @@ public class loginEmpresa extends Fragment {
 
         });
 
-        registro = rootView.findViewById(R.id.textViewRegistroE);
+        registro = rootView.findViewById(R.id.textRegistroE);
         registro.setOnClickListener(new View.OnClickListener() {
 
             @Override

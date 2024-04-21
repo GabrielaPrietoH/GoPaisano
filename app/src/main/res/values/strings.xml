@@ -1,3 +1,36 @@
 <resources>
-    <string name="app_name">ProyectoPaisanoGo</string>
+    <string name="app_name">PaisanoGo</string>
+    <string name="setting_empresas">Setting Empresas</string>
+    <string name="modificar_cif">Modificar CIF</string>
+    <string name="modificar_nombre_empresa">Modificar Nombre Empresa</string>
+    <string name="modificar_direccion">Modificar Direccion</string>
+    <string name="modificar_codigo_postal">Modificar Codigo Postal</string>
+    <string name="modificar_telefono">Modificar Telefono</string>
+    <string name="modificar_email">Modificar Email</string>
+    <string name="modificar_password">Modificar Password</string>
+    <string name="confirmar_password">Confirmar Password</string>
+    <string name="guardar_cambios">GUARDAR CAMBIOS</string>
+    <string name="login">LOGIN</string>
+    <string name="usuario">Usuario</string>
+    <string name="password">Password</string>
+    <string name="clientes">CLIENTES</string>
+    <string name="si_no_tienes_cuenta">Si no tienes cuenta</string>
+    <string name="registrarse">Registrarse</string>
+    <string name="registro_clientes">Registro Clientes</string>
+    <string name="telefono">Telefono</string>
+    <string name="email">Email</string>
+    <string name="codigo_postal">Codigo Postal</string>
+    <string name="registro_empresas">Registro Empresas</string>
+    <string name="cif">CIF</string>
+    <string name="nombre_empresa">Nombre Empresa</string>
+    <string name="direccion">Direccion</string>
+    <string name="setting">Setting</string>
+    <string name="eres_empresa_o_cliente">eres empresa o cliente</string>
+    <string name="empresa">empresa</string>
+    <string name="cliente">cliente</string>
+    <string name="agenda">Agenda</string>
+    <string name="inicio">Inicio</string>
+    <string name="logout">Logout</string>
+    <string name="search">Search</string>
+    <string name="todo">TODO</string>
 </resources>

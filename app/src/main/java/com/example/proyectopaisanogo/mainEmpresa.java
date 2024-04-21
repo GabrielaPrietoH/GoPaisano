@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,19 +29,71 @@ public class mainEmpresa extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+        //FIREBASE Logout
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.logout){
+            mAuth.signOut();
+            // Crear un nuevo fragmento y transacción
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, loginEmpresa.class, null)
+                    .setReorderingAllowed(true)
+                    .addToBackStack("nombre") // El nombre puede ser nulo
+                    .commit();
+
+        }else if(id == R.id.setting){
+            // Crear un nuevo fragmento y transacción
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, settingEmpresa.class, null)
+                    .setReorderingAllowed(true)
+                    .addToBackStack("nombre") // El nombre puede ser nulo
+                    .commit();
+
+        }else if(id == R.id.calendar){
+            // Crear un nuevo fragmento y transacción
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, calendarioEmpresa.class, null)
+                    .setReorderingAllowed(true)
+                    .addToBackStack("nombre") // El nombre puede ser nulo
+                    .commit();
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_main_empresa, container, false);
 
         //Logout
-        mAuth = FirebaseAuth.getInstance();
-
+        //mAuth = FirebaseAuth.getInstance();
+/**
         //********Comunicación entre activities
         String nombre = getIntent().getStringExtra("nombre");
         //TextView etiquetaNomUser = findViewById(R.id.cajaCorreo);
         if (nombre != null && !nombre.isEmpty()) {
             Toast.makeText(MainActivity.this, "Hola " + nombre, Toast.LENGTH_SHORT).show();
         }
+ **/
     }
 
     @Override
@@ -50,27 +103,4 @@ public class mainEmpresa extends Fragment {
         // TODO: Use the ViewModel
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Infla los elementos del menú en la barra de opciones
-        inflater.inflate(R.menu.menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.inicio) {
-            // Maneja el clic en el elemento "Settings"
-            // Realiza las acciones relacionadas con la configuración
-            return true;
-        }else if (item.getItemId() == R.id.logout){
-            mAuth.signOut();
-            //Vuelta al login
-            //startActivity(new Intent(MainActivity.this, Login.class));
-            finish(); //finalizo la main
-
-            return true;
-        }else return super.onOptionsItemSelected(item);
-    }
 }
