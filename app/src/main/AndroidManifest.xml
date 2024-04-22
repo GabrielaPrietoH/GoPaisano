@@ -16,23 +16,12 @@
         android:theme="@style/Theme.PaisanoGo"
         tools:targetApi="31">
         <activity
-            android:name=".Presentation.Splash"
+            android:name=".MainActivity"
             android:exported="true">
             <!-- Intent-filter opcional para la actividad Splash -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <!-- Actividad Principal (MainActivity) -->
-        <activity
-            android:name=".Presentation.MainActivity"
-            android:exported="true">
-            <!-- Intent-filter opcional para la actividad MainActivity -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
     </application>

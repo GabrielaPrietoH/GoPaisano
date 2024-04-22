@@ -4,12 +4,13 @@
     android:id="@+id/mainCliente"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.proyectopaisanogo.Presentation.mainCliente">
+    tools:context="com.example.proyectopaisanogo.mainCliente">
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/recyclerViewEmpresas">
     </androidx.recyclerview.widget.RecyclerView>
+
 
 </FrameLayout>
