@@ -19,7 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnCalendarButtonClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +39,17 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
 
+        // Configurar el botón del calendario en el fragmento MainCliente
+        mainCliente mainCliente = (mainCliente) getSupportFragmentManager().findFragmentById(R.id.mainCliente);
+        mainCliente.setOnCalendarButtonClickListener(this);
 
 
+    }
+
+    @Override
+    public void onCalendarButtonClick() {
+        // Cuando se hace clic en el botón del calendario en MainCliente, enviar información a los fragmentos correspondientes
+        // Por ejemplo, aquí enviarías la información de la cita a través de los fragmentos para actualizar los calendarios
     }
 
 }

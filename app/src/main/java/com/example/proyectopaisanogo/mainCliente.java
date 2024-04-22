@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -32,6 +33,20 @@ public class mainCliente extends Fragment {
 
     //FIREBASE AUTHENTICATOR. logout
     private FirebaseAuth mAuth;
+
+
+    //Calendario
+    private OnCalendarButtonClickListener listener;
+
+    public mainCliente() {
+        // Required empty public constructor
+    }
+    public void setOnCalendarButtonClickListener(OnCalendarButtonClickListener listener) {
+        this.listener = listener;
+    }
+
+
+
 
 
     public static mainCliente newInstance() {
@@ -108,6 +123,20 @@ public class mainCliente extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(helperAdapter);
 
+
+
+        //CALENDARIO
+        Button calendarButton = view.findViewById(R.id.calendarButton);  //nombre
+        calendarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Notificar a la actividad que se ha hecho clic en el botón del calendario
+                if (listener != null) {
+                    listener.onCalendarButtonClick();
+                }
+            }
+        });
+
         return view;
 
         //Logout
@@ -121,6 +150,7 @@ public class mainCliente extends Fragment {
             Toast.makeText(MainActivity.this, "Hola " + nombre, Toast.LENGTH_SHORT).show();
         }
 */
+
     }
 
 
