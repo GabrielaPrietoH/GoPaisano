@@ -1,23 +1,12 @@
-package com.example.proyectopaisanogo;
+package com.example.proyectopaisanogo.Presentation;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
+
+import com.example.proyectopaisanogo.R;
 
 public class MainActivity extends AppCompatActivity implements OnCalendarButtonClickListener {
 
@@ -38,11 +27,11 @@ public class MainActivity extends AppCompatActivity implements OnCalendarButtonC
         fragmentTransaction.replace(R.id.fragment_container, login); // Reemplaza "fragment_container" con el ID de tu contenedor de fragmentos
         fragmentTransaction.commit();
 
-
+/**
         // Configurar el botón del calendario en el fragmento MainCliente
         mainCliente mainCliente = (mainCliente) getSupportFragmentManager().findFragmentById(R.id.mainCliente);
         mainCliente.setOnCalendarButtonClickListener(this);
-
+**/
 
     }
 

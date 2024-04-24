@@ -1,4 +1,4 @@
-package com.example.proyectopaisanogo;
+package com.example.proyectopaisanogo.Presentation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.example.proyectopaisanogo.R;
 
 public class modificarEmpresa extends Fragment {
 

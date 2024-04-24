@@ -1,7 +1,6 @@
-package com.example.proyectopaisanogo;
+package com.example.proyectopaisanogo.Presentation;
 
-import android.content.Context;
-import android.content.Intent;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -9,10 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,46 +17,57 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.proyectopaisanogo.Adapter.HelperAdapter;
+import com.example.proyectopaisanogo.Model.Empresa;
+import com.example.proyectopaisanogo.R;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.ArrayList;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 public class mainCliente extends Fragment {
     RecyclerView recyclerView;
-    ArrayList images, names;
+    HelperAdapter helperAdapter;
+    FirebaseFirestore firestore;
     private MainClienteViewModel mViewModel;
 
-    //FIREBASE AUTHENTICATOR. logout
     private FirebaseAuth mAuth;
 
 
-    //Calendario
-    private OnCalendarButtonClickListener listener;
-
-    public mainCliente() {
-        // Required empty public constructor
-    }
-    public void setOnCalendarButtonClickListener(OnCalendarButtonClickListener listener) {
-        this.listener = listener;
+    public static com.example.proyectopaisanogo.Presentation.mainCliente newInstance() {
+        return new com.example.proyectopaisanogo.Presentation.mainCliente();
     }
 
 
-
-
-
-    public static mainCliente newInstance() {
-        return new mainCliente();
-    }
-
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        firestore = FirebaseFirestore.getInstance();
+        recyclerView = recyclerView.findViewById(R.id.recyclerViewEmpresas);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.recyclerView.getContext()));
+        Query query = firestore.collection("registroEmpresa");
 
-        //FIREBASE Logout
-        mAuth = FirebaseAuth.getInstance();
+        FirestoreRecyclerOptions<Empresa> firestoresRecyclerOptions =
+                new FirestoreRecyclerOptions.Builder<Empresa>().setQuery(query, Empresa.class).build();
+        helperAdapter = new HelperAdapter(firestoresRecyclerOptions);
+        helperAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(helperAdapter);
 
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        helperAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        helperAdapter.stopListening();
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu, menu);
@@ -100,7 +106,7 @@ public class mainCliente extends Fragment {
                     .commit();
 
         }
-
+        mAuth = FirebaseAuth.getInstance();
         return super.onOptionsItemSelected(item);
     }
 
@@ -109,48 +115,17 @@ public class mainCliente extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_cliente, container, false);
-        recyclerView = view.findViewById(R.id.recyclerViewEmpresas);
-        images = new ArrayList();
-        names = new ArrayList();
-
-        for(int i=0; i<Data.names.length; i++){
-            images.add(Data.images);
-            names.add(Data.names);
-        }
-
-        HelperAdapter helperAdapter = new HelperAdapter(getContext(), images, names);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(helperAdapter);
-
-
-
-        //CALENDARIO
-        Button calendarButton = view.findViewById(R.id.calendarButton);  //nombre
-        calendarButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Notificar a la actividad que se ha hecho clic en el botón del calendario
-                if (listener != null) {
-                    listener.onCalendarButtonClick();
-                }
-            }
-        });
 
         return view;
 
-        //Logout
-       // mAuth = FirebaseAuth.getInstance();
-
 /**
-        //********Comunicación entre activities
-        String nombre = getIntent().getStringExtra("nombre");
-        //TextView etiquetaNomUser = findViewById(R.id.cajaCorreo);
-        if (nombre != null && !nombre.isEmpty()) {
-            Toast.makeText(MainActivity.this, "Hola " + nombre, Toast.LENGTH_SHORT).show();
-        }
-*/
-
+ //********Comunicación entre activities
+ String nombre = getIntent().getStringExtra("nombre");
+ //TextView etiquetaNomUser = findViewById(R.id.cajaCorreo);
+ if (nombre != null && !nombre.isEmpty()) {
+ Toast.makeText(MainActivity.this, "Hola " + nombre, Toast.LENGTH_SHORT).show();
+ }
+ */
     }
 
 

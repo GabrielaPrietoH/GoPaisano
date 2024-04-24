@@ -1,4 +1,4 @@
-package com.example.proyectopaisanogo;
+package com.example.proyectopaisanogo.Presentation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,28 +14,35 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.proyectopaisanogo.R;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class calendarioCliente extends Fragment {
+public class mainEmpresa extends Fragment {
 
-    private CalendarioClienteViewModel mViewModel;
+    private MainEmpresaViewModel mViewModel;
 
-    public static calendarioCliente newInstance() {
-        return new calendarioCliente();
-    }
+    //FIREBASE AUTHENTICATOR. logout
     private FirebaseAuth mAuth;
+
+    public static mainEmpresa newInstance() {
+        return new mainEmpresa();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        //FIREBASE Logout
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu, menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -44,7 +51,7 @@ public class calendarioCliente extends Fragment {
             // Crear un nuevo fragmento y transacción
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, loginCliente.class, null)
+                    .replace(R.id.fragment_container, loginEmpresa.class, null)
                     .setReorderingAllowed(true)
                     .addToBackStack("nombre") // El nombre puede ser nulo
                     .commit();
@@ -53,16 +60,16 @@ public class calendarioCliente extends Fragment {
             // Crear un nuevo fragmento y transacción
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, settingCliente.class, null)
+                    .replace(R.id.fragment_container, settingEmpresa.class, null)
                     .setReorderingAllowed(true)
                     .addToBackStack("nombre") // El nombre puede ser nulo
                     .commit();
 
-        }else if(id == R.id.inicio){
+        }else if(id == R.id.calendar){
             // Crear un nuevo fragmento y transacción
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, mainCliente.class, null)
+                    .replace(R.id.fragment_container, calendarioEmpresa.class, null)
                     .setReorderingAllowed(true)
                     .addToBackStack("nombre") // El nombre puede ser nulo
                     .commit();
@@ -75,15 +82,25 @@ public class calendarioCliente extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_calendario_cliente, container, false);
+        return inflater.inflate(R.layout.fragment_main_empresa, container, false);
+
+        //Logout
+        //mAuth = FirebaseAuth.getInstance();
+/**
+        //********Comunicación entre activities
+        String nombre = getIntent().getStringExtra("nombre");
+        //TextView etiquetaNomUser = findViewById(R.id.cajaCorreo);
+        if (nombre != null && !nombre.isEmpty()) {
+            Toast.makeText(MainActivity.this, "Hola " + nombre, Toast.LENGTH_SHORT).show();
+        }
+ **/
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(CalendarioClienteViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(MainEmpresaViewModel.class);
         // TODO: Use the ViewModel
     }
-
 
 }

@@ -1,4 +1,4 @@
-package com.example.proyectopaisanogo;
+package com.example.proyectopaisanogo.Presentation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,10 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
+
+import com.example.proyectopaisanogo.R;
 
 public class FragmentLogin extends Fragment {
 
