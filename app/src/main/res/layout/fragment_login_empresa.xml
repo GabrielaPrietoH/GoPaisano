@@ -4,23 +4,24 @@
     android:id="@+id/loginEmpresa"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".loginEmpresa">
+    tools:context="com.example.proyectopaisanogo.Presentation.FragmentLogin">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="227dp"
+        <ImageButton
+            android:id="@+id/botonLogoutEmpresa"
+            android:layout_width="276dp"
+            android:layout_height="262dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="26dp"
-            android:layout_marginEnd="82dp"
+            android:layout_marginStart="68dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="68dp"
             android:src="@drawable/paisano" />
+
 
         <EditText
             android:id="@+id/cajaPass"
@@ -31,7 +32,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="60dp"
             android:layout_marginEnd="63dp"
-            android:layout_marginBottom="254dp"
+            android:layout_marginBottom="236dp"
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword" />
@@ -40,11 +41,11 @@
             android:id="@+id/cajaCorreo"
             android:layout_width="284dp"
             android:layout_height="61dp"
-            android:layout_below="@+id/imageView"
+            android:layout_below="@+id/botonLogoutEmpresa"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="59dp"
-            android:layout_marginTop="87dp"
+            android:layout_marginTop="73dp"
             android:layout_marginEnd="67dp"
             android:ems="10"
             android:hint="Usuario"
@@ -59,7 +60,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="94dp"
-            android:layout_marginTop="265dp"
+            android:layout_marginTop="306dp"
             android:layout_marginEnd="111dp"
             android:text="EMPRESAS"
             android:textAlignment="center"
@@ -73,9 +74,9 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="88dp"
-            android:layout_marginEnd="112dp"
-            android:layout_marginBottom="172dp"
+            android:layout_marginStart="97dp"
+            android:layout_marginEnd="103dp"
+            android:layout_marginBottom="152dp"
             android:backgroundTint="#03A9F4"
             android:text="LOGIN"
             android:textColor="@color/white"
@@ -88,9 +89,9 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="49dp"
-            android:layout_marginEnd="52dp"
-            android:layout_marginBottom="42dp"
+            android:layout_marginStart="43dp"
+            android:layout_marginEnd="58dp"
+            android:layout_marginBottom="92dp"
             android:text="Si no tienes cuenta"
             android:textAlignment="center"
             android:textColor="#FFC107"
@@ -103,14 +104,14 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="60dp"
-            android:layout_marginEnd="79dp"
-            android:layout_marginBottom="93dp"
+            android:layout_marginStart="63dp"
+            android:layout_marginEnd="76dp"
+            android:layout_marginBottom="20dp"
             android:backgroundTint="#03A9F4"
             android:text="Registrarse"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="34sp" />
+            android:textSize="24sp" />
 
     </RelativeLayout>
 </FrameLayout>

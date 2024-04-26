@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,7 +39,7 @@ public class loginEmpresa extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_login_empresa, container, false);
-
+        ImageButton botonLogout = rootView.findViewById(R.id.botonLogoutEmpresa);
         //FIREBASE AUTHENTICATOR
         mAuth = FirebaseAuth.getInstance();
         emailText = rootView.findViewById(R.id.cajaCorreo);
@@ -136,11 +137,19 @@ public class loginEmpresa extends Fragment {
                         .commit();
             }
         });
+        botonLogout.setOnClickListener( new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
 
-
-
-
-
+                // Crear un nuevo fragmento y transacción
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, FragmentLogin.class, null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack("nombre") // El nombre puede ser nulo
+                        .commit();
+            }
+        });
         return rootView;
     }
     @Override

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.appprueba.mainEmpresa">
+    tools:context="com.example.proyectopaisanogo.Presentation.mainEmpresa">
 
     <ImageView
         android:id="@+id/imageView3"

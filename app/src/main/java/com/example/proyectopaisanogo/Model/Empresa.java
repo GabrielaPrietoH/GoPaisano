@@ -24,7 +24,7 @@ public class Empresa {
     }
 
     public void setCif(String cif) {
-        this.cif = cif;
+        Empresa.cif = cif;
     }
 
     public static String getCp() {
@@ -32,7 +32,7 @@ public class Empresa {
     }
 
     public void setCp(String cp) {
-        this.cp = cp;
+        Empresa.cp = cp;
     }
 
     public static String getDireccion() {
@@ -40,7 +40,7 @@ public class Empresa {
     }
 
     public void setDireccion(String direccion) {
-        this.direccion = direccion;
+        Empresa.direccion = direccion;
     }
 
     public static String getEmail() {
@@ -48,7 +48,7 @@ public class Empresa {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        Empresa.email = email;
     }
 
     public static String getNombreEmpresa() {
@@ -56,7 +56,7 @@ public class Empresa {
     }
 
     public void setNombreEmpresa(String nombreEmpresa) {
-        this.nombreEmpresa = nombreEmpresa;
+        Empresa.nombreEmpresa = nombreEmpresa;
     }
 
     public static String getTelefono() {
@@ -64,7 +64,7 @@ public class Empresa {
     }
 
     public void setTelefono(String telefono) {
-        this.telefono = telefono;
+        Empresa.telefono = telefono;
     }
 
     public static String getUserID() {
@@ -72,6 +72,6 @@ public class Empresa {
     }
 
     public void setUserID(String userID) {
-        this.userID = userID;
+        Empresa.userID = userID;
     }
 }
