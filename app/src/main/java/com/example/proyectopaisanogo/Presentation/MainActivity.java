@@ -16,7 +16,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-public class MainActivity extends AppCompatActivity implements OnCalendarButtonClickListener {
+public class MainActivity extends AppCompatActivity  {
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
@@ -36,16 +36,8 @@ public class MainActivity extends AppCompatActivity implements OnCalendarButtonC
         fragmentTransaction.replace(R.id.fragment_container, login); // Reemplaza "fragment_container" con el ID de tu contenedor de fragmentos
         fragmentTransaction.commit();
 
-        // Configurar el botón del calendario en el fragmento MainCliente
-       // mainCliente mainCliente = (mainCliente) getSupportFragmentManager().findFragmentById(R.id.mainCliente);
-        //mainCliente.setOnCalendarButtonClickListener(this);
 
-    }
 
-    @Override
-    public void onCalendarButtonClick() {
-        // Cuando se hace clic en el botón del calendario en MainCliente, enviar información a los fragmentos correspondientes
-        // Por ejemplo, aquí enviarías la información de la cita a través de los fragmentos para actualizar los calendarios
     }
 
 }
