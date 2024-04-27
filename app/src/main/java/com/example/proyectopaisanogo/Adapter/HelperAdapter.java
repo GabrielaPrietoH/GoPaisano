@@ -1,63 +1,65 @@
 package com.example.proyectopaisanogo.Adapter;
 
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.proyectopaisanogo.Model.Empresa;
 import com.example.proyectopaisanogo.R;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import java.util.List;
 
+public class HelperAdapter extends RecyclerView.Adapter<HelperAdapter.ViewHolder> {
+    private List<Empresa> empresas;
 
-public class HelperAdapter extends FirestoreRecyclerAdapter<Empresa, HelperAdapter.ViewHolder> {
-
-
-    public HelperAdapter(@NonNull FirestoreRecyclerOptions<Empresa> options) {
-        super(options);
-    }
-
-    @Override
-    protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int i, @NonNull Empresa empresa) {
-        viewHolder.nombreEmpresa.setText(Empresa.getNombreEmpresa());
-        viewHolder.cif.setText(Empresa.getCif());
-        viewHolder.cp.setText(Empresa.getCp());
-        viewHolder.direccion.setText(Empresa.getDireccion());
-        viewHolder.email.setText(Empresa.getEmail());
-        viewHolder.telefono.setText(Empresa.getTelefono());
-        viewHolder.userID.setText(Empresa.getUserID());
+    public HelperAdapter(List<Empresa> empresas) {
+        this.empresas = empresas;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-      View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_item, parent, false);
-      return new ViewHolder(v);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_item, parent, false);
+        return new ViewHolder(view);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView nombreEmpresa;
-        TextView cif;
-        TextView cp;
-        TextView direccion;
-        TextView email;
-        TextView telefono;
-        TextView userID;
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Empresa empresa = empresas.get(position);
+        holder.nombreEmpresa.setText(empresa.getNombreEmpresa());
+        holder.cif.setText(empresa.getCif());
+        holder.cp.setText(empresa.getCp());
+        holder.direccion.setText(empresa.getDireccion());
+        holder.email.setText(empresa.getEmail());
+        holder.telefono.setText(empresa.getTelefono());
+        holder.userID.setText(empresa.getUserID());
+    }
+
+    @Override
+    public int getItemCount() {
+        return empresas.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView nombreEmpresa;
+        public TextView cif;
+        public TextView cp;
+        public TextView direccion;
+        public TextView email;
+        public TextView telefono;
+        public TextView userID;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             nombreEmpresa = itemView.findViewById(R.id.textnombreEmpresa);
             cif = itemView.findViewById(R.id.textCif);
-            telefono = itemView.findViewById(R.id.textTelefono);
-            direccion = itemView.findViewById(R.id.textDireccion);
             cp = itemView.findViewById(R.id.textCP);
+            direccion = itemView.findViewById(R.id.textDireccion);
             email = itemView.findViewById(R.id.textEmail);
+            telefono = itemView.findViewById(R.id.textTelefono);
             userID = itemView.findViewById(R.id.textUserID);
         }
     }
-    }
-
+}

@@ -6,15 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.proyectopaisanogo.Presentation.mainCliente">
 
-    <ImageView
-        android:id="@+id/imageView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="81dp"
-        android:layout_marginTop="41dp"
-        android:layout_marginEnd="77dp"
-        android:src="@drawable/paisano" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RvEmpresas"
         android:layout_width="match_parent"

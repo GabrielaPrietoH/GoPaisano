@@ -20,16 +20,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.proyectopaisanogo.Adapter.HelperAdapter;
 import com.example.proyectopaisanogo.Model.Empresa;
 import com.example.proyectopaisanogo.R;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 public class mainCliente extends Fragment {
-    RecyclerView recyclerView;
-    HelperAdapter helperAdapter;
-    FirebaseFirestore firestore;
-    private Context context;
+    private FirebaseFirestore firestore;
+    private RecyclerView recyclerView;
+    private FirestoreRecyclerAdapter<Empresa, HelperAdapter.ViewHolder> firestoreAdapter;
 
     public static com.example.proyectopaisanogo.Presentation.mainCliente newInstance() {
         return new com.example.proyectopaisanogo.Presentation.mainCliente();
@@ -87,7 +87,6 @@ public class mainCliente extends Fragment {
     }
 
 
-    @SuppressLint("NotifyDataSetChanged")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -95,28 +94,48 @@ public class mainCliente extends Fragment {
 
         firestore = FirebaseFirestore.getInstance();
         recyclerView = v.findViewById(R.id.RvEmpresas);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.context));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
         Query query = firestore.collection("registroEmpresa");
-        FirestoreRecyclerOptions<Empresa> firestoresRecyclerOptions =
-                new FirestoreRecyclerOptions.Builder<Empresa>().setQuery(query, Empresa.class).build();
-        helperAdapter = new HelperAdapter(firestoresRecyclerOptions);
-        helperAdapter.notifyDataSetChanged();
-        recyclerView.setAdapter(helperAdapter);
-        return  v ;
+        FirestoreRecyclerOptions<Empresa> options = new FirestoreRecyclerOptions.Builder<Empresa>()
+                .setQuery(query, Empresa.class)
+                .build();
+
+        firestoreAdapter = new FirestoreRecyclerAdapter<Empresa, HelperAdapter.ViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull HelperAdapter.ViewHolder viewHolder, int i, @NonNull Empresa empresa) {
+                viewHolder.nombreEmpresa.setText(empresa.getNombreEmpresa());
+                viewHolder.cif.setText(empresa.getCif());
+                viewHolder.cp.setText(empresa.getCp());
+                viewHolder.direccion.setText(empresa.getDireccion());
+                viewHolder.email.setText(empresa.getEmail());
+                viewHolder.telefono.setText(empresa.getTelefono());
+                viewHolder.userID.setText(empresa.getUserID());
+            }
+
+            @NonNull
+            @Override
+            public HelperAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_item, parent, false);
+                return new HelperAdapter.ViewHolder(view);
+            }
+        };
+
+        recyclerView.setAdapter(firestoreAdapter);
+        return v;
     }
+
     @Override
     public void onStart() {
         super.onStart();
-        helperAdapter.startListening();
+        firestoreAdapter.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        helperAdapter.stopListening();
+        firestoreAdapter.stopListening();
     }
-
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
