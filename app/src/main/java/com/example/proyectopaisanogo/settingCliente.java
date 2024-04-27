@@ -127,7 +127,7 @@ public class settingCliente extends Fragment {
                 if (user != null) {
 
                     // Actualizar los datos en Firestore
-                    DocumentReference docRef = db.collection("registroCliente").document(user.getUid());
+                    DocumentReference docRef = db.collection("settingsCliente").document(user.getUid());
                     Map<String, Object> updates = new HashMap<>();
                     updates.put("nombreCliente", nombreCliente);
                     updates.put("direccion", direccion);

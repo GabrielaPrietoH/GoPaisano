@@ -38,10 +38,12 @@ public class MainActivity extends AppCompatActivity implements OnCalendarButtonC
         fragmentTransaction.replace(R.id.fragment_container, login); // Reemplaza "fragment_container" con el ID de tu contenedor de fragmentos
         fragmentTransaction.commit();
 
-
+        /*
         // Configurar el botón del calendario en el fragmento MainCliente
         mainCliente mainCliente = (mainCliente) getSupportFragmentManager().findFragmentById(R.id.mainCliente);
         mainCliente.setOnCalendarButtonClickListener(this);
+
+         */
 
 
     }

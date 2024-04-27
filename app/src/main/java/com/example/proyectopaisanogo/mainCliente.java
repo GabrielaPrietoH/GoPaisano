@@ -126,6 +126,7 @@ public class mainCliente extends Fragment {
 
 
         //CALENDARIO
+        /*
         Button calendarButton = view.findViewById(R.id.calendarButton);  //nombre
         calendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +137,8 @@ public class mainCliente extends Fragment {
                 }
             }
         });
+
+         */
 
         return view;
 

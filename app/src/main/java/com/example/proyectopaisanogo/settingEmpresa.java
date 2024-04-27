@@ -126,7 +126,7 @@ public class settingEmpresa extends Fragment {
                 if (user != null) {
 
                     // Actualizar los datos en Firestore
-                    DocumentReference docRef = db.collection("registroEmpresa").document(user.getUid());
+                    DocumentReference docRef = db.collection("settingsEmpresa").document(user.getUid());
                     Map<String, Object> updates = new HashMap<>();
                     updates.put("cif", cif);
                     updates.put("nombreEmpresa", nombreEmpresa);
