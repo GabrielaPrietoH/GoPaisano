@@ -23,6 +23,21 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textnombreEmpresa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/nombre_empresa" />
+
+            <TextView
+                android:id="@+id/textUserID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:visibility="invisible"
+                android:layout_weight="0"
+                android:text="userID" />
+
+            <TextView
                 android:id="@+id/textDireccion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,24 +56,10 @@
                 android:layout_height="wrap_content"
                 android:text="@string/telefono" />
 
-            <TextView
-                android:id="@+id/textnombreEmpresa"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/nombre_empresa" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textUserID"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="0"
-                    android:text="userID" />
 
                 <TextView
                     android:id="@+id/textCP"
