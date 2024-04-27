@@ -33,4 +33,12 @@
     <string name="logout">Logout</string>
     <string name="search">Search</string>
     <string name="volver_al_inicio">Volver al Inicio</string>
+    <string name="open">Abrir</string>
+    <string name="close">Cerrar</string>
+    <string name="eres_cliente_o_empresa_largo">eres cliente o empresa</string>
+    <string name="paisanogo">PaisanoGo</string>
+    <string name="paisanogo_gmail_com">paisanoGo@gmail.com</string>
+    <string name="menu">Menu</string>
+    <string name="calendario_citas">Calendario Citas</string>
+    <string name="calendario_citas_empresa">Calendario Citas Empresa</string>
 </resources>

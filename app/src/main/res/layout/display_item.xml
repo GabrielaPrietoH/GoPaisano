@@ -22,17 +22,27 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/header_image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/paisano"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/textnombreEmpresa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/TextAppearance.MaterialComponents.Headline3"
+                android:textColor="@color/white"
                 android:text="@string/nombre_empresa" />
 
             <TextView
                 android:id="@+id/textUserID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:visibility="invisible"
                 android:layout_weight="0"
                 android:text="userID" />
@@ -41,6 +51,7 @@
                 android:id="@+id/textDireccion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/TextAppearance.MaterialComponents.Headline3"
                 android:text="@string/direccion"
                 android:textColor="#E6E6E6" />
 
@@ -74,8 +85,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:text="@string/cif" />
-            </LinearLayout>
 
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

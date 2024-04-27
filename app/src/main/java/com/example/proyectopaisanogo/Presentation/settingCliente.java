@@ -30,7 +30,6 @@ import java.util.Map;
 public class settingCliente extends Fragment {
 
 
-
     //Settings
     EditText nombreText, direccionText, cpText, telefonoText, emailText, passwordText;
     Button btnSaveChanges;

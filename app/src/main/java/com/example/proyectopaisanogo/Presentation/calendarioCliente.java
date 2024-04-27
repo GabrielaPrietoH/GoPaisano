@@ -2,63 +2,55 @@ package com.example.proyectopaisanogo.Presentation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.proyectopaisanogo.R;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class calendarioCliente extends Fragment {
+public class calendarioCliente extends Fragment  implements NavigationView.OnNavigationItemSelectedListener {
 
-    private CalendarioClienteViewModel mViewModel;
-    public static calendarioCliente newInstance() {
-        return new calendarioCliente();
-    }
+    private DrawerLayout drawerLayout;
     private FirebaseAuth mAuth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true); // Indica que este fragmento tiene un menú
+    }
+
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_calendario_cliente, container, false);
+
+        setupToolbar(view);
+        return view;
+    }
+
+    private void setupToolbar(View view) {
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        AppCompatActivity activity = (AppCompatActivity) requireActivity();
+        activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.getSupportActionBar().setTitle("Calendario Cliente");
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if(id == R.id.logout){
-            mAuth.signOut();
-            // Crear un nuevo fragmento y transacción
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, loginCliente.class, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("nombre") // El nombre puede ser nulo
-                    .commit();
-
-        }else if(id == R.id.setting){
-            // Crear un nuevo fragmento y transacción
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, settingCliente.class, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("nombre") // El nombre puede ser nulo
-                    .commit();
-
-        }else if(id == R.id.inicio){
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        // Manejar el clic en el ícono de retroceso en la barra de herramientas
+        if (menuItem.getItemId() == android.R.id.home) {
             // Crear un nuevo fragmento y transacción
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction()
@@ -66,24 +58,8 @@ public class calendarioCliente extends Fragment {
                     .setReorderingAllowed(true)
                     .addToBackStack("nombre") // El nombre puede ser nulo
                     .commit();
-
         }
-
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(menuItem);
     }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_calendario_cliente, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(CalendarioClienteViewModel.class);
-        // TODO: Use the ViewModel
-    }
-
-
 }
+

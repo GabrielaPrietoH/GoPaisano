@@ -45,17 +45,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/linearLayout" />
 
-
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="280dp"
         android:layout_height="333dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/paisano"
         tools:ignore="MissingConstraints"
         android:contentDescription="TODO" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
