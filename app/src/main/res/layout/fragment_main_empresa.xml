@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainCliente"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.proyectopaisanogo.Presentation.mainEmpresa">
+    tools:context="com.example.proyectopaisanogo.Presentation.mainCliente">
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="81dp"
-        android:layout_marginTop="41dp"
-        android:layout_marginEnd="77dp"
-        android:src="@drawable/paisano" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RvEmpresas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 </FrameLayout>
