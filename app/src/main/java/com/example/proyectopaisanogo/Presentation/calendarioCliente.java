@@ -20,7 +20,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class calendarioCliente extends Fragment {
 
     private CalendarioClienteViewModel mViewModel;
-
     public static calendarioCliente newInstance() {
         return new calendarioCliente();
     }
