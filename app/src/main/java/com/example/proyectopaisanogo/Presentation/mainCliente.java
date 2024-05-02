@@ -30,9 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 public class mainCliente extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
-    private FirebaseFirestore firestore;
     private DrawerLayout drawerLayout;
-    private RecyclerView recyclerView;
     private FirestoreRecyclerAdapter<Empresa, HelperAdapter.ViewHolder> firestoreAdapter;
 
     public static com.example.proyectopaisanogo.Presentation.mainCliente newInstance() {
@@ -54,8 +52,8 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_main_cliente, container, false);
 
-        firestore = FirebaseFirestore.getInstance();
-        recyclerView = v.findViewById(R.id.RvEmpresas);
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        RecyclerView recyclerView = v.findViewById(R.id.RvEmpresas);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         Toolbar toolbar = v.findViewById(R.id.toolbar);

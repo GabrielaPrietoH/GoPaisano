@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -20,7 +19,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class calendarioCliente extends Fragment  implements NavigationView.OnNavigationItemSelectedListener {
 
-    private DrawerLayout drawerLayout;
     private FirebaseAuth mAuth;
 
     @Override

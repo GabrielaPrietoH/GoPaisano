@@ -2,22 +2,25 @@ package com.example.proyectopaisanogo.Presentation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.proyectopaisanogo.R;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class mainEmpresa extends Fragment {
+public class mainEmpresa extends Fragment implements NavigationView.OnNavigationItemSelectedListener{
 
     private MainEmpresaViewModel mViewModel;
 
@@ -28,6 +31,8 @@ public class mainEmpresa extends Fragment {
         return new mainEmpresa();
     }
 
+    private DrawerLayout drawerLayout;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,63 +42,19 @@ public class mainEmpresa extends Fragment {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if(id == R.id.logout){
-            mAuth.signOut();
-            // Crear un nuevo fragmento y transacción
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, loginEmpresa.class, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("nombre") // El nombre puede ser nulo
-                    .commit();
-
-        }else if(id == R.id.setting){
-            // Crear un nuevo fragmento y transacción
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, settingEmpresa.class, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("nombre") // El nombre puede ser nulo
-                    .commit();
-
-        }else if(id == R.id.calendar){
-            // Crear un nuevo fragmento y transacción
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, calendarioEmpresa.class, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("nombre") // El nombre puede ser nulo
-                    .commit();
-
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main_empresa, container, false);
+        View v = inflater.inflate(R.layout.fragment_main_empresa, container, false);
+        Toolbar toolbar = v.findViewById(R.id.toolbar);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
 
-        //Logout
-        //mAuth = FirebaseAuth.getInstance();
-/**
-        //********Comunicación entre activities
-        String nombre = getIntent().getStringExtra("nombre");
-        //TextView etiquetaNomUser = findViewById(R.id.cajaCorreo);
-        if (nombre != null && !nombre.isEmpty()) {
-            Toast.makeText(MainActivity.this, "Hola " + nombre, Toast.LENGTH_SHORT).show();
-        }
- **/
+        drawerLayout = v.findViewById(R.id.drawerLayout);
+        NavigationView navigationView = v.findViewById(R.id.navView);
+        navigationView.setNavigationItemSelectedListener(this);
+        setupToolbar(v);
+        return v;
     }
 
     @Override
@@ -103,4 +64,49 @@ public class mainEmpresa extends Fragment {
         // TODO: Use the ViewModel
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        int id = menuItem.getItemId();
+
+        if (id == R.id.setting) {
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, settingEmpresa.class, null)
+                    .setReorderingAllowed(true)
+                    .addToBackStack("Setting") // El nombre puede ser nulo
+                    .commit();
+
+        } else if (id == R.id.calendar) {
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, calendarioEmpresa.class, null)
+                    .setReorderingAllowed(true)
+                    .addToBackStack("Calendario") // El nombre puede ser nulo
+                    .commit();
+
+        } else if (id == R.id.logout) {
+            mAuth.signOut();
+            // Crear un nuevo fragmento y transacción
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, loginEmpresa.class, null)
+                    .setReorderingAllowed(true)
+                    .addToBackStack("Logout") // El nombre puede ser nulo
+                    .commit();
+
+        }
+        mAuth = FirebaseAuth.getInstance();
+        drawerLayout.closeDrawers();
+        return true;
+
+    }
+
+    private void setupToolbar(View view) {
+        Toolbar toolbar;
+        toolbar = view.findViewById(R.id.toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(requireActivity(), drawerLayout, toolbar,
+                R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+    }
 }

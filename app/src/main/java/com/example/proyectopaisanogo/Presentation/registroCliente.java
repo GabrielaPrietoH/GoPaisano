@@ -62,72 +62,67 @@ public class registroCliente extends Fragment {
 
 
         registroC = rootView.findViewById(R.id.buttonResgistroCliente);
-        registroC.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
+        registroC.setOnClickListener(v -> {
 
 
-                String email = emailText.getText().toString();
-                String password = passwordText.getText().toString();
+            String email = emailText.getText().toString();
+            String password = passwordText.getText().toString();
 
-                //Registro
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
+            //Registro
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
 
-                                    //Tras registro, obtener usuario y email.
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    if (user != null) {
-                                        String uid = user.getUid();
-                                        String userEmail = user.getEmail();
+                                //Tras registro, obtener usuario y email.
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                if (user != null) {
+                                    String uid = user.getUid();
+                                    String userEmail = user.getEmail();
 
-                                        // Preparar los datos de la empresa para Firestore
-                                        Map<String, Object> empresa = new HashMap<>();
-                                        empresa.put("nombreCliente", nombreText.getText().toString().trim());
-                                        empresa.put("direccion", direccionText.getText().toString().trim());
-                                        empresa.put("cp", cpText.getText().toString().trim());
-                                        empresa.put("telefono", telefonoText.getText().toString().trim());
-                                        empresa.put("email", userEmail); // Usar el email del registro
-                                        empresa.put("userID", uid);  //user ID del registro
+                                    // Preparar los datos de la empresa para Firestore
+                                    Map<String, Object> empresa = new HashMap<>();
+                                    empresa.put("nombreCliente", nombreText.getText().toString().trim());
+                                    empresa.put("direccion", direccionText.getText().toString().trim());
+                                    empresa.put("cp", cpText.getText().toString().trim());
+                                    empresa.put("telefono", telefonoText.getText().toString().trim());
+                                    empresa.put("email", userEmail); // Usar el email del registro
+                                    empresa.put("userID", uid);  //user ID del registro
 
 
 
-                                        // Agregar información a Firestore con UID como ID del documento
-                                        db.collection("registroCliente").document(uid).set(empresa)
-                                                .addOnSuccessListener(aVoid -> {
-                                                    // Datos añadidos correctamente
-                                                    // Toast
-                                                    // Cambiar a otro fragmento/activity después del registro exitoso
-                                                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                                                    fragmentManager.beginTransaction()
-                                                            .replace(R.id.fragment_container, mainCliente.class, null)
-                                                            .setReorderingAllowed(true)
-                                                            .addToBackStack("nombre") // El nombre puede ser nulo
-                                                            .commit();
-                                                })
-                                                .addOnFailureListener(e -> {
-                                                    // Manejar el error aquí
-                                                    //Toast
-                                                });
+                                    // Agregar información a Firestore con UID como ID del documento
+                                    db.collection("registroCliente").document(uid).set(empresa)
+                                            .addOnSuccessListener(aVoid -> {
+                                                // Datos añadidos correctamente
+                                                // Toast
+                                                // Cambiar a otro fragmento/activity después del registro exitoso
+                                                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                                                fragmentManager.beginTransaction()
+                                                        .replace(R.id.fragment_container, mainCliente.class, null)
+                                                        .setReorderingAllowed(true)
+                                                        .addToBackStack("nombre") // El nombre puede ser nulo
+                                                        .commit();
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                // Manejar el error aquí
+                                                //Toast
+                                            });
 
 
-
-                                    }
-
-                                } else {
-                                    // If sign in fails, display a message to the user.
-
-                                    //Toast fallo auth
 
                                 }
+
+                            } else {
+                                // If sign in fails, display a message to the user.
+
+                                //Toast fallo auth
+
                             }
-                        });
+                        }
+                    });
 
-
-            }
 
         });
         return rootView;

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    app:cardBackgroundColor="@color/colorPrimaryDark"
     app:cardCornerRadius="8dp"
     app:cardElevation="8dp"
     app:cardMaxElevation="10dp"
@@ -12,81 +12,159 @@
     app:cardUseCompatPadding="true"
     app:contentPadding="1dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="382dp"
+        android:layout_marginBottom="8dp">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/header_image"
+            android:layout_width="318dp"
+            android:layout_height="156dp"
+            android:layout_marginTop="16dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/paisano"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textnombreEmpresa"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/nombre_empresa"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.046"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header_image" />
+
+        <TextView
+            android:id="@+id/textUserID"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_weight="0"
+            android:text="userID"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/action_button_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textCP"
+            app:layout_constraintVertical_bias="1.0"
+            tools:ignore="MissingConstraints" />
 
-            <ImageView
-                android:id="@+id/header_image"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="@drawable/paisano"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textDireccion"
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="148dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/direccion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/textnombreEmpresa"
+            app:layout_constraintTop_toBottomOf="@id/textnombreEmpresa" />
 
-            <TextView
-                android:id="@+id/textnombreEmpresa"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/TextAppearance.MaterialComponents.Headline3"
-                android:textColor="@color/white"
-                android:text="@string/nombre_empresa" />
 
-            <TextView
-                android:id="@+id/textUserID"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="invisible"
-                android:layout_weight="0"
-                android:text="userID" />
+        <TextView
+            android:id="@+id/textCif"
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="114dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginBottom="56dp"
+            android:layout_weight="2"
+            android:text="@string/cif"
+            app:layout_constraintBottom_toTopOf="@+id/action_button_3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/textEmail"
+            tools:ignore="MissingConstraints" />
 
-            <TextView
-                android:id="@+id/textDireccion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/TextAppearance.MaterialComponents.Headline3"
-                android:text="@string/direccion"
-                android:textColor="#E6E6E6" />
+        <TextView
+            android:id="@+id/textEmail"
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="172dp"
+            android:layout_height="23dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/email"
+            app:layout_constraintBottom_toTopOf="@id/textCP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.049"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textTelefono"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="MissingConstraints" />
 
-            <TextView
-                android:id="@+id/textEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/email" />
+        <TextView
+            android:id="@+id/textTelefono"
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="134dp"
+            android:layout_height="26dp"
+            android:text="@string/telefono"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.041"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textDireccion"
+            tools:ignore="MissingConstraints" />
 
-            <TextView
-                android:id="@+id/textTelefono"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/telefono" />
+        <TextView
+            android:id="@+id/textCP"
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="116dp"
+            android:layout_height="20dp"
+            android:layout_weight="1"
+            android:text="@string/codigo_postal"
+            app:layout_constraintBottom_toTopOf="@+id/textCif"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.754"
+            app:layout_constraintStart_toEndOf="@+id/textTelefono"
+            app:layout_constraintTop_toBottomOf="@+id/header_image"
+            app:layout_constraintVertical_bias="0.879"
+            tools:ignore="MissingConstraints" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/action_button_1"
+            android:layout_width="111dp"
+            android:layout_height="50dp"
+            android:contentDescription="descripcion_action_button_1"
+            android:text="ACCION 1"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/textDireccion"
+            app:layout_constraintTop_toTopOf="@id/action_button_2"
+            app:layout_constraintVertical_bias="1.0"
+            tools:ignore="HardcodedText" />
 
-                <TextView
-                    android:id="@+id/textCP"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/codigo_postal" />
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/action_button_2"
+            android:layout_width="106dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="20dp"
+            android:contentDescription="descripcion_action_button_2"
+            android:text="ACTION 2"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/action_button_1"
+            app:layout_constraintTop_toBottomOf="@id/textCP"
+            app:layout_constraintVertical_bias="1.0"
+            tools:ignore="HardcodedText" />
 
-                <TextView
-                    android:id="@+id/textCif"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="@string/cif" />
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/action_button_3"
+            android:layout_width="87dp"
+            android:layout_height="52dp"
+            android:contentDescription="descripcion_action_button_3"
+            android:text="ACCION 3"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.508"
+            app:layout_constraintStart_toEndOf="@id/action_button_2"
+            tools:ignore="HardcodedText" />
 
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
