@@ -11,14 +11,14 @@ public class Empresa {
     private String nombreEmpresa;
     private String telefono;
     private String userID;
+    private String imagenURL;
 
-    // Constructor vacío requerido por Firestore
     public Empresa() {
-        // Constructor vacío
+
     }
 
-    // Constructor con todos los campos
-    public Empresa(String cif, String cp, String direccion, String email, String nombreEmpresa, String telefono, String userID) {
+
+    public Empresa(String cif, String cp, String direccion, String email, String nombreEmpresa, String telefono, String userID, String imagenURL) {
         this.cif = cif;
         this.cp = cp;
         this.direccion = direccion;
@@ -26,6 +26,7 @@ public class Empresa {
         this.nombreEmpresa = nombreEmpresa;
         this.telefono = telefono;
         this.userID = userID;
+        this.imagenURL = imagenURL; // Asignar la URL de la imagen
     }
 
     // Getters y setters
@@ -97,5 +98,15 @@ public class Empresa {
     @PropertyName("userID")
     public void setUserID(String userID) {
         this.userID = userID;
+    }
+
+    @PropertyName("imagenURL")
+    public String getImagenURL() {
+        return imagenURL;
+    }
+
+    @PropertyName("imagenURL")
+    public void setImagenURL(String imagenURL) {
+        this.imagenURL = imagenURL;
     }
 }

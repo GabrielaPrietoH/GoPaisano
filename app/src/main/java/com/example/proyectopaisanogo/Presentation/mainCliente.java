@@ -1,11 +1,13 @@
 package com.example.proyectopaisanogo.Presentation;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.proyectopaisanogo.Adapter.HelperAdapter;
 import com.example.proyectopaisanogo.Model.Empresa;
 import com.example.proyectopaisanogo.R;
@@ -28,13 +31,16 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class mainCliente extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
     private FirestoreRecyclerAdapter<Empresa, HelperAdapter.ViewHolder> firestoreAdapter;
+    private StorageReference storageRef;
 
-    public static com.example.proyectopaisanogo.Presentation.mainCliente newInstance() {
-        return new com.example.proyectopaisanogo.Presentation.mainCliente();
+    public static mainCliente newInstance() {
+        return new mainCliente();
     }
 
     private FirebaseAuth mAuth;
@@ -44,6 +50,7 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        storageRef = FirebaseStorage.getInstance().getReference();
     }
 
 
@@ -79,6 +86,9 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
                 viewHolder.email.setText(empresa.getEmail());
                 viewHolder.telefono.setText(empresa.getTelefono());
                 viewHolder.userID.setText(empresa.getUserID());
+
+                // Cargar la imagen utilizando Glide
+                loadImage(requireContext(), empresa.getUserID(), viewHolder.imageView);
             }
 
             @NonNull
@@ -141,10 +151,11 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
         return true;
 
     }
-        @Override
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-            MainClienteViewModel mViewModel = new ViewModelProvider(this).get(MainClienteViewModel.class);
+        MainClienteViewModel mViewModel = new ViewModelProvider(this).get(MainClienteViewModel.class);
 
     }
 
@@ -157,4 +168,21 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
         toggle.syncState();
     }
 
+    // Método para cargar la imagen desde Firebase Storage usando Glide
+    private void loadImage(Context context, String userID, ImageView imageView) {
+        StorageReference imageRef = storageRef.child("images/" + userID);
+        imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+            // Load the image using Glide
+            Glide.with(context)
+                    .load(uri)
+                    .into(imageView);
+        }).addOnFailureListener(exception -> {
+            // Handle any errors
+            // For now, you can display a placeholder image or a message
+            // For example:
+            // imageView.setImageResource(R.drawable.placeholder_image);
+            // Or
+            // imageView.setVisibility(View.GONE);
+        });
+    }
 }

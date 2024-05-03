@@ -1,17 +1,20 @@
 package com.example.proyectopaisanogo.Presentation;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.proyectopaisanogo.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,43 +23,31 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class registroEmpresa extends Fragment {
 
-    //Registro empresa
-    Button registroE;
+    private Button registroE, btnSelectImage, btnCancel;
     private FirebaseAuth mAuth;
-
-    //Add datos en colección
     private FirebaseFirestore db;
-    private String idUser, userEmail;
-
-    EditText cifText, nombreText, direccionText, cpText, telefonoText, emailText, passwordText;
-
-
-    private RegistroEmpresaViewModel mViewModel;
-
-    public static registroEmpresa newInstance() {
-        return new registroEmpresa();
-    }
+    private EditText cifText, nombreText, direccionText, cpText, telefonoText, emailText, passwordText;
+    private Uri filePath; // Uri de la imagen seleccionada
+    private StorageReference storageRef;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_registro_empresa, container, false);
 
-        //REGISTRO
         mAuth = FirebaseAuth.getInstance();
-
-        //ADD datos a FirebaseFirestore
         db = FirebaseFirestore.getInstance();
-       // idUser = mAuth.getCurrentUser().getUid();
-       // userEmail = mAuth.getCurrentUser().getEmail();
+        storageRef = FirebaseStorage.getInstance().getReference();
 
-        //Referencia de las cajas
         cifText = rootView.findViewById(R.id.editTextCifEmpresa);
         nombreText = rootView.findViewById(R.id.editTextNomEmpresa);
         direccionText = rootView.findViewById(R.id.editTextDireccionEmpresa);
@@ -65,114 +56,126 @@ public class registroEmpresa extends Fragment {
         emailText = rootView.findViewById(R.id.editTextEmailEmpresa);
         passwordText = rootView.findViewById(R.id.editTextTextPassword3);
 
+        btnSelectImage = rootView.findViewById(R.id.subirImagen);
+        btnCancel = rootView.findViewById(R.id.cancelarImagen);
 
-
-        /*
-        registroE = rootView.findViewById(R.id.buttonRegistroEmpresa);
-        registroE.setOnClickListener(new View.OnClickListener() {
-
+        btnSelectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Crear un nuevo fragmento y transacción
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, mainEmpresa.class, null)
-                        .setReorderingAllowed(true)
-                        .addToBackStack("nombre") // El nombre puede ser nulo
-                        .commit();
-            }
-
-        });
-        */
-
-        //Registro empresa
-        registroE = rootView.findViewById(R.id.buttonRegistroEmpresa);
-        registroE.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-
-                String email = emailText.getText().toString();
-                String password = passwordText.getText().toString();
-
-                //Registro
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-
-                                    //Tras registro, obtener usuario y email.
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    if (user != null) {
-                                        String uid = user.getUid();
-                                        String userEmail = user.getEmail();
-
-                                        // Preparar los datos de la empresa para Firestore
-                                        Map<String, Object> empresa = new HashMap<>();
-                                        empresa.put("cif", cifText.getText().toString().trim());
-                                        empresa.put("nombreEmpresa", nombreText.getText().toString().trim());
-                                        empresa.put("direccion", direccionText.getText().toString().trim());
-                                        empresa.put("cp", cpText.getText().toString().trim());
-                                        empresa.put("telefono", telefonoText.getText().toString().trim());
-                                        empresa.put("email", userEmail); // Usar el email del registro
-                                        empresa.put("userID", uid);  //user ID del registro
-
-
-
-                                        // Agregar información a Firestore con UID como ID del documento
-                                        db.collection("registroEmpresa").document(uid).set(empresa)
-                                                .addOnSuccessListener(aVoid -> {
-                                                    // Datos añadidos correctamente
-                                                    // Toast
-                                                    // Cambiar a otro fragmento/activity después del registro exitoso
-                                                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                                                    fragmentManager.beginTransaction()
-                                                            .replace(R.id.fragment_container, mainEmpresa.class, null)
-                                                            .setReorderingAllowed(true)
-                                                            .addToBackStack("nombre") // El nombre puede ser nulo
-                                                            .commit();
-                                                })
-                                                .addOnFailureListener(e -> {
-                                                    // Manejar el error aquí
-                                                    //Toast
-                                                });
-
-
-
-                                    }
-
-                                } else {
-                                        // If sign in fails, display a message to the user.
-
-                                        //Toast fallo auth
-
-                                }
-                            }
-                        });
+                selectImage();
             }
         });
 
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelUpload();
+            }
+        });
+
+        registroE = rootView.findViewById(R.id.buttonRegistroEmpresa);
+        registroE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerCompany();
+            }
+        });
 
         return rootView;
+    }
 
+    private void selectImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Image"), 1);
+    }
 
+    private void cancelUpload() {
+        filePath = null;
+        Toast.makeText(getContext(), "Upload canceled", Toast.LENGTH_SHORT).show();
+    }
 
+    private void registerCompany() {
+        String email = emailText.getText().toString();
+        String password = passwordText.getText().toString();
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (user != null) {
+                                String uid = user.getUid();
+                                String userEmail = user.getEmail();
+
+                                Map<String, Object> empresa = new HashMap<>();
+                                empresa.put("cif", cifText.getText().toString().trim());
+                                empresa.put("nombreEmpresa", nombreText.getText().toString().trim());
+                                empresa.put("direccion", direccionText.getText().toString().trim());
+                                empresa.put("cp", cpText.getText().toString().trim());
+                                empresa.put("telefono", telefonoText.getText().toString().trim());
+                                empresa.put("email", userEmail);
+                                empresa.put("userID", uid);
+
+                                db.collection("registroEmpresa").document(uid).set(empresa)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    if (filePath != null) {
+                                                        uploadImage(uid);
+                                                    } else {
+                                                        goToMainEmpresaFragment();
+                                                    }
+                                                } else {
+                                                    Toast.makeText(getContext(), "Error al registrar la empresa", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                            }
+                        } else {
+                            Toast.makeText(getContext(), "Error al registrar el usuario", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void uploadImage(String uid) {
+        if (filePath != null) {
+            StorageReference imageRef = storageRef.child("images/" + uid);
+            UploadTask uploadTask = imageRef.putFile(filePath);
+
+            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        goToMainEmpresaFragment();
+                    } else {
+                        Toast.makeText(getContext(), "Error al subir la imagen", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        } else {
+            goToMainEmpresaFragment();
+        }
+    }
+
+    private void goToMainEmpresaFragment() {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, mainEmpresa.class, null)
+                .setReorderingAllowed(true)
+                .addToBackStack("nombre")
+                .commit();
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(RegistroEmpresaViewModel.class);
-        // TODO: Use the ViewModel
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+            filePath = data.getData();
+        }
     }
-
-
-
-
-
-
-
-
 }
