@@ -1,153 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/loginCliente"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.proyectopaisanogo.Presentation.loginCliente">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="420dp"
-        android:layout_height="751dp"
-        android:background="@drawable/fondo_login"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:visibility="visible" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_10" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="346dp"
-            android:layout_height="190dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="34dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="201dp"
-            android:background="@color/white"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            tools:visibility="visible" />
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="-2dp">
 
         <ImageButton
             android:id="@+id/botonLogoutCliente"
-            android:layout_width="wrap_content"
-            android:layout_height="260dp"
+            android:layout_width="267dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="68dp"
+            android:layout_marginStart="73dp"
             android:layout_marginTop="0dp"
-            android:layout_marginEnd="79dp"
+            android:layout_marginEnd="71dp"
             android:background="@drawable/round_corner"
             android:src="@drawable/paisano" />
 
         <EditText
             android:id="@+id/cajaCorreo"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/botonLogoutCliente"
+            android:layout_below="@id/botonLogoutCliente"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="62dp"
-            android:layout_marginTop="105dp"
-            android:layout_marginEnd="64dp"
-            android:ems="10"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="71dp"
+            android:layout_marginEnd="49dp"
             android:hint="@string/usuario"
             android:inputType="text" />
 
         <EditText
             android:id="@+id/cajaPass"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cajaCorreo"
+            android:layout_below="@id/cajaCorreo"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="62dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="67dp"
-            android:ems="10"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="51dp"
             android:hint="@string/password"
             android:inputType="textPassword" />
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="218dp"
+            android:layout_width="131dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/botonLogoutCliente"
+            android:layout_below="@id/botonLogoutCliente"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="96dp"
-            android:layout_marginTop="29dp"
-            android:layout_marginEnd="96dp"
+            android:layout_marginStart="140dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="140dp"
             android:background="#EBF1EF"
             android:text="@string/clientes"
             android:textAlignment="center"
             android:textColor="#1731BF"
-            android:textSize="34sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView6"
-            android:layout_width="310dp"
+            android:layout_width="297dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cajaPass"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="95dp"
+            android:layout_marginEnd="56dp"
+            android:text="Si no tienes cuenta"
+            android:textAlignment="center"
+            android:textColor="#FFC107"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/buttonLoginC"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/buttonRegistroC"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="52dp"
+            android:layout_marginEnd="47dp"
+            android:layout_marginBottom="70dp"
+            android:backgroundTint="#03A9F4"
+            android:text="@string/login"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/buttonRegistroC"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="51dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginBottom="104dp"
-            android:text="Si no tienes cuenta"
-            android:textAlignment="center"
-            android:textColor="#FFC107"
-            android:textSize="32sp" />
-
-        <Button
-            android:id="@+id/buttonRegistroC"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="70dp"
-            android:layout_marginEnd="69dp"
-            android:layout_marginBottom="33dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="37dp"
             android:backgroundTint="#03A9F4"
             android:text="Registrarse"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
-        <Button
-            android:id="@+id/buttonLoginC"
-            android:layout_width="207dp"
-            android:layout_height="62dp"
-            android:layout_above="@+id/textView6"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="116dp"
-            android:layout_marginEnd="116dp"
-            android:layout_marginBottom="22dp"
-            android:backgroundTint="#03A9F4"
-            android:text="@string/login"
-            android:textColor="@color/white"
-            android:textSize="24sp" />
     </RelativeLayout>
 
-</FrameLayout>
+</RelativeLayout>

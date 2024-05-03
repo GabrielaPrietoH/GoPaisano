@@ -9,6 +9,13 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.proyectopaisanogo.Presentation.mainCliente">
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="405dp"
+        android:layout_height="731dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_10" />
+
     <!-- Contenedor principal -->
     <LinearLayout
         android:layout_width="match_parent"
