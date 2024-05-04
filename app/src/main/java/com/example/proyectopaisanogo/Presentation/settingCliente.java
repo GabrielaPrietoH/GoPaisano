@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.proyectopaisanogo.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,19 +37,11 @@ public class settingCliente extends Fragment implements NavigationView.OnNavigat
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
-
-    private SettingClienteViewModel mViewModel;
-
-    public static settingCliente newInstance() {
-        return new settingCliente();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
-
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -63,7 +54,7 @@ public class settingCliente extends Fragment implements NavigationView.OnNavigat
 
         //Referencia de las cajas
         nombreText = rootView.findViewById(R.id.editTextUsuarioCliente);
-        direccionText = rootView.findViewById(R.id.editTextDIreccionCLiente);
+        direccionText = rootView.findViewById(R.id.editTextDireccionCLiente);
         cpText = rootView.findViewById(R.id.editTextCpCliente);
         telefonoText = rootView.findViewById(R.id.editTextPhoneCliente);
         emailText = rootView.findViewById(R.id.editTextEmailCliente);
@@ -125,13 +116,6 @@ public class settingCliente extends Fragment implements NavigationView.OnNavigat
         setupToolbar(rootView);
         return rootView;
 
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(SettingClienteViewModel.class);
-        // TODO: Use the ViewModel
     }
 
     private void setupToolbar(View view) {

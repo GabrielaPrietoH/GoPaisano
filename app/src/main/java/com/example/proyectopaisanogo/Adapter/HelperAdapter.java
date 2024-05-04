@@ -22,9 +22,9 @@ import com.google.firebase.storage.StorageReference;
 import java.util.List;
 
 public class HelperAdapter extends RecyclerView.Adapter<HelperAdapter.ViewHolder> {
-    private List<Empresa> empresas;
-    private Context mContext;
-    private StorageReference storageRef;
+    private final List<Empresa> empresas;
+    private final Context mContext;
+    private final StorageReference storageRef;
 
     public HelperAdapter(List<Empresa> empresas, Context context) {
         this.empresas = empresas;
@@ -53,30 +53,21 @@ public class HelperAdapter extends RecyclerView.Adapter<HelperAdapter.ViewHolder
         // Cargar la imagen desde Firebase Storage usando Glide
         loadImage(empresa.getUserID(), holder.imageView);
         // Configurar OnClickListener para el botón de llamada
-        holder.botonLlamar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String telefono = empresa.getTelefono();
-                realizarLlamada(telefono);
-            }
+        holder.botonLlamar.setOnClickListener(v -> {
+            String telefono = empresa.getTelefono();
+            realizarLlamada(telefono);
         });
 
         // Configurar OnClickListener para el botón de correo electrónico
-        holder.botonCorreo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = empresa.getEmail();
-                enviarCorreo(email);
-            }
+        holder.botonCorreo.setOnClickListener(v -> {
+            String email = empresa.getEmail();
+            enviarCorreo(email);
         });
 
         // Configurar OnClickListener para el botón de abrir dirección en Google Maps
-        holder.botonDireccion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String direccion = empresa.getDireccion();
-                abrirDireccionEnMapas(direccion);
-            }
+        holder.botonDireccion.setOnClickListener(v -> {
+            String direccion = empresa.getDireccion();
+            abrirDireccionEnMapas(direccion);
         });
     }
 

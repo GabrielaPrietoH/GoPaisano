@@ -12,30 +12,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.proyectopaisanogo.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class loginCliente extends Fragment {
 
     Button loginC, registroC;
-
-    private LoginClienteViewModel mViewModel;
-
-    public static loginCliente newInstance() {
-        return new loginCliente();
-    }
 
     @SuppressLint("ResourceType")
 
@@ -80,25 +67,22 @@ public class loginCliente extends Fragment {
             }else{
 
                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                           public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
 
-                                    // Crear un nuevo fragmento y transacción
-                                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                                    fragmentManager.beginTransaction()
-                                            .replace(R.id.fragment_container, mainCliente.class, null)
-                                            .setReorderingAllowed(true)
-                                            .addToBackStack("nombre") // El nombre puede ser nulo
-                                            .commit();
+                                // Crear un nuevo fragmento y transacción
+                                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.fragment_container, mainCliente.class, null)
+                                        .setReorderingAllowed(true)
+                                        .addToBackStack("nombre") // El nombre puede ser nulo
+                                        .commit();
 
-                                } else {
-                                    //Un toast para avisar que las credenciales son incorrectas
-                                    // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(getContext(), "Authentication failed.",Toast.LENGTH_SHORT);
-                                }
+                            } else {
+                                //Un toast para avisar que las credenciales son incorrectas
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                Toast.makeText(getContext(), "Authentication failed.",Toast.LENGTH_SHORT).show();
                             }
                         });
               }
@@ -127,13 +111,6 @@ public class loginCliente extends Fragment {
         });
 
         return rootView;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(LoginClienteViewModel.class);
-        // TODO: Use the ViewModel
     }
 
 }

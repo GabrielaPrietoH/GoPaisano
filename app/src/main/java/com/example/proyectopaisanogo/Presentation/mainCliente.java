@@ -17,7 +17,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,10 +37,6 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
     private DrawerLayout drawerLayout;
     private FirestoreRecyclerAdapter<Empresa, HelperAdapter.ViewHolder> firestoreAdapter;
     private StorageReference storageRef;
-
-    public static mainCliente newInstance() {
-        return new mainCliente();
-    }
 
     private FirebaseAuth mAuth;
 
@@ -149,13 +144,6 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
         mAuth = FirebaseAuth.getInstance();
         drawerLayout.closeDrawers();
         return true;
-
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        MainClienteViewModel mViewModel = new ViewModelProvider(this).get(MainClienteViewModel.class);
 
     }
 

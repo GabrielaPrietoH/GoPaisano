@@ -13,56 +13,31 @@ import com.example.proyectopaisanogo.R;
 
 public class FragmentLogin extends Fragment {
 
-    private loginViewModel mViewModel;
-    private Button cliente, empresa;
-
-    public static FragmentLogin newInstance() {
-        return new FragmentLogin();
-    }
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_login, container, false);
-            cliente = rootView.findViewById(R.id.buttonCliente);
-            cliente.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    // Crear un nuevo fragmento y transacción
-                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, loginCliente.class, null)
-                            .setReorderingAllowed(true)
-                            .addToBackStack("nombre") // El nombre puede ser nulo
-                            .commit();
-                }
+            Button cliente = rootView.findViewById(R.id.buttonCliente);
+            cliente.setOnClickListener(v -> {
+                // Crear un nuevo fragmento y transacción
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, loginCliente.class, null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack("nombre") // El nombre puede ser nulo
+                        .commit();
             });
 
-            empresa = rootView.findViewById(R.id.buttonEmpresa);
-            empresa.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    // Crear un nuevo fragmento y transacción
-                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, loginEmpresa.class, null)
-                            .setReorderingAllowed(true)
-                            .addToBackStack("nombre") // El nombre puede ser nulo
-                            .commit();
-                }
+            Button empresa = rootView.findViewById(R.id.buttonEmpresa);
+            empresa.setOnClickListener(v -> {
+                // Crear un nuevo fragmento y transacción
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, loginEmpresa.class, null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack("nombre") // El nombre puede ser nulo
+                        .commit();
             });
             return rootView;
         }
-
-/**
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(loginViewModel.class);
-        // TODO: Use the ViewModel
-    }
-**/
 }
