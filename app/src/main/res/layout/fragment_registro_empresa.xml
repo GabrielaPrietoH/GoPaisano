@@ -1,207 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.proyectopaisanogo.Presentation.registroEmpresa">
+    tools:context=".Presentation.registroEmpresa">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="43dp"
+        android:text="@string/registro_empresas"
+        android:textAlignment="center"
+        android:textColor="#065CA1"
+        android:textSize="24sp" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="112dp"
+        android:layout_height="73dp"
+        android:layout_below="@id/textView9"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="-51dp"
+        android:layout_marginEnd="28dp"
+        android:layout_toStartOf="@+id/textView9"
+        android:src="@drawable/paisano" />
+
+    <ImageView
+        android:id="@+id/imageEmpresa"
+        android:layout_width="173dp"
+        android:layout_height="89dp"
+        android:layout_below="@id/imageView5"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="119dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="119dp"
+        android:src="@drawable/imagen_empresa" />
+
+    <Button
+        android:id="@+id/subirImagen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageEmpresa"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="22dp"
+        android:backgroundTint="#03A9F4"
+        android:text="@string/subir_imagen"
+        android:textColor="@color/white"
+        android:textSize="13sp" />
+
+    <Button
+        android:id="@+id/cancelarImagen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageEmpresa"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="22dp"
+        android:layout_toEndOf="@id/subirImagen"
+        android:backgroundTint="#03A9F4"
+        android:text="@string/cancelar"
+        android:textColor="@color/white"
+        android:textSize="13sp" />
+
+    <EditText
+        android:id="@+id/editTextCifEmpresa"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/subirImagen"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/cif"
+        android:inputType="text" />
 
+    <EditText
+        android:id="@+id/editTextNomEmpresa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextCifEmpresa"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/nombre_empresa"
+        android:inputType="text" />
 
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="112dp"
-            android:layout_height="73dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="11dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="288dp"
-            android:src="@drawable/paisano" />
+    <EditText
+        android:id="@+id/editTextDireccionEmpresa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextNomEmpresa"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/direccion"
+        android:inputType="textPostalAddress" />
 
-        <ImageView
-            android:id="@+id/imageEmpresa"
-            android:layout_width="139dp"
-            android:layout_height="85dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="111dp"
-            android:layout_marginTop="88dp"
-            android:layout_marginEnd="161dp"
-            android:src="@drawable/paisano" />
+    <EditText
+        android:id="@+id/editTextCpEmpresa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextDireccionEmpresa"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/codigo_postal"
+        android:inputType="textPostalAddress" />
 
-        <Button
-            android:id="@+id/subirImagen"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_below="@+id/imageEmpresa"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="85dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="235dp"
-            android:layout_marginBottom="515dp"
-            android:backgroundTint="#03A9F4"
-            android:text="@string/subir"
-            android:textColor="@color/white"
-            android:textSize="13sp" />
+    <EditText
+        android:id="@+id/editTextTelefonoEmpresa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextCpEmpresa"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/telefono"
+        android:inputType="phone" />
 
-        <Button
-            android:id="@+id/cancelarImagen"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="182dp"
-            android:layout_marginTop="17dp"
-            android:layout_marginEnd="135dp"
-            android:layout_marginBottom="515dp"
-            android:backgroundTint="#03A9F4"
-            android:text="@string/cancelar"
-            android:textColor="@color/white"
-            android:textSize="13sp" />
+    <EditText
+        android:id="@+id/editTextEmailEmpresa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextTelefonoEmpresa"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress" />
 
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="212dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="151dp"
-            android:layout_marginTop="27dp"
-            android:layout_marginEnd="48dp"
-            android:text="@string/registro_empresas"
-            android:textAlignment="center"
-            android:textColor="#065CA1"
-            android:textSize="24sp" />
+    <EditText
+        android:id="@+id/editTextTextPassword3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextEmailEmpresa"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/password"
+        android:inputType="textPassword" />
 
-        <EditText
-            android:id="@+id/editTextCifEmpresa"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView5"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="142dp"
-            android:layout_marginEnd="78dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/cif"
-            android:inputType="text" />
+    <Button
+        android:id="@+id/buttonRegistroEmpresa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextTextPassword3"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="117dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="141dp"
+        android:backgroundTint="#03A9F4"
+        android:text="@string/registrarse"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/editTextNomEmpresa"
-            android:layout_width="wrap_content"
-            android:layout_height="56dp"
-            android:layout_below="@+id/editTextCifEmpresa"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="34dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="78dp"
-            android:ems="10"
-            android:hint="@string/nombre_empresa"
-            android:inputType="text"
-            android:autofillHints="" />
-
-        <EditText
-            android:id="@+id/editTextDireccionEmpresa"
-            android:layout_width="wrap_content"
-            android:layout_height="56dp"
-            android:layout_below="@+id/editTextNomEmpresa"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="29dp"
-            android:ems="10"
-            android:hint="@string/direccion"
-            android:inputType="textPostalAddress"
-            android:autofillHints="" />
-
-        <EditText
-            android:id="@+id/editTextCpEmpresa"
-            android:layout_width="wrap_content"
-            android:layout_height="56dp"
-            android:layout_below="@+id/editTextDireccionEmpresa"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="34dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="155dp"
-            android:ems="10"
-            android:hint="@string/codigo_postal"
-            android:inputType="textPostalAddress"
-            android:autofillHints="" />
-
-        <EditText
-            android:id="@+id/editTextTelefonoEmpresa"
-            android:layout_width="wrap_content"
-            android:layout_height="57dp"
-            android:layout_below="@+id/editTextCpEmpresa"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="33dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="96dp"
-            android:ems="10"
-            android:hint="@string/telefono"
-            android:inputType="phone"
-            android:autofillHints="" />
-
-        <EditText
-            android:id="@+id/editTextEmailEmpresa"
-            android:layout_width="wrap_content"
-            android:layout_height="55dp"
-            android:layout_below="@+id/editTextTelefonoEmpresa"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="33dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="35dp"
-            android:ems="10"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress"
-            android:autofillHints="" />
-
-        <EditText
-            android:id="@+id/editTextTextPassword3"
-            android:layout_width="285dp"
-            android:layout_height="56dp"
-            android:layout_below="@+id/editTextEmailEmpresa"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="33dp"
-            android:layout_marginTop="-4dp"
-            android:layout_marginEnd="93dp"
-            android:ems="10"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:autofillHints="" />
-
-        <Button
-            android:id="@+id/buttonRegistroEmpresa"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="100dp"
-            android:layout_marginEnd="111dp"
-            android:layout_marginBottom="52dp"
-            android:backgroundTint="#03A9F4"
-            android:text="@string/registrarse"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-
-    </RelativeLayout>
-
-</FrameLayout>
+</RelativeLayout>
