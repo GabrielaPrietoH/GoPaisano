@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -85,12 +86,10 @@ public class settingCliente extends Fragment implements NavigationView.OnNavigat
                 updates.put("email", email);
 
                 docRef.update(updates)
-                        .addOnSuccessListener(aVoid -> {
-                            // Toast
-                        })
-                        .addOnFailureListener(e -> {
-                            //Toast
-                        });
+                        .addOnSuccessListener(aVoid -> showToast("Datos actualizados exitosamente"))
+                        .addOnFailureListener(e -> showToast("Error al actualizar datos"));
+
+
 
                 // Verificar si la contraseña fue ingresada para cambiarla
                 if (!newPassword.isEmpty()) {
@@ -99,10 +98,10 @@ public class settingCliente extends Fragment implements NavigationView.OnNavigat
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                //Toast
+                                showToast("Contraseña actualizada exitosamente");
                             } else {
                                 // Si el cambio de contraseña falla, podría ser necesario reautenticar al usuario
-                                //Toast
+                                showToast("Error al actualizar la contraseña");
                             }
                         }
                     });
@@ -110,7 +109,7 @@ public class settingCliente extends Fragment implements NavigationView.OnNavigat
 
             } else {
                 // El usuario no está autenticado o ha ocurrido un error
-                //Toast
+                showToast("Usuario no autenticado");
             }
         });
         setupToolbar(rootView);
@@ -139,6 +138,9 @@ public class settingCliente extends Fragment implements NavigationView.OnNavigat
                     .commit();
         }
         return super.onOptionsItemSelected(menuItem);
+    }
+    private void showToast(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -71,6 +72,10 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
                     .setReorderingAllowed(true)
                     .addToBackStack("nombre") // El nombre puede ser nulo
                     .commit();
+
+            // Mostrar un Toast indicando que se ha seleccionado la opción
+            Toast.makeText(requireContext(), "Regresando al menú principal", Toast.LENGTH_SHORT).show();
+
         }
         return super.onOptionsItemSelected(menuItem);
     }

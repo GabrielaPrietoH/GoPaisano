@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -76,7 +77,8 @@ public class loginEmpresa extends Fragment {
                                 Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                 Toast.makeText(loginEmpresa.this , "Authentication failed.",Toast.LENGTH_SHORT).show();
                                  */
-
+                                // Mostrar un Toast indicando que las credenciales son incorrectas
+                                Toast.makeText(getContext(), "Autenticación fallida", Toast.LENGTH_SHORT).show();
                             }
                         });
             }

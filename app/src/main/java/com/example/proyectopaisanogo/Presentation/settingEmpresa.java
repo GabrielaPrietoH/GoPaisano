@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,9 +40,7 @@ public class settingEmpresa extends Fragment implements NavigationView.OnNavigat
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
-
-
-    @Override
+       @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_setting_empresa, container, false);
@@ -85,10 +84,10 @@ public class settingEmpresa extends Fragment implements NavigationView.OnNavigat
 
                 docRef.update(updates)
                         .addOnSuccessListener(aVoid -> {
-                            // Toast
+                            showToast("Datos actualizados correctamente");
                         })
                         .addOnFailureListener(e -> {
-                            //Toast
+                            showToast("Error al actualizar los datos");
                         });
 
                 // Verificar si la contraseña fue ingresada para cambiarla
@@ -96,17 +95,17 @@ public class settingEmpresa extends Fragment implements NavigationView.OnNavigat
                     // Cambiar la contraseña del usuario
                     user.updatePassword(newPassword).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            //Toast
+                            showToast("Contraseña actualizada correctamente");
                         } else {
                             // Si el cambio de contraseña falla, podría ser necesario reautenticar al usuario
-                            //Toast
+                            showToast("Error al actualizar la contraseña");
                         }
                     });
                 }
 
             } else {
                 // El usuario no está autenticado o ha ocurrido un error
-                //Toast
+                showToast("Error: El usuario no está autenticado");
             }
         });
 
@@ -137,4 +136,8 @@ public class settingEmpresa extends Fragment implements NavigationView.OnNavigat
         }
         return super.onOptionsItemSelected(menuItem);
     }
+    private void showToast(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
 }

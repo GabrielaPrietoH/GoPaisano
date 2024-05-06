@@ -124,6 +124,7 @@ public class registroEmpresa extends Fragment {
 
             uploadTask.addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
+                    Toast.makeText(getContext(), "Image uploaded successfully", Toast.LENGTH_SHORT).show();
                     goToMainEmpresaFragment();
                 } else {
                     Toast.makeText(getContext(), "Error al subir la imagen", Toast.LENGTH_SHORT).show();

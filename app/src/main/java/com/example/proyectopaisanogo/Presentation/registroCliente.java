@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -86,7 +87,8 @@ public class registroCliente extends Fragment {
                                 db.collection("registroCliente").document(uid).set(empresa)
                                         .addOnSuccessListener(aVoid -> {
                                             // Datos añadidos correctamente
-                                            // Toast
+
+                                            Toast.makeText(getContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
                                             // Cambiar a otro fragmento/activity después del registro exitoso
                                             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                                             fragmentManager.beginTransaction()
@@ -97,7 +99,7 @@ public class registroCliente extends Fragment {
                                         })
                                         .addOnFailureListener(e -> {
                                             // Manejar el error aquí
-                                            //Toast
+                                            Toast.makeText(getContext(), "Error al registrar cliente", Toast.LENGTH_SHORT).show();
                                         });
 
 
@@ -106,7 +108,8 @@ public class registroCliente extends Fragment {
 
                         } else {
                             // If sign in fails, display a message to the user.
-
+                            // Si falla el registro, mostrar mensaje de error
+                            Toast.makeText(getContext(), "Error al registrar", Toast.LENGTH_SHORT).show();
                             //Toast fallo auth
 
                         }

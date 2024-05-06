@@ -108,6 +108,8 @@ public class loginCliente extends Fragment {
                     .setReorderingAllowed(true)
                     .addToBackStack("nombre") // El nombre puede ser nulo
                     .commit();
+            // Mostrar un Toast indicando que se ha cerrado la sesión
+            Toast.makeText(getContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show();
         });
 
         return rootView;

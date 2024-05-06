@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -26,6 +27,9 @@ public class FragmentLogin extends Fragment {
                         .setReorderingAllowed(true)
                         .addToBackStack("nombre") // El nombre puede ser nulo
                         .commit();
+                // Mostrar un Toast indicando que se ha seleccionado la opción
+                Toast.makeText(requireContext(), "Iniciando sesión como cliente", Toast.LENGTH_SHORT).show();
+
             });
 
             Button empresa = rootView.findViewById(R.id.buttonEmpresa);
@@ -37,6 +41,8 @@ public class FragmentLogin extends Fragment {
                         .setReorderingAllowed(true)
                         .addToBackStack("nombre") // El nombre puede ser nulo
                         .commit();
+                // Mostrar un Toast indicando que se ha seleccionado la opción
+                Toast.makeText(requireContext(), "Iniciando sesión como empresa", Toast.LENGTH_SHORT).show();
             });
             return rootView;
         }

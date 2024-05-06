@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -149,6 +150,9 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
                     .setReorderingAllowed(true)
                     .addToBackStack("Logout")
                     .commit();
+            // Mostrar un Toast indicando que se ha cerrado la sesión
+            Toast.makeText(getContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show();
+
         }
 
         drawerLayout.closeDrawers();
