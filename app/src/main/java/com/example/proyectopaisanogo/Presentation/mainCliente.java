@@ -2,7 +2,10 @@ package com.example.proyectopaisanogo.Presentation;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.proyectopaisanogo.Adapter.HelperAdapter;
+import com.example.proyectopaisanogo.Adapter.HelperViewHolder;
 import com.example.proyectopaisanogo.Model.Empresa;
 import com.example.proyectopaisanogo.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -35,7 +38,7 @@ import com.google.firebase.storage.StorageReference;
 
 public class mainCliente extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
-    private FirestoreRecyclerAdapter<Empresa, HelperAdapter.ViewHolder> firestoreAdapter;
+    private FirestoreRecyclerAdapter<Empresa, HelperViewHolder> firestoreAdapter;
     private StorageReference storageRef;
 
     private FirebaseAuth mAuth;
@@ -71,9 +74,9 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
                 .setQuery(query, Empresa.class)
                 .build();
 
-        firestoreAdapter = new FirestoreRecyclerAdapter<Empresa, HelperAdapter.ViewHolder>(options) {
+        firestoreAdapter = new FirestoreRecyclerAdapter<Empresa, HelperViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull HelperAdapter.ViewHolder viewHolder, int i, @NonNull Empresa empresa) {
+            protected void onBindViewHolder(@NonNull HelperViewHolder viewHolder, int i, @NonNull Empresa empresa) {
                 viewHolder.nombreEmpresa.setText(empresa.getNombreEmpresa());
                 viewHolder.cif.setText(empresa.getCif());
                 viewHolder.cp.setText(empresa.getCp());
@@ -84,13 +87,53 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
 
                 // Cargar la imagen utilizando Glide
                 loadImage(requireContext(), empresa.getUserID(), viewHolder.imageView);
+
+                // Configurar OnClickListener para el botón de llamada
+                viewHolder.botonLlamar.setOnClickListener(v -> {
+                    Log.e("NAMG", "bottonLlamar");
+                    String telefono = empresa.getTelefono();
+                    realizarLlamada(telefono);
+                });
+
+                // Configurar OnClickListener para el botón de correo electrónico
+                viewHolder.botonCorreo.setOnClickListener(v -> {
+                    Log.e("NAMG", "bottonCorreo");
+                    String email = empresa.getEmail();
+                    enviarCorreo(email);
+                });
+
+                // Configurar OnClickListener para el botón de abrir dirección en Google Maps
+                viewHolder.botonDireccion.setOnClickListener(v -> {
+                    Log.e("NAMG", "bottonDireccion");
+                    String direccion = empresa.getDireccion();
+                    abrirDireccionEnMapas(direccion);
+                });
             }
 
             @NonNull
             @Override
-            public HelperAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            public HelperViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_item, parent, false);
-                return new HelperAdapter.ViewHolder(view);
+                return new HelperViewHolder(view);
+            }
+
+            private void realizarLlamada(String telefono) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + telefono));
+                requireContext().startActivity(intent);
+            }
+
+            private void enviarCorreo(String correo) {
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:" + correo));
+                requireContext().startActivity(intent);
+            }
+
+            private void abrirDireccionEnMapas(String direccion) {
+                Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(direccion));
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                requireContext().startActivity(mapIntent);
             }
         };
         setupToolbar(v);
@@ -163,14 +206,14 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
             // Load the image using Glide
             Glide.with(context)
                     .load(uri)
-                    .into(imageView);
+                    .into((ImageView) imageView.findViewById(R.id.imagen_empresa));
         }).addOnFailureListener(exception -> {
             // Handle any errors
             // For now, you can display a placeholder image or a message
             // For example:
             // imageView.setImageResource(R.drawable.placeholder_image);
             // Or
-            // imageView.setVisibility(View.GONE);
+            //imageView.setVisibility(View.GONE);
         });
     }
 }

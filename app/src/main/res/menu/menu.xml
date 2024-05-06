@@ -1,28 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/menu">
 
     <item android:id="@+id/calendar"
-            android:icon="@drawable/calendario"
-            android:title="@string/agenda"
-            app:showAsAction="ifRoom"/>
+        android:title="@string/agenda"
+        android:icon="@drawable/calendario"
+        app:iconSize="@dimen/icon_size_medium" />
 
     <item android:id="@+id/inicio"
-            android:icon="@drawable/casa"
-            android:title="@string/inicio"
-            app:showAsAction="ifRoom"/>
+        android:title="@string/inicio"
+        android:icon="@drawable/casa"
+        app:iconSize="@dimen/icon_size_medium" />
 
-    <item
-        android:id="@+id/setting"
-        android:icon="@drawable/configuraciones"
+    <item android:id="@+id/setting"
         android:title="@string/setting"
-        android:visible="true"
-        app:showAsAction="ifRoom" />
+        app:icon="@drawable/configuraciones"
+        app:iconSize="@dimen/icon_size_medium" />
 
     <item android:id="@+id/logout"
-        android:icon="@drawable/acceso"
         android:title="@string/logout"
-        app:showAsAction="ifRoom"/>
+        app:icon="@drawable/acceso"
+        app:iconSize="@dimen/icon_size_medium" />
 
 </menu>
