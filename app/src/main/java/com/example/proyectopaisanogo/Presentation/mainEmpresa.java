@@ -85,12 +85,12 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
 
             @Override
             protected void onBindViewHolder(@NonNull HelperViewHolder viewHolder, int i, @NonNull Empresa empresa) {
-                viewHolder.nombreEmpresa.setText(String.format(empresa.getNombreEmpresa()));
-                viewHolder.cif.setText(String.format(empresa.getCif()));
-                viewHolder.cp.setText(String.format(empresa.getCp()));
-                viewHolder.direccion.setText(String.format(empresa.getDireccion()));
-                viewHolder.email.setText(String.format(empresa.getEmail()));
-                viewHolder.telefono.setText(String.format(empresa.getTelefono()));
+                viewHolder.nombreEmpresa.setText(empresa.getNombreEmpresa());
+                viewHolder.cif.setText(empresa.getCif());
+                viewHolder.cp.setText(empresa.getCp());
+                viewHolder.direccion.setText(empresa.getDireccion());
+                viewHolder.email.setText(empresa.getEmail());
+                viewHolder.telefono.setText(empresa.getTelefono());
                 // Cargar la imagen utilizando Glide
                 loadImage(requireContext(), empresa.getUserID(), viewHolder.imageView);
             }
