@@ -1,190 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="8dp"
-    app:cardMaxElevation="10dp"
-    app:cardPreventCornerOverlap="true"
-    app:cardUseCompatPadding="true"
-    app:contentPadding="1dp">
+    android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="329dp"
-        android:layout_marginBottom="8dp">
 
-        <ImageView
-            android:id="@+id/imagen_empresa"
-            android:layout_width="318dp"
-            android:layout_height="156dp"
-            android:layout_marginTop="16dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textnombreEmpresa"
-            style="@style/TextAppearance.MaterialComponents.Headline6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/nombre_empresa"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.046"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imagen_empresa" />
-
-        <TextView
-            android:id="@+id/textUserID"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_weight="0"
-            android:text="@string/userid"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/botonCorreo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textCP"
-            app:layout_constraintVertical_bias="0.727"
-            tools:ignore="MissingConstraints" />
+            android:layout_margin="5dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp"
+            app:cardMaxElevation="10dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="1dp">
 
 
-        <TextView
-            android:id="@+id/textDireccion"
-            style="@style/TextAppearance.MaterialComponents.Caption"
-            android:layout_width="148dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="12dp"
-            android:text="@string/direccion"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.027"
-            app:layout_constraintStart_toStartOf="@id/textnombreEmpresa"
-            app:layout_constraintTop_toBottomOf="@id/textnombreEmpresa" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textCif"
-            style="@style/TextAppearance.MaterialComponents.Caption"
-            android:layout_width="114dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="36dp"
-            android:layout_marginBottom="28dp"
-            android:layout_weight="2"
-            android:text="@string/cif"
-            app:layout_constraintBottom_toTopOf="@+id/botonLocalizacion"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.23"
-            app:layout_constraintStart_toEndOf="@+id/textEmail"
-            tools:ignore="MissingConstraints" />
+                <TextView
+                    android:id="@+id/textnombreEmpresa"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/size_small"
+                    android:fontFamily="@font/heading_now_trial_bold"
+                    android:text="@string/nombre_empresa"
+                    android:textColor="@color/colorPrimaryDark" />
 
-        <TextView
-            android:id="@+id/textEmail"
-            style="@style/TextAppearance.MaterialComponents.Caption"
-            android:layout_width="172dp"
-            android:layout_height="23dp"
-            android:layout_marginTop="24dp"
-            android:text="@string/email"
-            app:layout_constraintBottom_toTopOf="@id/textCP"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.049"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textTelefono"
-            app:layout_constraintVertical_bias="0.0"
-            tools:ignore="MissingConstraints" />
+                <ImageView
+                    android:id="@+id/imagen_empresa"
+                    android:layout_width="333dp"
+                    android:layout_height="139dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/imagen_empresa"
+                    android:scaleType="center" />
 
-        <TextView
-            android:id="@+id/textTelefono"
-            style="@style/TextAppearance.MaterialComponents.Caption"
-            android:layout_width="134dp"
-            android:layout_height="26dp"
-            android:layout_marginTop="4dp"
-            android:text="@string/telefono"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.066"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textDireccion"
-            tools:ignore="MissingConstraints" />
+                <TextView
+                    android:id="@+id/textDireccion"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/size_extra_small"
+                    android:layout_marginStart="@dimen/size_small"
+                    android:fontFamily="@font/typo_irregular"
+                    android:text="@string/direccion"
+                    android:textColor="@color/colorPrimaryDark"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.03"
+                    app:layout_constraintStart_toStartOf="@id/textnombreEmpresa"
+                    app:layout_constraintTop_toBottomOf="@+id/imagen_empresa" />
 
-        <TextView
-            android:id="@+id/textCP"
-            style="@style/TextAppearance.MaterialComponents.Caption"
-            android:layout_width="116dp"
-            android:layout_height="20dp"
-            android:layout_weight="1"
-            android:text="@string/codigo_postal"
-            app:layout_constraintBottom_toTopOf="@+id/textCif"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.754"
-            app:layout_constraintStart_toEndOf="@+id/textTelefono"
-            app:layout_constraintTop_toBottomOf="@+id/imagen_empresa"
-            app:layout_constraintVertical_bias="0.879"
-            tools:ignore="MissingConstraints" />
+                <TextView
+                    android:id="@+id/textEmail"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/size_extra_small"
+                    android:layout_marginStart="@dimen/size_small"
+                    android:fontFamily="@font/typo_irregular"
+                    android:text="@string/email"
+                    android:textColor="@color/colorPrimaryDark" />
 
-        <ImageView
-            android:id="@+id/botonAgenda"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:src="@drawable/agregar"
-            android:textSize="15sp"
-            android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/textDireccion"
-            app:layout_constraintTop_toTopOf="@+id/botonCorreo"
-            app:layout_constraintVertical_bias="0.0" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/botonCorreo"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:src="@drawable/correo_electronico"
-            android:textSize="15sp"
-            android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/botonAgenda"
-            app:layout_constraintTop_toBottomOf="@id/textCP"
-            app:layout_constraintVertical_bias="1.0" />
+                    <TextView
+                        android:id="@+id/textTelefono"
+                        style="@style/TextAppearance.MaterialComponents.Caption"
+                        android:layout_width="215dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/size_extra_small"
+                        android:layout_marginStart="@dimen/size_small"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/typo_irregular"
+                        android:text="@string/telefono"
+                        android:textColor="@color/colorPrimaryDark" />
 
-        <ImageView
-            android:id="@+id/botonMeGusta"
-            android:layout_width="45dp"
-            android:layout_height="30dp"
-            android:src="@drawable/img_8"
-            android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.115"
-            app:layout_constraintStart_toEndOf="@+id/botonCorreo"/>
+                    <TextView
+                        android:id="@+id/textCif"
+                        style="@style/TextAppearance.MaterialComponents.Caption"
+                        android:layout_width="451dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/size_extra_small"
+                        android:layout_marginStart="@dimen/size_small"
+                        android:layout_weight="3"
+                        android:fontFamily="@font/typo_irregular"
+                        android:text="@string/cif"
+                        android:textColor="@color/colorPrimaryDark" />
 
-        <ImageView
-            android:id="@+id/botonLocalizacion"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/alfiler_de_mapa"
-            android:textSize="15sp"
-            android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.201"
-            app:layout_constraintStart_toEndOf="@+id/botonMeGusta" />
+                    <TextView
+                        android:id="@+id/textCP"
+                        style="@style/TextAppearance.MaterialComponents.Caption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/size_extra_small"
+                        android:layout_marginStart="@dimen/size_small"
+                        android:layout_weight="2"
+                        android:fontFamily="@font/typo_irregular"
+                        android:text="@string/codigo_postal"
+                        android:textColor="@color/colorPrimaryDark"
+                        app:layout_constraintBottom_toTopOf="@+id/textCif" />
+                </LinearLayout>
 
-        <ImageView
-            android:id="@+id/botonLLamada"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/llamada_telefonica"
-            android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.508"
-            app:layout_constraintStart_toEndOf="@+id/botonLocalizacion" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-</androidx.cardview.widget.CardView>
+                    <ImageView
+                        android:id="@+id/botonAgenda"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/icon_size_medium"
+                        android:layout_marginBottom="@dimen/size_extra_small"
+                        android:clickable="true"
+                        android:contentDescription="@string/agenda"
+                        android:src="@drawable/agregar"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:id="@+id/botonCorreo"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/icon_size_medium"
+                        android:layout_marginBottom="@dimen/size_extra_small"
+                        android:clickable="true"
+                        android:contentDescription="@string/correo"
+                        android:src="@drawable/correo_electronico"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:id="@+id/botonLocalizacion"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/icon_size_medium"
+                        android:layout_marginBottom="@dimen/size_extra_small"
+                        android:clickable="true"
+                        android:contentDescription="@string/localization"
+                        android:src="@drawable/alfiler_de_mapa"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:id="@+id/botonLLamada"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/icon_size_medium"
+                        android:layout_marginBottom="@dimen/size_extra_small"
+                        android:clickable="true"
+                        android:contentDescription="@string/llamada"
+                        android:src="@drawable/llamada_telefonica" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>

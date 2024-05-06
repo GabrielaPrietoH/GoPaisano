@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.proyectopaisanogo.R;
 
 public class HelperViewHolder extends RecyclerView.ViewHolder {
-    public TextView nombreEmpresa, cif, cp, direccion, email, telefono, userID;
+    public TextView nombreEmpresa, cif, cp, direccion, email, telefono;
     public ImageView botonLlamar, botonCorreo, botonDireccion, imageView;
 
     public HelperViewHolder(@NonNull View itemView) {
@@ -21,7 +21,6 @@ public class HelperViewHolder extends RecyclerView.ViewHolder {
             direccion = itemView.findViewById(R.id.textDireccion);
             email = itemView.findViewById(R.id.textEmail);
             telefono = itemView.findViewById(R.id.textTelefono);
-            userID = itemView.findViewById(R.id.textUserID);
             botonLlamar = itemView.findViewById(R.id.botonLLamada);
             botonCorreo = itemView.findViewById(R.id.botonCorreo);
             botonDireccion = itemView.findViewById(R.id.botonLocalizacion);
