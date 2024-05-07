@@ -7,12 +7,12 @@
 
     <activity
         android:id="@+id/mainActivity"
-        android:name="com.example.appprueba.MainActivity"
+        android:name="com.example.proyectopaisanogo.Presentation.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
     <fragment
         android:id="@+id/login"
-        android:name="com.example.appprueba.FragmentLogin"
+        android:name="com.example.proyectopaisanogo.Presentation.FragmentLogin"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginCliente"
-        android:name="com.example.appprueba.loginCliente"
+        android:name="com.example.proyectopaisanogo.Presentation.loginCliente"
         android:label="fragment_login_cliente"
         tools:layout="@layout/fragment_login_cliente" >
         <action
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginEmpresa"
-        android:name="com.example.appprueba.loginEmpresa"
+        android:name="com.example.proyectopaisanogo.Presentation.loginEmpresa"
         android:label="fragment_login_empresa"
         tools:layout="@layout/fragment_login_empresa" >
         <action
@@ -51,7 +51,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainCliente"
-        android:name="com.example.appprueba.mainCliente"
+        android:name="com.example.proyectopaisanogo.Presentation.mainCliente"
         android:label="fragment_main_cliente"
         tools:layout="@layout/fragment_main_cliente" >
         <action
@@ -63,7 +63,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainEmpresa"
-        android:name="com.example.appprueba.mainEmpresa"
+        android:name="com.example.proyectopaisanogo.Presentation.mainEmpresa"
         android:label="fragment_main_empresa"
         tools:layout="@layout/fragment_main_empresa" >
         <action
@@ -75,7 +75,7 @@
     </fragment>
     <fragment
         android:id="@+id/registroCliente"
-        android:name="com.example.appprueba.registroCliente"
+        android:name="com.example.proyectopaisanogo.Presentation.registroCliente"
         android:label="fragment_registro_cliente"
         tools:layout="@layout/fragment_registro_cliente" >
         <action
@@ -84,7 +84,7 @@
     </fragment>
     <fragment
         android:id="@+id/registroEmpresa"
-        android:name="com.example.appprueba.registroEmpresa"
+        android:name="com.example.proyectopaisanogo.Presentation.registroEmpresa"
         android:label="fragment_registro_empresa"
         tools:layout="@layout/fragment_registro_empresa" >
         <action
@@ -93,22 +93,23 @@
     </fragment>
     <fragment
         android:id="@+id/calendarioCliente"
-        android:name="com.example.proyectopaisanogo.calendarioCliente"
+        android:name="com.example.proyectopaisanogo.Presentation.calendarioCliente"
         android:label="fragment_calendario_cliente"
         tools:layout="@layout/fragment_calendario_cliente" />
     <fragment
         android:id="@+id/settingCliente"
-        android:name="com.example.proyectopaisanogo.settingCliente"
+        android:name="com.example.proyectopaisanogo.Presentation.settingCliente"
         android:label="fragment_setting_cliente"
         tools:layout="@layout/fragment_setting_cliente" />
     <fragment
         android:id="@+id/calendarioEmpresa"
-        android:name="com.example.proyectopaisanogo.calendarioEmpresa"
+        android:name="com.example.proyectopaisanogo.Presentation.calendarioEmpresa"
         android:label="fragment_calendario_empresa"
         tools:layout="@layout/fragment_calendario_empresa" />
     <fragment
         android:id="@+id/settingEmpresa"
-        android:name="com.example.proyectopaisanogo.settingEmpresa"
+        android:name="com.example.proyectopaisanogo.Presentation.settingEmpresa"
         android:label="fragment_setting_empresa"
         tools:layout="@layout/fragment_setting_empresa" />
+
 </navigation>
