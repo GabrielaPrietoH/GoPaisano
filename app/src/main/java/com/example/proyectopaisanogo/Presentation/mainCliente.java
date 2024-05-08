@@ -83,7 +83,6 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
                 viewHolder.direccion.setText(empresa.getDireccion());
                 viewHolder.email.setText(empresa.getEmail());
                 viewHolder.telefono.setText(empresa.getTelefono());
-                viewHolder.userID.setText(empresa.getUserID());
 
                 // Cargar la imagen utilizando Glide
                 loadImage(requireContext(), empresa.getUserID(), viewHolder.imageView);

@@ -85,14 +85,12 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
 
             @Override
             protected void onBindViewHolder(@NonNull HelperViewHolder viewHolder, int i, @NonNull Empresa empresa) {
-                viewHolder.nombreEmpresa.setText(empresa.getNombreEmpresa());
-                viewHolder.cif.setText(empresa.getCif());
-                viewHolder.cp.setText(empresa.getCp());
-                viewHolder.direccion.setText(empresa.getDireccion());
-                viewHolder.email.setText(empresa.getEmail());
-                viewHolder.telefono.setText(empresa.getTelefono());
-                viewHolder.userID.setText(empresa.getUserID());
-
+                viewHolder.nombreEmpresa.setText(String.format(empresa.getNombreEmpresa()));
+                viewHolder.cif.setText(String.format(empresa.getCif()));
+                viewHolder.cp.setText(String.format(empresa.getCp()));
+                viewHolder.direccion.setText(String.format(empresa.getDireccion()));
+                viewHolder.email.setText(String.format(empresa.getEmail()));
+                viewHolder.telefono.setText(String.format(empresa.getTelefono()));
                 // Cargar la imagen utilizando Glide
                 loadImage(requireContext(), empresa.getUserID(), viewHolder.imageView);
             }
@@ -100,7 +98,7 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
             @NonNull
             @Override
             public HelperViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_empresa, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_item, parent, false);
                 return new HelperViewHolder(view);
             }
 

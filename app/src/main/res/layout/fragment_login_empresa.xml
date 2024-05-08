@@ -16,7 +16,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
         android:layout_marginTop="76dp">
 
 
@@ -61,14 +60,14 @@
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="131dp"
+            android:layout_width="156dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/botonLogoutEmpresa"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="140dp"
+            android:layout_marginStart="126dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="140dp"
+            android:layout_marginEnd="129dp"
             android:background="#EBF1EF"
             android:text="@string/EMPRESAS"
             android:textAlignment="center"
@@ -99,9 +98,9 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="54dp"
-            android:layout_marginTop="94dp"
+            android:layout_marginTop="81dp"
             android:layout_marginEnd="58dp"
-            android:text="Si no tienes cuenta"
+            android:text="@string/si_no_tienes_cuenta"
             android:textAlignment="center"
             android:textColor="#FFC107"
             android:textSize="30sp"
@@ -118,7 +117,7 @@
             android:layout_marginEnd="48dp"
             android:layout_marginBottom="37dp"
             android:backgroundTint="#03A9F4"
-            android:text="Registrarse"
+            android:text="@string/registrarse"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="18sp" />

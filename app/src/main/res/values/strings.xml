@@ -46,4 +46,10 @@
     <string name="userid">userID</string>
     <string name="EMPRESAS">EMPRESAS</string>
     <string name="subir_imagen">Subir Imagen</string>
+    <string name="espacio">": "</string>
+    <string name="correo">Correo</string>
+    <string name="localization">Localización</string>
+    <string name="llamada">Llamar</string>
+    <string name="imagen_empresa">Imagen Empresa</string>
+    <string name="titulo_interacciones">ESTAS SON TUS INTERACCIONES</string>
 </resources>

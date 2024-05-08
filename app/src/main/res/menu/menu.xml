@@ -9,10 +9,6 @@
            android:title="@string/agenda"/>
 
        <item
-           android:id="@+id/inicio"
-           android:title="@string/inicio"/>
-
-       <item
            android:id="@+id/setting"
            android:title="@string/setting"/>
 
