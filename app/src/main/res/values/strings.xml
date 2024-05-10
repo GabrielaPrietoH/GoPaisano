@@ -52,4 +52,6 @@
     <string name="llamada">Llamar</string>
     <string name="imagen_empresa">Imagen Empresa</string>
     <string name="titulo_interacciones">ESTAS SON TUS INTERACCIONES</string>
+    <string name="boton_login">Boton login</string>
+    <string name="salir_a_login_anterior">Salir a Login anterior</string>
 </resources>

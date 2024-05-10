@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
@@ -45,7 +44,7 @@
 
 
     </LinearLayout>
-        <!-- Contenido principal -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -54,7 +53,7 @@
             <EditText
                 android:id="@+id/editTextUsuarioCliente"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/icon_size_large"
                 android:layout_margin="@dimen/size_extra_small"
                 android:hint="@string/usuario"
                 android:inputType="text"
@@ -63,7 +62,7 @@
             <EditText
                 android:id="@+id/editTextPasswordCliente"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/icon_size_large"
                 android:layout_margin="@dimen/size_extra_small"
                 android:hint="@string/modificar_password"
                 android:inputType="textPassword"
@@ -72,7 +71,7 @@
             <EditText
                 android:id="@+id/editTextEmailCliente"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/icon_size_large"
                 android:layout_margin="@dimen/size_extra_small"
                 android:hint="@string/modificar_email"
                 android:inputType="textEmailAddress"
@@ -81,7 +80,7 @@
             <EditText
                 android:id="@+id/editTextPhoneCliente"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/icon_size_large"
                 android:layout_margin="@dimen/size_extra_small"
                 android:hint="@string/modificar_telefono"
                 android:inputType="phone"
@@ -90,7 +89,7 @@
             <EditText
                 android:id="@+id/editTextDireccionCLiente"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/icon_size_large"
                 android:layout_margin="@dimen/size_extra_small"
                 android:hint="@string/modificar_direccion"
                 android:inputType="textEmailAddress"
@@ -99,7 +98,7 @@
             <EditText
                 android:id="@+id/editTextCpCLiente"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/icon_size_large"
                 android:layout_margin="@dimen/size_extra_small"
                 android:hint="@string/modificar_codigo_postal"
                 android:inputType="textEmailAddress"
@@ -108,7 +107,7 @@
             <Button
                 android:id="@+id/buttonResgistroCliente"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/icon_size_large"
                 android:layout_marginStart="@dimen/icon_size_medium"
                 android:layout_marginEnd="@dimen/icon_size_medium"
                 android:backgroundTint="#03A9F4"

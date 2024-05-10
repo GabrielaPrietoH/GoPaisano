@@ -14,7 +14,8 @@
         android:layout_width="405dp"
         android:layout_height="731dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/img_10" />
+        android:src="@drawable/fondo"
+        tools:ignore="ContentDescription" />
 
     <!-- Contenedor principal -->
     <LinearLayout

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/loginCliente"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,121 +10,86 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/img_10" />
+        android:src="@drawable/fondo"
+        tools:ignore="ContentDescription" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="76dp"
-        android:layout_marginEnd="-2dp">
+        android:orientation="vertical">
 
         <ImageButton
             android:id="@+id/botonLogoutCliente"
-            android:layout_width="267dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="73dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="71dp"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/size_small"
             android:background="@drawable/round_corner"
-            android:src="@drawable/paisano" />
+            android:src="@drawable/paisano"
+            android:contentDescription="@string/salir_a_login_anterior" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_small"
+            android:text="@string/clientes"
+            android:textAlignment="center"
+            android:textColor="@color/blueDark"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/cajaCorreo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/botonLogoutCliente"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="71dp"
-            android:layout_marginEnd="49dp"
+            android:layout_height="@dimen/icon_size_large"
+            android:layout_margin="@dimen/size_extra_small"
             android:hint="@string/usuario"
-            android:inputType="text" />
+            android:inputType="text"
+            tools:ignore="Autofill" />
 
         <EditText
             android:id="@+id/cajaPass"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/cajaCorreo"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="51dp"
+            android:layout_height="@dimen/icon_size_large"
+            android:layout_margin="@dimen/size_extra_small"
             android:hint="@string/password"
-            android:inputType="textPassword" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="131dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/botonLogoutCliente"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="140dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="140dp"
-            android:background="#EBF1EF"
-            android:text="@string/clientes"
-            android:textAlignment="center"
-            android:textColor="#1731BF"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="297dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/cajaPass"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="56dp"
-            android:layout_marginTop="95dp"
-            android:layout_marginEnd="56dp"
-            android:text="Si no tienes cuenta"
-            android:textAlignment="center"
-            android:textColor="#FFC107"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:inputType="textPassword"
+            tools:ignore="Autofill" />
 
         <Button
             android:id="@+id/buttonLoginC"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/buttonRegistroC"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="52dp"
-            android:layout_marginEnd="47dp"
-            android:layout_marginBottom="70dp"
-            android:backgroundTint="#03A9F4"
+            android:layout_marginStart="@dimen/icon_size_medium"
+            android:layout_marginEnd="@dimen/icon_size_medium"
+            android:backgroundTint="@color/blue"
             android:text="@string/login"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="@dimen/buttom_letter" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_extra_small"
+            android:text="@string/si_no_tienes_cuenta"
+            android:textAlignment="center"
+            android:textColor="@color/amarillo"
+            android:textSize="@dimen/letter_big"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/buttonRegistroC"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="51dp"
-            android:layout_marginEnd="48dp"
-            android:layout_marginBottom="37dp"
-            android:backgroundTint="#03A9F4"
-            android:text="Registrarse"
-            android:textAlignment="center"
+            android:layout_marginStart="@dimen/icon_size_medium"
+            android:layout_marginEnd="@dimen/icon_size_medium"
+            android:backgroundTint="@color/blue"
+            android:text="@string/registrarse"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="@dimen/buttom_letter" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
-</RelativeLayout>
+</FrameLayout>
