@@ -11,7 +11,7 @@ import com.example.proyectopaisanogo.R;
 
 public class HelperViewHolder extends RecyclerView.ViewHolder {
     public TextView nombreEmpresa, cif, cp, direccion, email, telefono;
-    public ImageView botonLlamar, botonCorreo, botonDireccion, imageView;
+    public ImageView botonLlamar, botonCorreo, botonDireccion, botonAgenda, imageView;
 
     public HelperViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -24,6 +24,7 @@ public class HelperViewHolder extends RecyclerView.ViewHolder {
             botonLlamar = itemView.findViewById(R.id.botonLLamada);
             botonCorreo = itemView.findViewById(R.id.botonCorreo);
             botonDireccion = itemView.findViewById(R.id.botonLocalizacion);
+            botonAgenda = itemView.findViewById(R.id.botonAgenda);
             imageView = itemView.findViewById(R.id.imagen_empresa);
     }
 }

@@ -5,12 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,6 +42,9 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
     private StorageReference storageRef;
 
     private FirebaseAuth mAuth;
+    private int contadorCall, contadorEmail, contadorDirection = 0;
+
+    private TextView llamadas, emails, direccion;
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
@@ -49,8 +52,8 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         storageRef = FirebaseStorage.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
     }
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -68,6 +71,10 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
         NavigationView navigationView = v.findViewById(R.id.navView);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View layoutMainEmpresa = inflater.inflate(R.layout.fragment_main_empresa, container, false);
+        llamadas = layoutMainEmpresa.findViewById(R.id.textLlamadas);
+        emails = layoutMainEmpresa.findViewById(R.id.textEmails);
+        direccion = layoutMainEmpresa.findViewById(R.id.textDirection);
 
         Query query = firestore.collection("registroEmpresa");
         FirestoreRecyclerOptions<Empresa> options = new FirestoreRecyclerOptions.Builder<Empresa>()
@@ -84,28 +91,37 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
                 viewHolder.email.setText(empresa.getEmail());
                 viewHolder.telefono.setText(empresa.getTelefono());
 
-                // Cargar la imagen utilizando Glide
                 loadImage(requireContext(), empresa.getUserID(), viewHolder.imageView);
 
+                viewHolder.botonLlamar.setVisibility(View.VISIBLE);
                 // Configurar OnClickListener para el botón de llamada
                 viewHolder.botonLlamar.setOnClickListener(v -> {
-                    Log.e("NAMG", "bottonLlamar");
                     String telefono = empresa.getTelefono();
                     realizarLlamada(telefono);
+                    incrementarContadorLlamadas();
                 });
 
+                viewHolder.botonCorreo.setVisibility(View.VISIBLE);
                 // Configurar OnClickListener para el botón de correo electrónico
                 viewHolder.botonCorreo.setOnClickListener(v -> {
-                    Log.e("NAMG", "bottonCorreo");
                     String email = empresa.getEmail();
                     enviarCorreo(email);
+                    incrementarContadorEmails();
                 });
 
+                viewHolder.botonDireccion.setVisibility(View.VISIBLE);
                 // Configurar OnClickListener para el botón de abrir dirección en Google Maps
                 viewHolder.botonDireccion.setOnClickListener(v -> {
-                    Log.e("NAMG", "bottonDireccion");
                     String direccion = empresa.getDireccion();
                     abrirDireccionEnMapas(direccion);
+                    incrementarContadorDireccion();
+                });
+
+                viewHolder.botonAgenda.setVisibility(View.VISIBLE);
+                // Configurar OnClickListener para el botón de abrir dirección en Google Maps
+                viewHolder.botonAgenda.setOnClickListener(v -> {
+                   // String direccion = empresa.getDireccion();
+                   // incrementarContadorDireccion();
                 });
             }
 
@@ -157,32 +173,14 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
         int id = menuItem.getItemId();
 
         if (id == R.id.setting) {
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, settingCliente.class, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("Setting") // El nombre puede ser nulo
-                    .commit();
-
+            navigateToFragment(settingCliente.class, "Setting");
         } else if (id == R.id.calendar) {
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, calendarioCliente.class, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("Calendario") // El nombre puede ser nulo
-                    .commit();
-
+            navigateToFragment(calendarioCliente.class, "Calendario");
         } else if (id == R.id.logout) {
             mAuth.signOut();
-            // Crear un nuevo fragmento y transacción
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, loginCliente.class, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("Logout") // El nombre puede ser nulo
-                    .commit();
-
+            navigateToFragment(loginCliente.class, "Logout");
         }
+
         mAuth = FirebaseAuth.getInstance();
         drawerLayout.closeDrawers();
         return true;
@@ -198,6 +196,15 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
         toggle.syncState();
     }
 
+    private void navigateToFragment(Class fragmentClass, String tag) {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragmentClass, null)
+                .setReorderingAllowed(true)
+                .addToBackStack(tag)
+                .commit();
+    }
+
     // Método para cargar la imagen desde Firebase Storage usando Glide
     private void loadImage(Context context, String userID, ImageView imageView) {
         StorageReference imageRef = storageRef.child("images/" + userID);
@@ -206,13 +213,19 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
             Glide.with(context)
                     .load(uri)
                     .into((ImageView) imageView.findViewById(R.id.imagen_empresa));
-        }).addOnFailureListener(exception -> {
-            // Handle any errors
-            // For now, you can display a placeholder image or a message
-            // For example:
-            // imageView.setImageResource(R.drawable.placeholder_image);
-            // Or
-            //imageView.setVisibility(View.GONE);
-        });
+        }).addOnFailureListener(exception -> imageView.setVisibility(View.GONE));
+    }
+
+    private void incrementarContadorLlamadas(){
+        contadorCall ++;
+        llamadas.setText(String.format("%sClientes", contadorCall));
+    }
+    private void incrementarContadorEmails(){
+        contadorEmail ++;
+        emails.setText(String.format("%sClientes", contadorEmail));
+    }
+    private void incrementarContadorDireccion(){
+        contadorDirection ++;
+        direccion.setText(String.format("%sClientes", contadorDirection));
     }
 }
