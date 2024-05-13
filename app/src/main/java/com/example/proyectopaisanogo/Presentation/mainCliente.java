@@ -31,6 +31,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
@@ -40,11 +41,10 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
     private DrawerLayout drawerLayout;
     private FirestoreRecyclerAdapter<Empresa, HelperViewHolder> firestoreAdapter;
     private StorageReference storageRef;
+    private TextView llamadas, emails, direccion;
 
     private FirebaseAuth mAuth;
     private int contadorCall, contadorEmail, contadorDirection = 0;
-
-    private TextView llamadas, emails, direccion;
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
@@ -94,34 +94,32 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
                 loadImage(requireContext(), empresa.getUserID(), viewHolder.imageView);
 
                 viewHolder.botonLlamar.setVisibility(View.VISIBLE);
-                // Configurar OnClickListener para el botón de llamada
                 viewHolder.botonLlamar.setOnClickListener(v -> {
                     String telefono = empresa.getTelefono();
                     realizarLlamada(telefono);
                     incrementarContadorLlamadas();
+                    actualizarContadorEmpresa(empresa.getUserID(), "contadorLlamadas");
                 });
 
                 viewHolder.botonCorreo.setVisibility(View.VISIBLE);
-                // Configurar OnClickListener para el botón de correo electrónico
                 viewHolder.botonCorreo.setOnClickListener(v -> {
                     String email = empresa.getEmail();
                     enviarCorreo(email);
                     incrementarContadorEmails();
+                    actualizarContadorEmpresa(empresa.getUserID(), "contadorEmails");
                 });
 
                 viewHolder.botonDireccion.setVisibility(View.VISIBLE);
-                // Configurar OnClickListener para el botón de abrir dirección en Google Maps
                 viewHolder.botonDireccion.setOnClickListener(v -> {
                     String direccion = empresa.getDireccion();
                     abrirDireccionEnMapas(direccion);
                     incrementarContadorDireccion();
+                    actualizarContadorEmpresa(empresa.getUserID(), "contadorDirecciones");
                 });
 
                 viewHolder.botonAgenda.setVisibility(View.VISIBLE);
-                // Configurar OnClickListener para el botón de abrir dirección en Google Maps
                 viewHolder.botonAgenda.setOnClickListener(v -> {
-                   // String direccion = empresa.getDireccion();
-                   // incrementarContadorDireccion();
+                    // funcionalidad de la agenda
                 });
             }
 
@@ -131,30 +129,10 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_item, parent, false);
                 return new HelperViewHolder(view);
             }
-
-            private void realizarLlamada(String telefono) {
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" + telefono));
-                requireContext().startActivity(intent);
-            }
-
-            private void enviarCorreo(String correo) {
-                Intent intent = new Intent(Intent.ACTION_SENDTO);
-                intent.setData(Uri.parse("mailto:" + correo));
-                requireContext().startActivity(intent);
-            }
-
-            private void abrirDireccionEnMapas(String direccion) {
-                Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(direccion));
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                requireContext().startActivity(mapIntent);
-            }
         };
         setupToolbar(v);
         recyclerView.setAdapter(firestoreAdapter);
         return v;
-
     }
 
     @Override
@@ -205,27 +183,67 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
                 .commit();
     }
 
-    // Método para cargar la imagen desde Firebase Storage usando Glide
     private void loadImage(Context context, String userID, ImageView imageView) {
         StorageReference imageRef = storageRef.child("images/" + userID);
-        imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            // Load the image using Glide
-            Glide.with(context)
-                    .load(uri)
-                    .into((ImageView) imageView.findViewById(R.id.imagen_empresa));
-        }).addOnFailureListener(exception -> imageView.setVisibility(View.GONE));
+        imageRef.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(context)
+                .load(uri)
+                .into(imageView)).addOnFailureListener(exception -> imageView.setVisibility(View.GONE));
     }
 
-    private void incrementarContadorLlamadas(){
-        contadorCall ++;
-        llamadas.setText(String.format("%sClientes", contadorCall));
+    private void realizarLlamada(String telefono) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + telefono));
+        requireContext().startActivity(intent);
     }
-    private void incrementarContadorEmails(){
-        contadorEmail ++;
-        emails.setText(String.format("%sClientes", contadorEmail));
+
+    private void enviarCorreo(String correo) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:" + correo));
+        requireContext().startActivity(intent);
     }
-    private void incrementarContadorDireccion(){
-        contadorDirection ++;
-        direccion.setText(String.format("%sClientes", contadorDirection));
+
+    private void abrirDireccionEnMapas(String direccion) {
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(direccion));
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        requireContext().startActivity(mapIntent);
+    }
+
+    private void incrementarContadorLlamadas() {
+        contadorCall++;
+        llamadas.setText(String.valueOf(contadorCall));
+    }
+
+    private void incrementarContadorEmails() {
+        contadorEmail++;
+        emails.setText(String.valueOf(contadorEmail));
+    }
+
+    private void incrementarContadorDireccion() {
+        contadorDirection++;
+        direccion.setText(String.valueOf(contadorDirection));
+    }
+
+    private void actualizarContadorEmpresa(String empresaID, String campoContador) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference empresaRef = db.collection("registroEmpresa").document(empresaID);
+
+        empresaRef.update(campoContador, getContador(campoContador))
+                .addOnFailureListener(e -> {
+                    // Maneja el fallo de manera apropiada
+                });
+    }
+
+    private int getContador(String campoContador) {
+        switch (campoContador) {
+            case "contadorLlamadas":
+                return contadorCall;
+            case "contadorEmails":
+                return contadorEmail;
+            case "contadorDirecciones":
+                return contadorDirection;
+            default:
+                return 0;
+        }
     }
 }
