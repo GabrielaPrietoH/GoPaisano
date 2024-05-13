@@ -46,4 +46,16 @@
     <string name="userid">userID</string>
     <string name="EMPRESAS">EMPRESAS</string>
     <string name="subir_imagen">Subir Imagen</string>
+    <string name="espacio">": "</string>
+    <string name="correo">Correo</string>
+    <string name="localization">Localización</string>
+    <string name="llamada">Llamar</string>
+    <string name="imagen_empresa">Imagen Empresa</string>
+    <string name="titulo_interacciones">ESTAS SON TUS INTERACCIONES</string>
+    <string name="boton_login">Boton login</string>
+    <string name="salir_a_login_anterior">Salir a Login anterior</string>
+    <string name="llamadas_de_clientes">Llamadas de Clientes:</string>
+    <string name="tienes_emails">Emails de Clientes:</string>
+    <string name="los_clientes_han_buscado_tu_direccion">Los Clientes han buscado tu dirección:</string>
+    <string name="textClientes">Clientes</string>
 </resources>

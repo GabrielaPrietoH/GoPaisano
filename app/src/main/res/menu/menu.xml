@@ -1,25 +1,19 @@
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/menu">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu"
+    tools:showIn="navigation_view">
 
-    <item android:id="@+id/calendar"
-        android:title="@string/agenda"
-        android:icon="@drawable/calendario"
-        app:iconSize="@dimen/icon_size_medium" />
 
-    <item android:id="@+id/inicio"
-        android:title="@string/inicio"
-        android:icon="@drawable/casa"
-        app:iconSize="@dimen/icon_size_medium" />
+       <item
+           android:id="@+id/calendar"
+           android:title="@string/agenda"/>
 
-    <item android:id="@+id/setting"
-        android:title="@string/setting"
-        app:icon="@drawable/configuraciones"
-        app:iconSize="@dimen/icon_size_medium" />
+       <item
+           android:id="@+id/setting"
+           android:title="@string/setting"/>
 
-    <item android:id="@+id/logout"
-        android:title="@string/logout"
-        app:icon="@drawable/acceso"
-        app:iconSize="@dimen/icon_size_medium" />
+       <item
+           android:id="@+id/logout"
+           android:title="@string/logout"/>
 
 </menu>

@@ -39,10 +39,8 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
     private DrawerLayout drawerLayout;
     private FirestoreRecyclerAdapter<Empresa, HelperViewHolder> firestoreAdapter;
     private StorageReference storageRef;
-
     private FirebaseAuth mAuth;
     private String userID;
-
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
@@ -52,12 +50,12 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
         mAuth = FirebaseAuth.getInstance();
         storageRef = FirebaseStorage.getInstance().getReference();
 
-        // Obtener el ID del usuario actual
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             userID = currentUser.getUid();
         }
     }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -75,6 +73,7 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
         NavigationView navigationView = v.findViewById(R.id.navView);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         // Construir la consulta para obtener la empresa del usuario actual
         Query query = firestore.collection("registroEmpresa").whereEqualTo("userID", userID);
         FirestoreRecyclerOptions<Empresa> options = new FirestoreRecyclerOptions.Builder<Empresa>()
@@ -85,13 +84,12 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
 
             @Override
             protected void onBindViewHolder(@NonNull HelperViewHolder viewHolder, int i, @NonNull Empresa empresa) {
-                viewHolder.nombreEmpresa.setText(empresa.getNombreEmpresa());
-                viewHolder.cif.setText(empresa.getCif());
-                viewHolder.cp.setText(empresa.getCp());
-                viewHolder.direccion.setText(empresa.getDireccion());
-                viewHolder.email.setText(empresa.getEmail());
-                viewHolder.telefono.setText(empresa.getTelefono());
-                viewHolder.userID.setText(empresa.getUserID());
+                viewHolder.nombreEmpresa.setText(String.format(empresa.getNombreEmpresa()));
+                viewHolder.cif.setText(String.format(empresa.getCif()));
+                viewHolder.cp.setText(String.format(empresa.getCp()));
+                viewHolder.direccion.setText(String.format(empresa.getDireccion()));
+                viewHolder.email.setText(String.format(empresa.getEmail()));
+                viewHolder.telefono.setText(String.format(empresa.getTelefono()));
 
                 // Cargar la imagen utilizando Glide
                 loadImage(requireContext(), empresa.getUserID(), viewHolder.imageView);
@@ -100,7 +98,7 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
             @NonNull
             @Override
             public HelperViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_empresa, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_item, parent, false);
                 return new HelperViewHolder(view);
             }
 
@@ -164,23 +162,15 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
         toggle.syncState();
     }
 
-    // Método para cargar la imagen desde Firebase Storage usando Glide
     private void loadImage(Context context, String userID, ImageView imageView) {
         StorageReference imageRef = storageRef.child("images/" + userID);
         imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            // Load the image using Glide
             Glide.with(context)
                     .load(uri)
                     .into(imageView);
-        }).addOnFailureListener(exception -> {
-            // Handle any errors
-            // For now, you can display a placeholder image or a message
-            // For example:
-            // imageView.setImageResource(R.drawable.placeholder_image);
-            // Or
-            // imageView.setVisibility(View.GONE);
-        });
+        }).addOnFailureListener(exception -> imageView.setVisibility(View.GONE));
     }
+
 
 }
 
