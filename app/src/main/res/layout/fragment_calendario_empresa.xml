@@ -51,12 +51,22 @@
 
         </LinearLayout>
 
-            <CalendarView
-                android:id="@+id/calendarEmpresa"
-                android:layout_width="368dp"
-                android:layout_height="414dp"
-                android:layout_marginTop="@dimen/icon_size_medium"
-                android:layout_gravity="center"/>
+        <!-- CalendarView para mostrar el calendario de la empresa -->
+        <CalendarView
+            android:id="@+id/empresaCalendarView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>  <!-- Utiliza layout_weight para asegurar que el CalendarView utilice la mayoría del espacio vertical disponible -->
+
+        <!-- TextView para mostrar información sobre la cita seleccionada -->
+        <TextView
+            android:id="@+id/tvCitaInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/detalles_de_la_cita"
+            android:visibility="gone"
+            android:padding="8dp"/>
+
 
     </LinearLayout>
 

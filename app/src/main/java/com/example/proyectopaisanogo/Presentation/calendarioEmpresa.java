@@ -5,23 +5,36 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
+import com.example.proyectopaisanogo.Model.Empresa;
 import com.example.proyectopaisanogo.R;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 public class calendarioEmpresa extends Fragment  implements NavigationView.OnNavigationItemSelectedListener {
 
-    private CalendarioEmpresaViewModel mViewModel;
+    private CalendarView calendarView;
+    private TextView tvCitaInfo;
+    private FirebaseFirestore db;
+    private final Empresa empresa = new Empresa();
 
+    calendarioEmpresa() {
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,16 +47,14 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendario_empresa, container, false);
+        calendarView = view.findViewById(R.id.empresaCalendarView);
+        tvCitaInfo = view.findViewById(R.id.tvCitaInfo);
+
+        db = FirebaseFirestore.getInstance();
+        setupCalendarListener();
 
         setupToolbar(view);
         return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(CalendarioEmpresaViewModel.class);
-        // TODO: Use the ViewModel
     }
 
     private void setupToolbar(View view) {
@@ -63,5 +74,47 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
             return true; // Devolver true para indicar que el evento fue manejado
         }
         return super.onOptionsItemSelected(menuItem);
+    }
+
+    private void setupCalendarListener() {
+        calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
+            Calendar date = Calendar.getInstance();
+            date.set(year, month, dayOfMonth, 0, 0, 0);
+            date.set(Calendar.MILLISECOND, 0);
+            Date startDate = date.getTime(); // Midnight of the selected day
+            date.add(Calendar.DATE, 1);
+            Date endDate = date.getTime(); // Midnight of the next day
+
+            loadCitasForDate(startDate, endDate);
+        });
+    }
+
+    private void loadCitasForDate(Date startDate, Date endDate) {
+
+          /* si estuviera autenticado
+        FirebaseUser user = mAuth.getCurrentUser();
+        //tras autenticar a la empresa - obtengo el usuario.
+        String userEmail = user.getEmail();
+
+         */
+        db.collection("Citas")
+                .whereEqualTo("empresaId", empresa.getUserID()) // Cambiar por el ID real de la empresa
+                .whereGreaterThanOrEqualTo("fecha", new Timestamp(startDate))
+                .whereLessThan("fecha", new Timestamp(endDate))
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        StringBuilder citasDetails = new StringBuilder();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            citasDetails.append("Cita ID: ").append(document.getId()).append("\n");
+                            // Agrega más detalles según lo que esté almacenado en Firestore
+                        }
+                        tvCitaInfo.setText(citasDetails.toString());
+                        tvCitaInfo.setVisibility(View.VISIBLE);
+                    } else {
+                        tvCitaInfo.setText(R.string.error_cargando_citas);
+                        tvCitaInfo.setVisibility(View.VISIBLE);
+                    }
+                });
     }
 }

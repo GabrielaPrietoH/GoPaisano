@@ -58,4 +58,7 @@
     <string name="tienes_emails">Emails de Clientes:</string>
     <string name="los_clientes_han_buscado_tu_direccion">Los Clientes han buscado tu dirección:</string>
     <string name="textClientes">Clientes</string>
+    <string name="error_cargando_citas">Error cargando citas.</string>
+    <string name="confirmar_fecha">Confirmar Fecha</string>
+    <string name="detalles_de_la_cita">Detalles de la cita</string>
 </resources>

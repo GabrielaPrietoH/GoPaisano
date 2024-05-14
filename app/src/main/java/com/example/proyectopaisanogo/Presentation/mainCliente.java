@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -118,9 +119,7 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
                 });
 
                 viewHolder.botonAgenda.setVisibility(View.VISIBLE);
-                viewHolder.botonAgenda.setOnClickListener(v -> {
-                    // funcionalidad de la agenda
-                });
+                viewHolder.botonAgenda.setOnClickListener(v -> onEmpresaSelected(empresa));
             }
 
             @NonNull
@@ -245,5 +244,12 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
             default:
                 return 0;
         }
+    }
+
+
+    public void onEmpresaSelected(Empresa empresa) {
+        Log.d("Debug", "Pasando empresa con ID: " + empresa.getUserID() + " al diálogo.");
+        CalendarDialog dialog = new CalendarDialog(empresa);
+        dialog.show(getChildFragmentManager(), "CalendarDialog"); // Usa getChildFragmentManager aquí
     }
 }
