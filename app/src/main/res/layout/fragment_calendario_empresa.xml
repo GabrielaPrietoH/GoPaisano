@@ -7,7 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.proyectopaisanogo.Presentation.calendarioCliente">
+    tools:context="com.example.proyectopaisanogo.Presentation.calendarioEmpresa"
+    android:orientation="vertical">
 
     <!-- Contenedor principal -->
     <LinearLayout
@@ -18,7 +19,7 @@
 
         <!-- Toolbar -->
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbarCalendarioEmpresa"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimaryDark"
@@ -54,20 +55,28 @@
         <!-- CalendarView para mostrar el calendario de la empresa -->
         <CalendarView
             android:id="@+id/empresaCalendarView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>  <!-- Utiliza layout_weight para asegurar que el CalendarView utilice la mayoría del espacio vertical disponible -->
-
-        <!-- TextView para mostrar información sobre la cita seleccionada -->
-        <TextView
-            android:id="@+id/tvCitaInfo"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/detalles_de_la_cita"
-            android:visibility="gone"
-            android:padding="8dp"/>
+            android:layout_gravity="center"/>  <!-- Utiliza layout_weight para asegurar que el CalendarView utilice la mayoría del espacio vertical disponible -->
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- TextView para mostrar información sobre la cita seleccionada -->
+            <TextView
+                android:id="@+id/tvCitaInfo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/size_extra_small"
+                android:textColor="@color/colorPrimaryDark"
+                android:fontFamily="@font/typo_irregular"
+                android:text="@string/detalles_de_la_cita" />
+
+        </LinearLayout>
 
     </LinearLayout>
+
 
 </LinearLayout>

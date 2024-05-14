@@ -37,7 +37,7 @@ public class calendarioCliente extends Fragment  implements NavigationView.OnNav
     }
 
     private void setupToolbar(View view) {
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        Toolbar toolbar = view.findViewById(R.id.toolbarCalendarioCliente);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
         activity.setSupportActionBar(toolbar);
         Objects.requireNonNull(activity.getSupportActionBar()).setDisplayHomeAsUpEnabled(true);

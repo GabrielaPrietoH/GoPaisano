@@ -23,7 +23,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Objects;
 
 public class calendarioEmpresa extends Fragment  implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -32,8 +31,8 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
     private FirebaseFirestore db;
     private final Empresa empresa = new Empresa();
 
-    calendarioEmpresa() {
-
+    public calendarioEmpresa() {
+        // Requerido por Android
     }
 
     @Override
@@ -58,10 +57,10 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
     }
 
     private void setupToolbar(View view) {
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        Toolbar toolbar = view.findViewById(R.id.toolbarCalendarioEmpresa);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
         activity.setSupportActionBar(toolbar);
-        Objects.requireNonNull(activity.getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         activity.getSupportActionBar().setTitle("Calendario Empresa");
     }
 
@@ -91,12 +90,6 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
 
     private void loadCitasForDate(Date startDate, Date endDate) {
 
-          /* si estuviera autenticado
-        FirebaseUser user = mAuth.getCurrentUser();
-        //tras autenticar a la empresa - obtengo el usuario.
-        String userEmail = user.getEmail();
-
-         */
         db.collection("Citas")
                 .whereEqualTo("empresaId", empresa.getUserID()) // Cambiar por el ID real de la empresa
                 .whereGreaterThanOrEqualTo("fecha", new Timestamp(startDate))
@@ -106,7 +99,10 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
                     if (task.isSuccessful()) {
                         StringBuilder citasDetails = new StringBuilder();
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            citasDetails.append("Cita ID: ").append(document.getId()).append("\n");
+                            Date citaDate = document.getTimestamp("fecha").toDate();
+                            citasDetails.append("Cita ID: ").append(document.getId())
+                                    .append(", Fecha: ").append(citaDate)
+                                    .append("\n");
                             // Agrega más detalles según lo que esté almacenado en Firestore
                         }
                         tvCitaInfo.setText(citasDetails.toString());
@@ -117,4 +113,5 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
                     }
                 });
     }
+
 }

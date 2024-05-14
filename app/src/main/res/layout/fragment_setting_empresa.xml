@@ -14,7 +14,7 @@
 
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbarSettingEmpresa"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimaryDark"
@@ -54,16 +54,25 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/editTextUsuarioCliente"
+            android:id="@+id/editTextNombreEmpresa"
             android:layout_width="match_parent"
             android:layout_height="@dimen/icon_size_large"
             android:layout_margin="@dimen/size_extra_small"
-            android:hint="@string/usuario"
+            android:hint="@string/modificar_nombre_empresa"
             android:inputType="text"
             tools:ignore="Autofill" />
 
         <EditText
-            android:id="@+id/editTextPasswordCliente"
+            android:id="@+id/editTextCifEmpresa"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/icon_size_large"
+            android:layout_margin="@dimen/size_extra_small"
+            android:hint="@string/modificar_cif"
+            android:inputType="text"
+            tools:ignore="Autofill" />
+
+        <EditText
+            android:id="@+id/editTextPasswordEmpresa"
             android:layout_width="match_parent"
             android:layout_height="@dimen/icon_size_large"
             android:layout_margin="@dimen/size_extra_small"

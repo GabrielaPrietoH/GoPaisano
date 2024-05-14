@@ -124,34 +124,29 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
         int id = menuItem.getItemId();
 
         if (id == R.id.setting) {
-            FragmentManager fragmentManager = getParentFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, settingCliente.class, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("Setting")
-                    .commit();
-
+            navigateToFragment(settingEmpresa.class, "Setting");
         } else if (id == R.id.calendar) {
-            FragmentManager fragmentManager = getParentFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, calendarioCliente.class, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("Calendario")
-                    .commit();
-
+            navigateToFragment(calendarioEmpresa.class, "Calendario");
         } else if (id == R.id.logout) {
             mAuth.signOut();
-            FragmentManager fragmentManager = getParentFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, loginCliente.class, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("Logout")
-                    .commit();
+            navigateToFragment(loginEmpresa.class, "Logout");
         }
 
+        mAuth = FirebaseAuth.getInstance();
         drawerLayout.closeDrawers();
         return true;
+
     }
+
+    private void navigateToFragment(Class fragmentClass, String tag) {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragmentClass, null)
+                .setReorderingAllowed(true)
+                .addToBackStack(tag)
+                .commit();
+    }
+
 
     private void setupToolbar(View view) {
         Toolbar toolbar;
@@ -164,13 +159,10 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
 
     private void loadImage(Context context, String userID, ImageView imageView) {
         StorageReference imageRef = storageRef.child("images/" + userID);
-        imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            Glide.with(context)
-                    .load(uri)
-                    .into(imageView);
-        }).addOnFailureListener(exception -> imageView.setVisibility(View.GONE));
+        imageRef.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(context)
+                .load(uri)
+                .into(imageView)).addOnFailureListener(exception -> imageView.setVisibility(View.GONE));
     }
-
-
+    
 }
 

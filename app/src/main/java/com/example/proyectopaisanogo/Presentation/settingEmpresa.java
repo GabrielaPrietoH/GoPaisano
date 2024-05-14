@@ -34,6 +34,10 @@ public class settingEmpresa extends Fragment implements NavigationView.OnNavigat
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
+    public settingEmpresa() {
+        // Requerido por Android
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,14 +55,14 @@ public class settingEmpresa extends Fragment implements NavigationView.OnNavigat
 
         //Referencia de las cajas
         cifText = rootView.findViewById(R.id.editTextCifEmpresa);
-        nombreText = rootView.findViewById(R.id.editTextNomEmpresa);
+        nombreText = rootView.findViewById(R.id.editTextNombreEmpresa);
         direccionText = rootView.findViewById(R.id.editTextDireccionEmpresa);
         cpText = rootView.findViewById(R.id.editTextCpEmpresa);
         telefonoText = rootView.findViewById(R.id.editTextTelefonoEmpresa);
         emailText = rootView.findViewById(R.id.editTextEmailEmpresa);
-        passwordText = rootView.findViewById(R.id.editTextTextPassword3);
+        passwordText = rootView.findViewById(R.id.editTextPasswordEmpresa);
 
-        btnSaveChanges = rootView.findViewById(R.id.buttonRegistroEmpresa);
+        btnSaveChanges = rootView.findViewById(R.id.buttonResgistroEmpresa);
 
         btnSaveChanges.setOnClickListener(v -> {
             // Recoger los valores de las cajas de texto
@@ -116,7 +120,7 @@ public class settingEmpresa extends Fragment implements NavigationView.OnNavigat
     }
 
     private void setupToolbar(View view) {
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        Toolbar toolbar = view.findViewById(R.id.toolbarSettingEmpresa);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
