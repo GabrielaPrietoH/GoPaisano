@@ -55,12 +55,12 @@ public class settingEmpresa extends Fragment implements NavigationView.OnNavigat
 
         //Referencia de las cajas
         cifText = rootView.findViewById(R.id.editTextCifEmpresa);
-        nombreText = rootView.findViewById(R.id.editTextNombreEmpresa);
+        nombreText = rootView.findViewById(R.id.editTextNomEmpresa);
         direccionText = rootView.findViewById(R.id.editTextDireccionEmpresa);
         cpText = rootView.findViewById(R.id.editTextCpEmpresa);
         telefonoText = rootView.findViewById(R.id.editTextTelefonoEmpresa);
         emailText = rootView.findViewById(R.id.editTextEmailEmpresa);
-        passwordText = rootView.findViewById(R.id.editTextPasswordEmpresa);
+        passwordText = rootView.findViewById(R.id.editTextTextPassword3);
 
         btnSaveChanges = rootView.findViewById(R.id.buttonResgistroEmpresa);
 

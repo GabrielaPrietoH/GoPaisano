@@ -48,21 +48,24 @@ public class CalendarDialog extends DialogFragment {
 
         // Establecer listener para cambios de fecha
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
+            // Se ajusta la fecha tan pronto como se selecciona en el calendario.
             selectedDate.set(year, month, dayOfMonth);
 
-            // Abre el TimePickerDialog después de seleccionar la fecha
-            new TimePickerDialog(getContext(), (timeView, hourOfDay, minute) -> {
+            // El TimePickerDialog se abre con los valores iniciales del día seleccionado.
+            TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (timeView, hourOfDay, minute) -> {
+                // Se actualizan la hora y minutos solo después de confirmar en el TimePicker.
                 selectedDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 selectedDate.set(Calendar.MINUTE, minute);
-                confirmButton.setEnabled(true);  // Habilita el botón de confirmar una vez que la hora ha sido seleccionada
-            }, selectedDate.get(Calendar.HOUR_OF_DAY), selectedDate.get(Calendar.MINUTE), false).show();
+                confirmButton.setEnabled(true); // Habilita el botón una vez seleccionado el tiempo completo.
+            }, selectedDate.get(Calendar.HOUR_OF_DAY), selectedDate.get(Calendar.MINUTE), false);
+
+            timePickerDialog.show();
         });
 
-        // Establecer listener para el botón de confirmar
         confirmButton.setOnClickListener(v -> {
             Map<String, Object> cita = new HashMap<>();
             cita.put("empresaId", empresa.getUserID());
-            cita.put("fecha", selectedDate.getTime());  // Guarda el objeto Date completo
+            cita.put("fecha", selectedDate.getTime());  // Se guarda la fecha y hora seleccionada.
             createCita(cita);
             dialog.dismiss();
         });

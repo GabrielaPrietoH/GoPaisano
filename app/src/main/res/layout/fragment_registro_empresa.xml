@@ -90,7 +90,7 @@
         android:id="@+id/editTextCifEmpresa"
         android:layout_width="match_parent"
             android:layout_height="@dimen/icon_size_large"
-            android:hint="@string/cif"
+        android:hint="@string/cif"
             android:layout_margin="@dimen/size_extra_extra_small"
             android:inputType="text"
             tools:ignore="Autofill" />

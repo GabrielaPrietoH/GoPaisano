@@ -163,6 +163,6 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
                 .load(uri)
                 .into(imageView)).addOnFailureListener(exception -> imageView.setVisibility(View.GONE));
     }
-    
+
 }
 

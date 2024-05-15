@@ -75,8 +75,5 @@
                 android:text="@string/detalles_de_la_cita" />
 
         </LinearLayout>
-
     </LinearLayout>
-
-
 </LinearLayout>
