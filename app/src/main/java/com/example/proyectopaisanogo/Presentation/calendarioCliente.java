@@ -13,20 +13,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.proyectopaisanogo.R;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Objects;
 
 public class calendarioCliente extends Fragment  implements NavigationView.OnNavigationItemSelectedListener {
 
-    private FirebaseAuth mAuth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true); // Indica que este fragmento tiene un menú
+        setHasOptionsMenu(true);
     }
 
 
@@ -40,10 +39,10 @@ public class calendarioCliente extends Fragment  implements NavigationView.OnNav
     }
 
     private void setupToolbar(View view) {
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        Toolbar toolbar = view.findViewById(R.id.toolbarCalendarioCliente);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
         activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(activity.getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         activity.getSupportActionBar().setTitle("Calendario Cliente");
     }
 
@@ -51,18 +50,17 @@ public class calendarioCliente extends Fragment  implements NavigationView.OnNav
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         // Manejar el clic en el ícono de retroceso en la barra de herramientas
         if (menuItem.getItemId() == android.R.id.home) {
-            // Crear un nuevo fragmento y transacción
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, mainCliente.class, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("nombre") // El nombre puede ser nulo
-                    .commit();
+            // Navegar hacia atrás
+            requireActivity().onBackPressed();
             // Mostrar un Toast indicando que se ha seleccionado la opción
             Toast.makeText(requireContext(), "Regresando al menú principal", Toast.LENGTH_SHORT).show();
+            return true; // Devolver true para indicar que el evento fue manejado
+
+
 
         }
         return super.onOptionsItemSelected(menuItem);
     }
+
 }
 

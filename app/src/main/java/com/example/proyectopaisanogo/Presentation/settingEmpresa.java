@@ -35,6 +35,10 @@ public class settingEmpresa extends Fragment implements NavigationView.OnNavigat
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
+    public settingEmpresa() {
+        // Requerido por Android
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +61,7 @@ public class settingEmpresa extends Fragment implements NavigationView.OnNavigat
         emailText = rootView.findViewById(R.id.editTextEmailEmpresa);
         passwordText = rootView.findViewById(R.id.editTextTextPassword3);
 
-        btnSaveChanges = rootView.findViewById(R.id.buttonRegistroEmpresa);
+        btnSaveChanges = rootView.findViewById(R.id.buttonResgistroEmpresa);
 
         btnSaveChanges.setOnClickListener(v -> {
             // Recoger los valores de las cajas de texto
@@ -115,7 +119,7 @@ public class settingEmpresa extends Fragment implements NavigationView.OnNavigat
     }
 
     private void setupToolbar(View view) {
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        Toolbar toolbar = view.findViewById(R.id.toolbarSettingEmpresa);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);

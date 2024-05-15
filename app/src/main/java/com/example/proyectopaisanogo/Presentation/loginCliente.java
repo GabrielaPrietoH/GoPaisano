@@ -55,14 +55,16 @@ public class loginCliente extends Fragment {
             //VALIDACIONES-lOGIN
             if (email.isEmpty()) {
                 emailText.setError("Campo obligatorio");
+                Toast.makeText(getContext(), "Por favor ingrese su correo electrónico", Toast.LENGTH_SHORT).show();
             }else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-
                 emailText.setError("Correo incorrecto");
-
+                Toast.makeText(getContext(), "Por favor ingrese un correo electrónico válido", Toast.LENGTH_SHORT).show();
             }else if(password.isEmpty()){
                 passText.setError("Campo obligatorio");
+                Toast.makeText(getContext(), "Por favor ingrese su contraseña", Toast.LENGTH_SHORT).show();
             }else if(password.length() < 6){
                 passText.setError("Mínimo 6 caracteres");
+                Toast.makeText(getContext(), "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show();
 
             }else{
 
@@ -82,7 +84,7 @@ public class loginCliente extends Fragment {
                                 //Un toast para avisar que las credenciales son incorrectas
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                Toast.makeText(getContext(), "Authentication failed.",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Las credenciales son incorrectas. Por favor intente de nuevo.", Toast.LENGTH_SHORT).show();
                             }
                         });
               }
@@ -97,6 +99,7 @@ public class loginCliente extends Fragment {
                     .setReorderingAllowed(true)
                     .addToBackStack("nombre") // El nombre puede ser nulo
                      .commit();
+            Toast.makeText(getContext(), "Redirigiendo al registro", Toast.LENGTH_SHORT).show();
         });
 
         botonLogout.setOnClickListener(v -> {

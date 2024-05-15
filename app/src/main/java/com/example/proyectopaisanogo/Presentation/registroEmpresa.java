@@ -74,7 +74,7 @@ public class registroEmpresa extends Fragment {
 
     private void cancelUpload() {
         filePath = null;
-        Toast.makeText(getContext(), "Upload canceled", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Subida cancelada", Toast.LENGTH_SHORT).show();
     }
 
     private void registerCompany() {
@@ -124,7 +124,7 @@ public class registroEmpresa extends Fragment {
 
             uploadTask.addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    Toast.makeText(getContext(), "Image uploaded successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Imagen subida exitosamente", Toast.LENGTH_SHORT).show();
                     goToMainEmpresaFragment();
                 } else {
                     Toast.makeText(getContext(), "Error al subir la imagen", Toast.LENGTH_SHORT).show();

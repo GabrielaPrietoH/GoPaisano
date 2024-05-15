@@ -1,141 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.proyectopaisanogo.Presentation.registroCliente">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:id="@+id/imageView4"
-            android:layout_width="186dp"
-            android:layout_height="149dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="18dp"
-            android:layout_marginEnd="207dp"
-            android:src="@drawable/paisano" />
+            android:layout_width="146dp"
+            android:layout_height="141dp"
+            android:layout_margin="@dimen/size_extra_small"
+            android:src="@drawable/paisano"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/textViewRegistroCliente"
-            android:layout_width="171dp"
-            android:layout_height="52dp"
-            android:layout_below="@+id/imageView4"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="213dp"
-            android:layout_marginTop="-108dp"
-            android:layout_marginEnd="27dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/icon_size_medium"
             android:text="@string/registro_clientes"
             android:textAlignment="center"
-            android:textColor="#FFC107"
-            android:textSize="20sp" />
+            android:textColor="@color/amarillo"
+            android:textSize="@dimen/letter_big" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/editTextUsuarioCliente"
-            android:layout_width="wrap_content"
-            android:layout_height="57dp"
-            android:layout_below="@+id/imageView4"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="48dp"
-            android:ems="10"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/icon_size_large"
             android:hint="@string/usuario"
-            android:inputType="text" />
+            android:layout_margin="@dimen/size_extra_extra_small"
+            android:inputType="text"
+            tools:ignore="Autofill" />
 
         <EditText
             android:id="@+id/editTextPasswordCliente"
-            android:layout_width="wrap_content"
-            android:layout_height="55dp"
-            android:layout_below="@+id/editTextUsuarioCliente"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginEnd="51dp"
-            android:ems="10"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/icon_size_large"
+            android:layout_margin="@dimen/size_extra_extra_small"
             android:hint="@string/password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            tools:ignore="Autofill" />
 
         <EditText
             android:id="@+id/editTextPhoneCliente"
-            android:layout_width="334dp"
-            android:layout_height="56dp"
-            android:layout_below="@+id/editTextPasswordCliente"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="18dp"
-            android:layout_marginEnd="37dp"
-            android:ems="10"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/icon_size_large"
+            android:layout_margin="@dimen/size_extra_extra_small"
             android:hint="@string/telefono"
-            android:inputType="phone" />
+            android:inputType="phone"
+            tools:ignore="Autofill" />
 
         <EditText
             android:id="@+id/editTextEmailCliente"
-            android:layout_width="348dp"
-            android:layout_height="57dp"
-            android:layout_below="@+id/editTextPhoneCliente"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="22dp"
-            android:ems="10"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/icon_size_large"
+            android:layout_margin="@dimen/size_extra_extra_small"
             android:hint="@string/email"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            tools:ignore="Autofill" />
 
         <EditText
             android:id="@+id/editTextDireccionCLiente"
-            android:layout_width="347dp"
-            android:layout_height="58dp"
-            android:layout_below="@+id/editTextPhoneCliente"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="79dp"
-            android:layout_marginEnd="24dp"
-            android:autofillHints=""
-            android:ems="10"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/icon_size_large"
+            android:layout_margin="@dimen/size_extra_extra_small"
             android:hint="@string/direccion"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            tools:ignore="Autofill" />
 
         <EditText
             android:id="@+id/editTextCpCliente"
-            android:layout_width="247dp"
-            android:layout_height="57dp"
-            android:layout_below="@+id/editTextEmailCliente"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="67dp"
-            android:layout_marginEnd="123dp"
-            android:ems="10"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/icon_size_large"
+            android:layout_margin="@dimen/size_extra_extra_small"
             android:hint="@string/codigo_postal"
-            android:inputType="textPostalAddress" />
+            android:inputType="textPostalAddress"
+            tools:ignore="Autofill" />
 
         <Button
             android:id="@+id/buttonResgistroCliente"
-            android:layout_width="226dp"
-            android:layout_height="68dp"
-            android:layout_below="@+id/editTextCpCliente"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="86dp"
-            android:layout_marginTop="39dp"
-            android:layout_marginEnd="99dp"
-            android:backgroundTint="#03A9F4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/icon_size_large"
+            android:layout_marginStart="@dimen/icon_size_medium"
+            android:layout_marginEnd="@dimen/icon_size_medium"
+            android:backgroundTint="@color/blue"
             android:text="@string/registrarse"
             android:textColor="@color/white"
-            android:textSize="24sp" />
+            android:textSize="@dimen/buttom_letter" />
 
-    </RelativeLayout>
-</FrameLayout>
+    </LinearLayout>
+
+</LinearLayout>

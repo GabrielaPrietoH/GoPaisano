@@ -47,15 +47,16 @@ public class loginEmpresa extends Fragment {
             //VALIDACIONES-lOGIN
             if (email.isEmpty()) {
                 emailText.setError("Campo obligatorio");
+                Toast.makeText(getContext(), "Por favor ingrese su correo electrónico", Toast.LENGTH_SHORT).show();
             }else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-
                 emailText.setError("Correo incorrecto");
-
+                Toast.makeText(getContext(), "Por favor ingrese un correo electrónico válido", Toast.LENGTH_SHORT).show();
             }else if(password.isEmpty()){
                 passText.setError("Campo obligatorio");
+                Toast.makeText(getContext(), "Por favor ingrese su contraseña", Toast.LENGTH_SHORT).show();
             }else if(password.length() < 6){
                 passText.setError("Mínimo 6 caracteres");
-
+                Toast.makeText(getContext(), "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show();
             }else{
 
                 mAuth.signInWithEmailAndPassword(email, password)
@@ -71,8 +72,9 @@ public class loginEmpresa extends Fragment {
                                         .commit();
 
                             } else {
+
                                 /*
-                                //Un toast para avisar que las credenciales son incorrectas
+                                Toast.makeText(getContext(), "Autenticación fallida", Toast.LENGTH_SHORT).show();
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                 Toast.makeText(loginEmpresa.this , "Authentication failed.",Toast.LENGTH_SHORT).show();
@@ -96,6 +98,7 @@ public class loginEmpresa extends Fragment {
                     .setReorderingAllowed(true)
                     .addToBackStack("nombre") // El nombre puede ser nulo
                     .commit();
+            Toast.makeText(getContext(), "Redirigiendo al registro", Toast.LENGTH_SHORT).show();
         });
         botonLogout.setOnClickListener(v -> {
 
@@ -106,7 +109,9 @@ public class loginEmpresa extends Fragment {
                     .setReorderingAllowed(true)
                     .addToBackStack("nombre") // El nombre puede ser nulo
                     .commit();
+            Toast.makeText(getContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show();
         });
+
         return rootView;
     }
 

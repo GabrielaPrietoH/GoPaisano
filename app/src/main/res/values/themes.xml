@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.ProyectoPaisanoGo" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your light theme here. -->
@@ -7,7 +7,13 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
 
+
+    <!-- Estilo para las fechas del CalendarView -->
+    <style name="CalendarDateStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@android:color/holo_blue_bright</item>
     </style>
 
 </resources>

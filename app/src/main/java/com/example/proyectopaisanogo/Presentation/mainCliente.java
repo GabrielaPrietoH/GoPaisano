@@ -11,8 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -32,6 +32,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
@@ -41,8 +42,10 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
     private DrawerLayout drawerLayout;
     private FirestoreRecyclerAdapter<Empresa, HelperViewHolder> firestoreAdapter;
     private StorageReference storageRef;
+    private TextView llamadas, emails, direccion;
 
     private FirebaseAuth mAuth;
+    private int contadorCall, contadorEmail, contadorDirection = 0;
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
@@ -50,8 +53,8 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         storageRef = FirebaseStorage.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
     }
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -69,6 +72,10 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
         NavigationView navigationView = v.findViewById(R.id.navView);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View layoutMainEmpresa = inflater.inflate(R.layout.fragment_main_empresa, container, false);
+        llamadas = layoutMainEmpresa.findViewById(R.id.textLlamadas);
+        emails = layoutMainEmpresa.findViewById(R.id.textEmails);
+        direccion = layoutMainEmpresa.findViewById(R.id.textDirection);
 
         Query query = firestore.collection("registroEmpresa");
         FirestoreRecyclerOptions<Empresa> options = new FirestoreRecyclerOptions.Builder<Empresa>()
@@ -84,31 +91,35 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
                 viewHolder.direccion.setText(empresa.getDireccion());
                 viewHolder.email.setText(empresa.getEmail());
                 viewHolder.telefono.setText(empresa.getTelefono());
-                viewHolder.userID.setText(empresa.getUserID());
 
-                // Cargar la imagen utilizando Glide
                 loadImage(requireContext(), empresa.getUserID(), viewHolder.imageView);
 
-                // Configurar OnClickListener para el botón de llamada
+                viewHolder.botonLlamar.setVisibility(View.VISIBLE);
                 viewHolder.botonLlamar.setOnClickListener(v -> {
-                    Log.e("NAMG", "bottonLlamar");
                     String telefono = empresa.getTelefono();
                     realizarLlamada(telefono);
+                    incrementarContadorLlamadas();
+                    actualizarContadorEmpresa(empresa.getUserID(), "contadorLlamadas");
                 });
 
-                // Configurar OnClickListener para el botón de correo electrónico
+                viewHolder.botonCorreo.setVisibility(View.VISIBLE);
                 viewHolder.botonCorreo.setOnClickListener(v -> {
-                    Log.e("NAMG", "bottonCorreo");
                     String email = empresa.getEmail();
                     enviarCorreo(email);
+                    incrementarContadorEmails();
+                    actualizarContadorEmpresa(empresa.getUserID(), "contadorEmails");
                 });
 
-                // Configurar OnClickListener para el botón de abrir dirección en Google Maps
+                viewHolder.botonDireccion.setVisibility(View.VISIBLE);
                 viewHolder.botonDireccion.setOnClickListener(v -> {
-                    Log.e("NAMG", "bottonDireccion");
                     String direccion = empresa.getDireccion();
                     abrirDireccionEnMapas(direccion);
+                    incrementarContadorDireccion();
+                    actualizarContadorEmpresa(empresa.getUserID(), "contadorDirecciones");
                 });
+
+                viewHolder.botonAgenda.setVisibility(View.VISIBLE);
+                viewHolder.botonAgenda.setOnClickListener(v -> onEmpresaSelected(empresa));
             }
 
             @NonNull
@@ -117,30 +128,10 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_item, parent, false);
                 return new HelperViewHolder(view);
             }
-
-            private void realizarLlamada(String telefono) {
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" + telefono));
-                requireContext().startActivity(intent);
-            }
-
-            private void enviarCorreo(String correo) {
-                Intent intent = new Intent(Intent.ACTION_SENDTO);
-                intent.setData(Uri.parse("mailto:" + correo));
-                requireContext().startActivity(intent);
-            }
-
-            private void abrirDireccionEnMapas(String direccion) {
-                Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(direccion));
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                requireContext().startActivity(mapIntent);
-            }
         };
         setupToolbar(v);
         recyclerView.setAdapter(firestoreAdapter);
         return v;
-
     }
 
     @Override
@@ -159,34 +150,14 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
         int id = menuItem.getItemId();
 
         if (id == R.id.setting) {
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, settingCliente.class, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("Setting") // El nombre puede ser nulo
-                    .commit();
-
+            navigateToFragment(settingCliente.class, "Setting");
         } else if (id == R.id.calendar) {
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, calendarioCliente.class, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("Calendario") // El nombre puede ser nulo
-                    .commit();
-
+            navigateToFragment(calendarioCliente.class, "Calendario");
         } else if (id == R.id.logout) {
             mAuth.signOut();
-            // Crear un nuevo fragmento y transacción
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, loginCliente.class, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("Logout") // El nombre puede ser nulo
-                    .commit();
-            // Mostrar un Toast indicando que se ha cerrado la sesión
-            Toast.makeText(getContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show();
-
+            navigateToFragment(loginCliente.class, "Logout");
         }
+
         mAuth = FirebaseAuth.getInstance();
         drawerLayout.closeDrawers();
         return true;
@@ -202,21 +173,83 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
         toggle.syncState();
     }
 
-    // Método para cargar la imagen desde Firebase Storage usando Glide
+    private void navigateToFragment(Class fragmentClass, String tag) {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragmentClass, null)
+                .setReorderingAllowed(true)
+                .addToBackStack(tag)
+                .commit();
+    }
+
     private void loadImage(Context context, String userID, ImageView imageView) {
         StorageReference imageRef = storageRef.child("images/" + userID);
-        imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            // Load the image using Glide
-            Glide.with(context)
-                    .load(uri)
-                    .into((ImageView) imageView.findViewById(R.id.imagen_empresa));
-        }).addOnFailureListener(exception -> {
-            // Handle any errors
-            // For now, you can display a placeholder image or a message
-            // For example:
-            // imageView.setImageResource(R.drawable.placeholder_image);
-            // Or
-            //imageView.setVisibility(View.GONE);
-        });
+        imageRef.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(context)
+                .load(uri)
+                .into(imageView)).addOnFailureListener(exception -> imageView.setVisibility(View.GONE));
+    }
+
+    private void realizarLlamada(String telefono) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + telefono));
+        requireContext().startActivity(intent);
+    }
+
+    private void enviarCorreo(String correo) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:" + correo));
+        requireContext().startActivity(intent);
+    }
+
+    private void abrirDireccionEnMapas(String direccion) {
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(direccion));
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        requireContext().startActivity(mapIntent);
+    }
+
+    private void incrementarContadorLlamadas() {
+        contadorCall++;
+        llamadas.setText(String.valueOf(contadorCall));
+    }
+
+    private void incrementarContadorEmails() {
+        contadorEmail++;
+        emails.setText(String.valueOf(contadorEmail));
+    }
+
+    private void incrementarContadorDireccion() {
+        contadorDirection++;
+        direccion.setText(String.valueOf(contadorDirection));
+    }
+
+    private void actualizarContadorEmpresa(String empresaID, String campoContador) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference empresaRef = db.collection("registroEmpresa").document(empresaID);
+
+        empresaRef.update(campoContador, getContador(campoContador))
+                .addOnFailureListener(e -> {
+                    // Maneja el fallo de manera apropiada
+                });
+    }
+
+    private int getContador(String campoContador) {
+        switch (campoContador) {
+            case "contadorLlamadas":
+                return contadorCall;
+            case "contadorEmails":
+                return contadorEmail;
+            case "contadorDirecciones":
+                return contadorDirection;
+            default:
+                return 0;
+        }
+    }
+
+
+    public void onEmpresaSelected(Empresa empresa) {
+        Log.d("Debug", "Pasando empresa con ID: " + empresa.getUserID() + " al diálogo.");
+        CalendarDialog dialog = new CalendarDialog(empresa);
+        dialog.show(getChildFragmentManager(), "CalendarDialog"); // Usa getChildFragmentManager aquí
     }
 }

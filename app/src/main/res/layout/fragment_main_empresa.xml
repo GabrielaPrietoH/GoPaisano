@@ -8,21 +8,22 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.proyectopaisanogo.Presentation.mainEmpresa">
 
-    <!-- Fondo de imagen -->
+
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/img_10" />
+        android:src="@drawable/fondo"
+        tools:ignore="ContentDescription" />
 
-    <!-- Contenedor principal -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Toolbar -->
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -31,22 +32,80 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <!-- Contenido principal -->
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <!-- RecyclerView para mostrar las empresas -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/RvEmpresa"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content" >
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
 
-        </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/llamadas_de_clientes"
+                android:textColor="@color/blueDark"
+                android:fontFamily="@font/typo_irregular"
+                android:layout_margin="@dimen/size_extra_extra_small"/>
+
+            <TextView
+                android:id="@+id/textLlamadas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/amarillo"
+                android:text="@string/llamada"
+                android:fontFamily="@font/typo_irregular"
+                android:layout_margin="@dimen/size_extra_extra_small"/>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tienes_emails"
+                android:textColor="@color/blueDark"
+                android:fontFamily="@font/typo_irregular"
+                android:layout_margin="@dimen/size_extra_extra_small"/>
+
+            <TextView
+                android:id="@+id/textEmails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/amarillo"
+                android:text="@string/email"
+                android:fontFamily="@font/typo_irregular"
+                android:layout_margin="@dimen/size_extra_extra_small"/>
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blueDark"
+                android:fontFamily="@font/typo_irregular"
+                android:text="@string/los_clientes_han_buscado_tu_direccion"
+                android:layout_margin="@dimen/size_extra_extra_small"/>
+
+            <TextView
+                android:id="@+id/textDirection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/amarillo"
+                android:text="@string/direccion"
+                android:fontFamily="@font/typo_irregular"
+                android:layout_margin="@dimen/size_extra_extra_small"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <!-- NavigationView -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView"
         android:layout_width="wrap_content"
@@ -54,6 +113,8 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/menu" />
+        app:menu="@menu/menu" >
+
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>
