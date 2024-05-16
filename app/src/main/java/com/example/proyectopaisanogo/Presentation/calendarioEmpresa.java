@@ -89,9 +89,8 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
     }
 
     private void loadCitasForDate(Date startDate, Date endDate) {
-
         db.collection("Citas")
-                .whereEqualTo("empresaId", empresa.getUserID()) // Cambiar por el ID real de la empresa
+                .whereEqualTo("empresaId", empresa.getUserID()) // Reemplazar con el ID de la empresa
                 .whereGreaterThanOrEqualTo("fecha", new Timestamp(startDate))
                 .whereLessThan("fecha", new Timestamp(endDate))
                 .get()
@@ -100,10 +99,11 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
                         StringBuilder citasDetails = new StringBuilder();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Date citaDate = document.getTimestamp("fecha").toDate();
-                            citasDetails.append("Cita ID: ").append(document.getId())
+                            String citaID = document.getId();
+                            citasDetails.append("Cita ID: ").append(citaID)
                                     .append(", Fecha: ").append(citaDate)
+                                    // Agregar más detalles según lo que esté almacenado en Firestore
                                     .append("\n");
-                            // Agrega más detalles según lo que esté almacenado en Firestore
                         }
                         tvCitaInfo.setText(citasDetails.toString());
                         tvCitaInfo.setVisibility(View.VISIBLE);
@@ -113,5 +113,6 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
                     }
                 });
     }
+
 
 }

@@ -45,7 +45,7 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
     private TextView llamadas, emails, direccion;
 
     private FirebaseAuth mAuth;
-    private int contadorCall, contadorEmail, contadorDirection = 0;
+    private long contadorCall, contadorEmail, contadorDirection = 0;
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
@@ -93,6 +93,9 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
                 viewHolder.telefono.setText(empresa.getTelefono());
 
                 loadImage(requireContext(), empresa.getUserID(), viewHolder.imageView);
+
+                // Llama al método para obtener los contadores de esta empresa
+                obtenerContadoresEmpresa(empresa.getUserID());
 
                 viewHolder.botonLlamar.setVisibility(View.VISIBLE);
                 viewHolder.botonLlamar.setOnClickListener(v -> {
@@ -233,7 +236,7 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
                 });
     }
 
-    private int getContador(String campoContador) {
+    private long getContador(String campoContador) {
         switch (campoContador) {
             case "contadorLlamadas":
                 return contadorCall;
@@ -252,4 +255,27 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
         CalendarDialog dialog = new CalendarDialog(empresa);
         dialog.show(getChildFragmentManager(), "CalendarDialog"); // Usa getChildFragmentManager aquí
     }
+
+    // Método para obtener los contadores de la empresa desde Firestore
+    private void obtenerContadoresEmpresa(String empresaID) {
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        DocumentReference contadorEmpresaRef = firestore.collection("registroEmpresa").document(empresaID);
+
+        contadorEmpresaRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                Long contadorLlamadas = documentSnapshot.getLong("contadorLlamadas");
+                Long contadorEmails = documentSnapshot.getLong("contadorEmails");
+                Long contadorDirecciones = documentSnapshot.getLong("contadorDirecciones");
+
+                requireActivity().runOnUiThread(() -> {
+                    llamadas.setText(String.valueOf(contadorLlamadas));
+                    emails.setText(String.valueOf(contadorEmails));
+                    direccion.setText(String.valueOf(contadorDirecciones));
+                });
+            }
+        }).addOnFailureListener(e -> {
+            // Manejar cualquier error de consulta
+        });
+    }
+
 }

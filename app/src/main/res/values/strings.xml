@@ -61,4 +61,7 @@
     <string name="error_cargando_citas">Error cargando citas.</string>
     <string name="confirmar_fecha">Confirmar Fecha</string>
     <string name="detalles_de_la_cita">Detalles de la cita</string>
+    <string name="d_a_seleccionado">"Día seleccionado: "</string>
+    <string name="dia_seleccionado">"Día seleccionado: "</string>
+    <string name="error_al_buscar_citas">\nError al buscar citas.</string>
 </resources>
