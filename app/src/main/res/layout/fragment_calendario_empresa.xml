@@ -75,5 +75,13 @@
                 android:text="@string/detalles_de_la_cita" />
 
         </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerCitas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
     </LinearLayout>
 </LinearLayout>

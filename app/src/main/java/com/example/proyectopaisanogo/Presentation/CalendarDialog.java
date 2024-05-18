@@ -13,6 +13,8 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.proyectopaisanogo.Model.Empresa;
 import com.example.proyectopaisanogo.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
@@ -74,10 +76,17 @@ public class CalendarDialog extends DialogFragment {
     }
 
     private void createCita(Map<String, Object> cita) {
-        Log.d("CalendarDialog", "Guardando cita con empresa ID: " + empresa.getUserID()); // Debería mostrar el ID correcto
-        db.collection("Citas").add(cita)
-                .addOnSuccessListener(documentReference -> Log.d("CalendarDialog", "Cita guardada con éxito"))
-                .addOnFailureListener(e -> Log.w("CalendarDialog", "Error al guardar cita", e));
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userID = currentUser.getUid();  // Obtiene el ID del usuario autenticado
+            cita.put("userID", userID);  // Guarda el userID con la cita
+
+            Log.d("CalendarDialog", "Guardando cita con empresa ID: " + empresa.getUserID() + ", Usuario ID: " + userID);
+            db.collection("Citas").add(cita)
+                    .addOnSuccessListener(documentReference -> Log.d("CalendarDialog", "Cita guardada con éxito"))
+                    .addOnFailureListener(e -> Log.w("CalendarDialog", "Error al guardar cita", e));
+        }
     }
+
 
 }

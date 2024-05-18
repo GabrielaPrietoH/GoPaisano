@@ -1,6 +1,9 @@
 package com.example.proyectopaisanogo.Presentation;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,15 +17,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.example.proyectopaisanogo.Adapter.CitasAdapter;
+import com.example.proyectopaisanogo.Model.Cita;
 import com.example.proyectopaisanogo.Model.Empresa;
 import com.example.proyectopaisanogo.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 
 public class calendarioEmpresa extends Fragment  implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -30,6 +43,10 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
     private TextView tvCitaInfo;
     private FirebaseFirestore db;
     private final Empresa empresa = new Empresa();
+
+    private CitasAdapter citasAdapter;
+    private RecyclerView recyclerView;
+
 
     public calendarioEmpresa() {
         // Requerido por Android
@@ -42,6 +59,7 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
     }
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -53,6 +71,16 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
         setupCalendarListener();
 
         setupToolbar(view);
+
+        //CALENDARIO
+        recyclerView = view.findViewById(R.id.recyclerCitas);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        citasAdapter = new CitasAdapter();
+        recyclerView.setAdapter(citasAdapter);
+        // Cargar las citas al abrir la vista
+        fetchCitas();
+
+
         return view;
     }
 
@@ -91,7 +119,7 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
     private void loadCitasForDate(Date startDate, Date endDate) {
 
         db.collection("Citas")
-                .whereEqualTo("empresaId", empresa.getUserID()) // Cambiar por el ID real de la empresa
+                .whereEqualTo("empresaId", empresa.getUserID())
                 .whereGreaterThanOrEqualTo("fecha", new Timestamp(startDate))
                 .whereLessThan("fecha", new Timestamp(endDate))
                 .get()
@@ -103,7 +131,7 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
                             citasDetails.append("Cita ID: ").append(document.getId())
                                     .append(", Fecha: ").append(citaDate)
                                     .append("\n");
-                            // Agrega más detalles según lo que esté almacenado en Firestore
+
                         }
                         tvCitaInfo.setText(citasDetails.toString());
                         tvCitaInfo.setVisibility(View.VISIBLE);
@@ -113,5 +141,52 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
                     }
                 });
     }
+
+    //CALENDARIO
+    private void fetchCitas() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String empresaId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        db.collection("Citas")
+                .whereEqualTo("empresaId", empresaId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<Cita> nuevasCitas = new ArrayList<>();
+                        AtomicInteger remainingCalls = new AtomicInteger(task.getResult().size()); // Contador para gestionar subconsultas asincrónicas
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String userID = document.getString("userID");
+                            Timestamp fecha = document.getTimestamp("fecha");  // Extraer la fecha directamente de cada documento de cita
+
+                            // Subconsulta para obtener los detalles del cliente
+                            db.collection("registroCliente").document(userID).get().addOnSuccessListener(clientSnapshot -> {
+                                String nombreCliente = clientSnapshot.getString("nombreCliente");
+                                String telefonoCliente = clientSnapshot.getString("telefono");
+
+                                // Crear un objeto Cita con toda la información necesaria
+                                Cita cita = new Cita(nombreCliente, fecha, telefonoCliente);
+                                nuevasCitas.add(cita);
+
+                                // Verificar si todas las subconsultas han terminado
+                                if (remainingCalls.decrementAndGet() == 0) {
+                                    // Actualizar el adaptador aquí si todas las consultas han finalizado
+                                    citasAdapter.updateData(nuevasCitas);
+                                }
+                            }).addOnFailureListener(e -> {
+                                Log.w("calendarioEmpresa", "Error al obtener detalles del cliente", e);
+                                if (remainingCalls.decrementAndGet() == 0) {
+                                    // Actualizar el adaptador aquí si todas las consultas han finalizado
+                                    citasAdapter.updateData(nuevasCitas);
+                                }
+                            });
+                        }
+                    } else {
+                        Log.w("calendarioEmpresa", "Error getting documents.", task.getException());
+                    }
+                });
+    }
+
+
 
 }
