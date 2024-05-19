@@ -62,6 +62,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         return daysOfMonth.size();
     }
 
+
+    //AQUÍ CÓMO sabes qué cita de qué empresa/cliente la coges???????????????????????
     private void fetchCitas() {
         db.collection("Citas")
                 .get()

@@ -2,6 +2,7 @@ package com.example.proyectopaisanogo.Presentation;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.proyectopaisanogo.Adapter.CalendarAdapter;
+import com.example.proyectopaisanogo.Model.Empresa;
 import com.example.proyectopaisanogo.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.Timestamp;
@@ -38,6 +40,7 @@ public class calendarioCliente extends Fragment implements NavigationView.OnNavi
     private TextView monthYearText;
     private FirebaseFirestore db;
     private Calendar calendar;
+    Empresa empresa;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -143,7 +146,8 @@ public class calendarioCliente extends Fragment implements NavigationView.OnNavi
         return super.onOptionsItemSelected(menuItem);
     }
 
-    @Override
+    /* METODO MODIFICADO PARA PRUEBAS. ORIGINAL
+        @Override
     public void onItemClick(int position, String dayText) {
         // Manejar el clic en un día del calendario
         if (informacion != null) {
@@ -178,5 +182,62 @@ public class calendarioCliente extends Fragment implements NavigationView.OnNavi
                     }
                 });
     }
+     */
+
+
+
+    @Override
+    public void onItemClick(int position, String dayText) {
+        if (informacion != null) {
+            informacion.setText(String.format("%s%s", getString(R.string.dia_seleccionado), dayText));
+        }
+
+        // Buscar citas en Firestore para el día seleccionado
+        db.collection("Citas")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        StringBuilder citasInfo = new StringBuilder();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Timestamp timestamp = document.getTimestamp("fecha");
+                            if (timestamp != null) {
+                                SimpleDateFormat sdf = new SimpleDateFormat("d 'de' MMMM 'de' yyyy, h:mm a", Locale.getDefault());
+                                String fechaFormateada = sdf.format(timestamp.toDate());
+                                String diaCita = new SimpleDateFormat("d", Locale.getDefault()).format(timestamp.toDate());
+
+                                if (diaCita.equals(dayText)) {
+                                    String empresaId = document.getString("empresaId");
+                                    db.collection("registroEmpresa").document(empresaId).get().addOnSuccessListener(empresaDoc -> {
+                                        if (empresaDoc.exists()) {
+                                            Empresa empresa = empresaDoc.toObject(Empresa.class);
+                                            String detallesEmpresa = String.format("Empresa: %s\nDirección: %s\nEmail: %s\nTeléfono: %s",
+                                                    empresa.getNombreEmpresa(), empresa.getDireccion(),
+                                                    empresa.getEmail(), empresa.getTelefono());
+                                            citasInfo.append(fechaFormateada).append("\n").append(detallesEmpresa).append("\n");
+                                            informacion.setText(String.format("%s%s\nCitas:\n%s", getString(R.string.dia_seleccionado), dayText, citasInfo.toString()));
+                                        }
+                                    }).addOnFailureListener(e -> {
+                                        Log.e("calendarioCliente", "Error al cargar datos de la empresa", e);
+                                    });
+                                }
+                            }
+                        }
+                        if (citasInfo.length() == 0) {
+                            informacion.setText(String.format("%s%s\nNo hay citas.", getString(R.string.dia_seleccionado), dayText));
+                        }
+                    } else {
+                        informacion.setText(String.format("%s%s\nNo hay citas.", getString(R.string.dia_seleccionado), dayText + getString(R.string.error_al_buscar_citas)));
+                    }
+                });
+    }
+
+
+
+
+
+
+
+
+
 }
 

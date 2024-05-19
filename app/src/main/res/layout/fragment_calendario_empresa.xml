@@ -52,28 +52,158 @@
 
         </LinearLayout>
 
-        <!-- CalendarView para mostrar el calendario de la empresa -->
-        <CalendarView
-            android:id="@+id/empresaCalendarView"
-            android:layout_width="wrap_content"
+
+
+        <!-- <CalendarView para mostrar el calendario de la empresa -->
+        <!-- <CalendarView -->
+        <!--     android:id="@+id/tvCitaInfoEView" -->
+        <!--     android:layout_width="wrap_content" -->
+        <!--     android:layout_height="wrap_content" -->
+        <!--     android:layout_gravity="center"/> Utiliza layout_weight para asegurar que el CalendarView utilice la mayoría del espacio vertical disponible -->
+
+        <!-- <LinearLayout -->
+        <!--     android:layout_width="match_parent" -->
+        <!--     android:layout_height="match_parent" -->
+        <!--     android:orientation="vertical"> -->
+
+        <!-- TextView para mostrar información sobre la cita seleccionada -->
+        <!-- <TextView -->
+        <!--     android:id="@+id/tvCitaInfo" -->
+        <!--     android:layout_width="match_parent" -->
+        <!--     android:layout_height="match_parent" -->
+        <!--     android:padding="@dimen/size_extra_small" -->
+        <!--     android:textColor="@color/colorPrimaryDark" -->
+        <!--     android:fontFamily="@font/typo_irregular" -->
+        <!--     android:text="@string/detalles_de_la_cita" /> -->
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/previousMonthButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>  <!-- Utiliza layout_weight para asegurar que el CalendarView utilice la mayoría del espacio vertical disponible -->
+            android:layout_weight="1"
+            android:background="@null"
+            android:text="Back"
+            android:textColor="@color/blue"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <TextView
+            android:id="@+id/monthYearTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Feb 2021"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
 
-            <!-- TextView para mostrar información sobre la cita seleccionada -->
-            <TextView
-                android:id="@+id/tvCitaInfo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/size_extra_small"
-                android:textColor="@color/colorPrimaryDark"
-                android:fontFamily="@font/typo_irregular"
-                android:text="@string/detalles_de_la_cita" />
+        <Button
+            android:id="@+id/nextMonthButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:text="Forward"
+            android:textColor="@color/blue"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvCitaInfoE"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/typo_irregular"
+        android:padding="@dimen/size_extra_small"
+        android:text="@string/detalles_de_la_cita"
+        android:textColor="@color/colorPrimaryDark" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="SUN"
+            android:textAlignment="center"
+            android:textColor="@color/blueDark"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="MON"
+            android:textAlignment="center"
+            android:textColor="@color/blueDark"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TUE"
+            android:textAlignment="center"
+            android:textColor="@color/blueDark"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="WED"
+            android:textAlignment="center"
+            android:textColor="@color/blueDark"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="THUR"
+            android:textAlignment="center"
+            android:textColor="@color/blueDark"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="FRI"
+            android:textAlignment="center"
+            android:textColor="@color/blueDark"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="SAT"
+            android:textAlignment="center"
+            android:textColor="@color/blueDark"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/calendarEmpresaRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
     </LinearLayout>
 </LinearLayout>
