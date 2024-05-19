@@ -40,7 +40,6 @@ public class calendarioCliente extends Fragment implements NavigationView.OnNavi
     private TextView monthYearText;
     private FirebaseFirestore db;
     private Calendar calendar;
-    Empresa empresa;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -192,7 +191,7 @@ public class calendarioCliente extends Fragment implements NavigationView.OnNavi
             informacion.setText(String.format("%s%s", getString(R.string.dia_seleccionado), dayText));
         }
 
-        // Buscar citas en Firestore para el día seleccionado
+        // Fetch appointments from Firestore
         db.collection("Citas")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -207,18 +206,18 @@ public class calendarioCliente extends Fragment implements NavigationView.OnNavi
 
                                 if (diaCita.equals(dayText)) {
                                     String empresaId = document.getString("empresaId");
+                                    assert empresaId != null;
                                     db.collection("registroEmpresa").document(empresaId).get().addOnSuccessListener(empresaDoc -> {
                                         if (empresaDoc.exists()) {
                                             Empresa empresa = empresaDoc.toObject(Empresa.class);
+                                            assert empresa != null;
                                             String detallesEmpresa = String.format("Empresa: %s\nDirección: %s\nEmail: %s\nTeléfono: %s",
                                                     empresa.getNombreEmpresa(), empresa.getDireccion(),
                                                     empresa.getEmail(), empresa.getTelefono());
                                             citasInfo.append(fechaFormateada).append("\n").append(detallesEmpresa).append("\n");
-                                            informacion.setText(String.format("%s%s\nCitas:\n%s", getString(R.string.dia_seleccionado), dayText, citasInfo.toString()));
+                                            informacion.setText(String.format("%s%s\nCitas:\n%s", getString(R.string.dia_seleccionado), dayText, citasInfo));
                                         }
-                                    }).addOnFailureListener(e -> {
-                                        Log.e("calendarioCliente", "Error al cargar datos de la empresa", e);
-                                    });
+                                    }).addOnFailureListener(e -> Log.e("calendarioCliente", "Error al cargar datos de la empresa", e));
                                 }
                             }
                         }

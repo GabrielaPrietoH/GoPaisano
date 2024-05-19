@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.proyectopaisanogo.Adapter.CalendarAdapter;
-import com.example.proyectopaisanogo.Model.Empresa;
+import com.example.proyectopaisanogo.Model.Cliente;
 import com.example.proyectopaisanogo.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.Timestamp;
@@ -32,13 +32,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class calendarioEmpresa extends Fragment  implements NavigationView.OnNavigationItemSelectedListener, CalendarAdapter.OnItemListener  {
 
     private CalendarView calendarView;
-    private TextView tvCitaInfo;
     private FirebaseFirestore db;
-    private final Empresa empresa = new Empresa();
+    private final Cliente cliente = new Cliente();
 
     //CRISTIAN
     private CalendarAdapter adapter;
@@ -64,9 +64,8 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendario_empresa, container, false);
-        //calendarView = view.findViewById(R.id.empresaCalendarView);
-        tvCitaInfo = view.findViewById(R.id.tvCitaInfoE);
-
+        View v = inflater.inflate(R.layout.calendar_dialog, container, false);
+        calendarView = v.findViewById(R.id.calendarViewDialog);
         //prueba-------------------
 
         setupRecyclerView(view);
@@ -76,8 +75,9 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
         calendar = Calendar.getInstance();
 
         db = FirebaseFirestore.getInstance();
-        setupCalendarListener();
 
+        updateCalendar();
+        setupCalendarListener();
         setupToolbar(view);
         return view;
     }
@@ -86,7 +86,7 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
         Toolbar toolbar = view.findViewById(R.id.toolbarCalendarioEmpresa);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
         activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(activity.getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         activity.getSupportActionBar().setTitle("Calendario Empresa");
     }
 
@@ -100,6 +100,7 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
         }
         return super.onOptionsItemSelected(menuItem);
     }
+
 
     private void setupCalendarListener() {
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
@@ -116,7 +117,7 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
 
     private void loadCitasForDate(Date startDate, Date endDate) {
         db.collection("Citas")
-                .whereEqualTo("empresaId", empresa.getUserID()) // Reemplazar con el ID de la empresa
+                .whereEqualTo("userID", cliente.getUserID()) // Reemplazar con el ID de la empresa
                 .whereGreaterThanOrEqualTo("fecha", new Timestamp(startDate))
                 .whereLessThan("fecha", new Timestamp(endDate))
                 .get()
@@ -124,18 +125,17 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
                     if (task.isSuccessful()) {
                         StringBuilder citasDetails = new StringBuilder();
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Date citaDate = document.getTimestamp("fecha").toDate();
+                            Date citaDate = Objects.requireNonNull(document.getTimestamp("fecha")).toDate();
                             String citaID = document.getId();
                             citasDetails.append("Cita ID: ").append(citaID)
                                     .append(", Fecha: ").append(citaDate)
-                                    // Agregar más detalles según lo que esté almacenado en Firestore
                                     .append("\n");
                         }
-                        tvCitaInfo.setText(citasDetails.toString());
-                        tvCitaInfo.setVisibility(View.VISIBLE);
+                        informacion.setText(citasDetails.toString());
+                        informacion.setVisibility(View.VISIBLE);
                     } else {
-                        tvCitaInfo.setText(R.string.error_cargando_citas);
-                        tvCitaInfo.setVisibility(View.VISIBLE);
+                        informacion.setText(R.string.error_cargando_citas);
+                        informacion.setVisibility(View.VISIBLE);
                     }
                 });
     }
@@ -208,7 +208,7 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
             informacion.setText(String.format("%s%s", getString(R.string.dia_seleccionado), dayText));
         }
 
-        // Buscar citas en Firestore para el día seleccionado
+        // Fetch appointments from Firestore
         db.collection("Citas")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -222,20 +222,19 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
                                 String diaCita = new SimpleDateFormat("d", Locale.getDefault()).format(timestamp.toDate());
 
                                 if (diaCita.equals(dayText)) {
-                                    String clienteId = document.getString("userId"); // Asegúrate que este campo corresponde en Firestore
+                                    String clienteId = document.getString("userID");
+                                    assert clienteId != null;
                                     db.collection("registroCliente").document(clienteId).get().addOnSuccessListener(clienteDoc -> {
                                         if (clienteDoc.exists()) {
-                                            String nombreCliente = clienteDoc.getString("nombreCliente");
-                                            String telefono = clienteDoc.getString("telefono");
-                                            String email = clienteDoc.getString("email");
-                                            String detallesCliente = String.format("Cliente: %s\nTeléfono: %s\nEmail: %s",
-                                                    nombreCliente, telefono, email);
-                                            citasInfo.append(fechaFormateada).append("\n").append(detallesCliente).append("\n");
-                                            informacion.setText(String.format("%s%s\nCitas:\n%s", getString(R.string.dia_seleccionado), dayText, citasInfo.toString()));
+                                            Cliente cliente = clienteDoc.toObject(Cliente.class);
+                                            assert cliente != null;
+                                            String detallesEmpresa = String.format("Cliente: %s\nDirección: %sTeléfono: %s",
+                                                    cliente.getNombreCliente(), cliente.getDireccion(),
+                                                    cliente.getTelefono());
+                                            citasInfo.append(fechaFormateada).append("\n").append(detallesEmpresa).append("\n");
+                                            informacion.setText(String.format("%s%s\nCitas:\n%s", getString(R.string.dia_seleccionado), dayText, citasInfo));
                                         }
-                                    }).addOnFailureListener(e -> {
-                                        Log.e("calendarioCliente", "Error al cargar datos del cliente", e);
-                                    });
+                                    }).addOnFailureListener(e -> Log.e("calendarioCliente", "Error al cargar datos de la empresa", e));
                                 }
                             }
                         }
