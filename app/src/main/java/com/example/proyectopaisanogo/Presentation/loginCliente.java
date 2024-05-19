@@ -66,7 +66,7 @@ public class loginCliente extends Fragment {
 
             }else{
 
-               mAuth.signInWithEmailAndPassword(email, password)
+                mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
 
@@ -85,18 +85,18 @@ public class loginCliente extends Fragment {
                                 Toast.makeText(getContext(), "Authentication failed.",Toast.LENGTH_SHORT).show();
                             }
                         });
-              }
+            }
         });
 
         registroC = rootView.findViewById(R.id.buttonRegistroC);
         registroC.setOnClickListener(v -> {
-             // Crear un nuevo fragmento y transacción para ir al fragmento de registro
+            // Crear un nuevo fragmento y transacción para ir al fragmento de registro
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, registroCliente.class, null)
                     .setReorderingAllowed(true)
                     .addToBackStack("nombre") // El nombre puede ser nulo
-                     .commit();
+                    .commit();
         });
 
         botonLogout.setOnClickListener(v -> {
@@ -108,6 +108,8 @@ public class loginCliente extends Fragment {
                     .setReorderingAllowed(true)
                     .addToBackStack("nombre") // El nombre puede ser nulo
                     .commit();
+            // Mostrar un Toast indicando que se ha cerrado la sesión
+            Toast.makeText(getContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show();
         });
 
         return rootView;

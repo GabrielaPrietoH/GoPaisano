@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -141,6 +142,7 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
         } else if (id == R.id.logout) {
             mAuth.signOut();
             navigateToFragment(loginEmpresa.class, "Logout");
+            Toast.makeText(getContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show();
         }
 
         drawerLayout.closeDrawers();

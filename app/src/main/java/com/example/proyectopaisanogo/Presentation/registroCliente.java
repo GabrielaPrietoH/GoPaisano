@@ -4,11 +4,13 @@ import static com.example.proyectopaisanogo.R.id.editTextDireccionCLiente;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -24,12 +26,9 @@ public class registroCliente extends Fragment {
     Button registroC;
 
     private FirebaseAuth mAuth;
-
-    //Add datos en colección
     private FirebaseFirestore db;
 
     EditText nombreText, direccionText, cpText, telefonoText, emailText, passwordText;
-
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -37,14 +36,11 @@ public class registroCliente extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_registro_cliente, container, false);
 
-
-
-        //REGISTRO
+        // Inicializar Firebase Auth y Firestore
         mAuth = FirebaseAuth.getInstance();
-        //ADD datos a FirebaseFirestore
         db = FirebaseFirestore.getInstance();
 
-        //Referencia de las cajas
+        // Referencia de los campos de entrada
         nombreText = rootView.findViewById(R.id.editTextUsuarioCliente);
         direccionText = rootView.findViewById(editTextDireccionCLiente);
         cpText = rootView.findViewById(R.id.editTextCpCliente);
@@ -52,69 +48,88 @@ public class registroCliente extends Fragment {
         emailText = rootView.findViewById(R.id.editTextEmailCliente);
         passwordText = rootView.findViewById(R.id.editTextPasswordCliente);
 
-
+        // Botón de registro
         registroC = rootView.findViewById(R.id.buttonResgistroCliente);
-        registroC.setOnClickListener(v -> {
+        registroC.setOnClickListener(v -> registerClient());
 
-
-            String email = emailText.getText().toString();
-            String password = passwordText.getText().toString();
-
-            //Registro
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-
-                            //Tras registro, obtener usuario y email.
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            if (user != null) {
-                                String uid = user.getUid();
-                                String userEmail = user.getEmail();
-
-                                // Preparar los datos de la empresa para Firestore
-                                Map<String, Object> empresa = new HashMap<>();
-                                empresa.put("nombreCliente", nombreText.getText().toString().trim());
-                                empresa.put("direccion", direccionText.getText().toString().trim());
-                                empresa.put("cp", cpText.getText().toString().trim());
-                                empresa.put("telefono", telefonoText.getText().toString().trim());
-                                empresa.put("email", userEmail); // Usar el email del registro
-                                empresa.put("userID", uid);  //user ID del registro
-
-
-
-                                // Agregar información a Firestore con UID como ID del documento
-                                db.collection("registroCliente").document(uid).set(empresa)
-                                        .addOnSuccessListener(aVoid -> {
-                                            // Datos añadidos correctamente
-                                            // Toast
-                                            // Cambiar a otro fragmento/activity después del registro exitoso
-                                            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                                            fragmentManager.beginTransaction()
-                                                    .replace(R.id.fragment_container, mainCliente.class, null)
-                                                    .setReorderingAllowed(true)
-                                                    .addToBackStack("nombre") // El nombre puede ser nulo
-                                                    .commit();
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            // Manejar el error aquí
-                                            //Toast
-                                        });
-
-
-
-                            }
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-
-                            //Toast fallo auth
-
-                        }
-                    });
-
-
-        });
         return rootView;
     }
 
+    // Método para registrar un cliente
+    private void registerClient() {
+        String nombreCliente = nombreText.getText().toString().trim();
+        String direccion = direccionText.getText().toString().trim();
+        String cp = cpText.getText().toString().trim();
+        String telefono = telefonoText.getText().toString().trim();
+        String email = emailText.getText().toString().trim();
+        String password = passwordText.getText().toString().trim();
+
+        // Validaciones
+        if (nombreCliente.isEmpty()) {
+            nombreText.setError("Nombre es obligatorio");
+            nombreText.requestFocus();
+            return;
+        }
+        if (direccion.isEmpty()) {
+            direccionText.setError("Dirección es obligatoria");
+            direccionText.requestFocus();
+            return;
+        }
+        if (cp.isEmpty() || !cp.matches("\\d{5}")) {
+            cpText.setError("Código Postal inválido");
+            cpText.requestFocus();
+            return;
+        }
+        if (telefono.isEmpty() || !telefono.matches("\\d{9}")) {
+            telefonoText.setError("Teléfono inválido");
+            telefonoText.requestFocus();
+            return;
+        }
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailText.setError("Correo electrónico inválido");
+            emailText.requestFocus();
+            return;
+        }
+        if (password.isEmpty() || password.length() < 6) {
+            passwordText.setError("La contraseña debe tener al menos 6 caracteres");
+            passwordText.requestFocus();
+            return;
+        }
+
+        // Crear usuario en Firebase Auth
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null) {
+                            String uid = user.getUid();
+                            String userEmail = user.getEmail();
+                            Map<String, Object> cliente = new HashMap<>();
+                            cliente.put("nombreCliente", nombreCliente);
+                            cliente.put("direccion", direccion);
+                            cliente.put("cp", cp);
+                            cliente.put("telefono", telefono);
+                            cliente.put("email", userEmail);
+                            cliente.put("userID", uid);
+
+                            db.collection("registroCliente").document(uid).set(cliente)
+                                    .addOnCompleteListener(task1 -> {
+                                        if (task1.isSuccessful()) {
+                                            Toast.makeText(getContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
+                                            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                                            fragmentManager.beginTransaction()
+                                                    .replace(R.id.fragment_container, new mainCliente())
+                                                    .setReorderingAllowed(true)
+                                                    .addToBackStack(null)
+                                                    .commit();
+                                        } else {
+                                            Toast.makeText(getContext(), "Error al registrar cliente", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Error al registrar", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 }

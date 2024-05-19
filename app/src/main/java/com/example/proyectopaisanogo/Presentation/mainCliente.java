@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -159,6 +160,16 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
         } else if (id == R.id.logout) {
             mAuth.signOut();
             navigateToFragment(loginCliente.class, "Logout");
+            // Crear un nuevo fragmento y transacción
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, loginCliente.class, null)
+                    .setReorderingAllowed(true)
+                    .addToBackStack("Logout") // El nombre puede ser nulo
+                    .commit();
+            // Mostrar un Toast indicando que se ha cerrado la sesión
+            Toast.makeText(getContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show();
+
         }
 
         mAuth = FirebaseAuth.getInstance();
