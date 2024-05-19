@@ -129,6 +129,12 @@ public class registroEmpresa extends Fragment {
             passwordText.requestFocus();
             return;
         }
+        if (filePath == null) {
+            imageView.requestFocus();
+            imageView.setBackgroundResource(R.drawable.error_background); // Cambiar el fondo para indicar error
+            Toast.makeText(getContext(), "Debe seleccionar una imagen", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         // Crear usuario en Firebase Auth
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -150,12 +156,7 @@ public class registroEmpresa extends Fragment {
                             db.collection("registroEmpresa").document(uid).set(empresa)
                                     .addOnCompleteListener(task1 -> {
                                         if (task1.isSuccessful()) {
-                                            if (filePath != null) {
-                                                uploadImage(uid);
-                                            } else {
-                                                Toast.makeText(getContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
-                                                goToMainEmpresaFragment();
-                                            }
+                                            uploadImage(uid); // Intentar subir la imagen
                                         } else {
                                             Toast.makeText(getContext(), "Error al registrar la empresa", Toast.LENGTH_SHORT).show();
                                         }
@@ -179,7 +180,7 @@ public class registroEmpresa extends Fragment {
                         db.collection("registroEmpresa").document(uid).update("imageUrl", imageUrl)
                                 .addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful()) {
-                                        Toast.makeText(getContext(), "Imagen subida exitosamente", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(), "Registro y subida de imagen exitosos", Toast.LENGTH_SHORT).show();
                                         goToMainEmpresaFragment();
                                     } else {
                                         Toast.makeText(getContext(), "Error al guardar URL de la imagen", Toast.LENGTH_SHORT).show();
@@ -190,6 +191,10 @@ public class registroEmpresa extends Fragment {
                     Toast.makeText(getContext(), "Error al subir la imagen", Toast.LENGTH_SHORT).show();
                 }
             });
+        } else {
+            imageView.requestFocus();
+            imageView.setBackgroundResource(R.drawable.error_background); // Cambiar el fondo para indicar error
+            Toast.makeText(getContext(), "Debe seleccionar una imagen", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -209,6 +214,8 @@ public class registroEmpresa extends Fragment {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             filePath = data.getData();
             imageView.setImageURI(filePath); // Mostrar vista previa de la imagen
+            imageView.setBackgroundResource(0); // Quitar el fondo de error si la imagen se selecciona correctamente
         }
     }
 }
+
