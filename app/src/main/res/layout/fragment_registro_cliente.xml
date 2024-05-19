@@ -46,13 +46,23 @@
             tools:ignore="Autofill" />
 
         <EditText
-            android:id="@+id/editTextPasswordCliente"
+            android:id="@+id/editTextDireccionCLiente"
             android:layout_width="match_parent"
             android:layout_height="@dimen/icon_size_large"
             android:layout_margin="@dimen/size_extra_extra_small"
-            android:hint="@string/password"
-            android:inputType="textPassword"
+            android:hint="@string/direccion"
+            android:inputType="textEmailAddress"
             tools:ignore="Autofill" />
+
+        <EditText
+            android:id="@+id/editTextCpCliente"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/icon_size_large"
+            android:layout_margin="@dimen/size_extra_extra_small"
+            android:hint="@string/codigo_postal"
+            android:inputType="textPostalAddress"
+            tools:ignore="Autofill" />
+
 
         <EditText
             android:id="@+id/editTextPhoneCliente"
@@ -73,22 +83,15 @@
             tools:ignore="Autofill" />
 
         <EditText
-            android:id="@+id/editTextDireccionCLiente"
+            android:id="@+id/editTextPasswordCliente"
             android:layout_width="match_parent"
             android:layout_height="@dimen/icon_size_large"
             android:layout_margin="@dimen/size_extra_extra_small"
-            android:hint="@string/direccion"
-            android:inputType="textEmailAddress"
+            android:hint="@string/password"
+            android:inputType="textPassword"
             tools:ignore="Autofill" />
 
-        <EditText
-            android:id="@+id/editTextCpCliente"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/icon_size_large"
-            android:layout_margin="@dimen/size_extra_extra_small"
-            android:hint="@string/codigo_postal"
-            android:inputType="textPostalAddress"
-            tools:ignore="Autofill" />
+
 
         <Button
             android:id="@+id/buttonResgistroCliente"
