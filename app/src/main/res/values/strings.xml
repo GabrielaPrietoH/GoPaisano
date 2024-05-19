@@ -64,4 +64,15 @@
     <string name="d_a_seleccionado">"Día seleccionado: "</string>
     <string name="dia_seleccionado">"Día seleccionado: "</string>
     <string name="error_al_buscar_citas">\nError al buscar citas.</string>
+    <string name="fecha">Fecha</string>
+    <string name="back"><![CDATA[<-]]></string>
+    <string name="forward"><![CDATA[->]]></string>
+    <string name="sun">SUN</string>
+    <string name="mon">MON</string>
+    <string name="tue">TUE</string>
+    <string name="wed">WED</string>
+    <string name="thur">THUR</string>
+    <string name="fri">FRI</string>
+    <string name="sat">SAT</string>
+    <string name="error">Error</string>
 </resources>

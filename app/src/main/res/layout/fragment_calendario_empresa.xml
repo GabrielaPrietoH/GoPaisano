@@ -52,33 +52,6 @@
 
         </LinearLayout>
 
-
-
-        <!-- <CalendarView para mostrar el calendario de la empresa -->
-        <!-- <CalendarView -->
-        <!--     android:id="@+id/tvCitaInfoEView" -->
-        <!--     android:layout_width="wrap_content" -->
-        <!--     android:layout_height="wrap_content" -->
-        <!--     android:layout_gravity="center"/> Utiliza layout_weight para asegurar que el CalendarView utilice la mayoría del espacio vertical disponible -->
-
-        <!-- <LinearLayout -->
-        <!--     android:layout_width="match_parent" -->
-        <!--     android:layout_height="match_parent" -->
-        <!--     android:orientation="vertical"> -->
-
-        <!-- TextView para mostrar información sobre la cita seleccionada -->
-        <!-- <TextView -->
-        <!--     android:id="@+id/tvCitaInfo" -->
-        <!--     android:layout_width="match_parent" -->
-        <!--     android:layout_height="match_parent" -->
-        <!--     android:padding="@dimen/size_extra_small" -->
-        <!--     android:textColor="@color/colorPrimaryDark" -->
-        <!--     android:fontFamily="@font/typo_irregular" -->
-        <!--     android:text="@string/detalles_de_la_cita" /> -->
-
-
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -92,9 +65,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
-            android:text="Back"
+            android:text="@string/back"
             android:textColor="@color/blue"
-            android:textSize="20sp"
+            android:textSize="40sp"
             android:textStyle="bold" />
 
         <TextView
@@ -102,7 +75,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="Feb 2021"
+            android:text="@string/fecha"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="20sp" />
@@ -113,9 +86,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
-            android:text="Forward"
+            android:text="@string/forward"
             android:textColor="@color/blue"
-            android:textSize="20sp"
+            android:textSize="40sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -138,7 +111,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="SUN"
+            android:text="@string/sun"
             android:textAlignment="center"
             android:textColor="@color/blueDark"
             android:textSize="16sp" />
@@ -147,7 +120,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="MON"
+            android:text="@string/mon"
             android:textAlignment="center"
             android:textColor="@color/blueDark"
             android:textSize="16sp" />
@@ -156,7 +129,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TUE"
+            android:text="@string/tue"
             android:textAlignment="center"
             android:textColor="@color/blueDark"
             android:textSize="16sp" />
@@ -165,7 +138,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="WED"
+            android:text="@string/wed"
             android:textAlignment="center"
             android:textColor="@color/blueDark"
             android:textSize="16sp" />
@@ -174,7 +147,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="THUR"
+            android:text="@string/thur"
             android:textAlignment="center"
             android:textColor="@color/blueDark"
             android:textSize="16sp" />
@@ -183,7 +156,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="FRI"
+            android:text="@string/fri"
             android:textAlignment="center"
             android:textColor="@color/blueDark"
             android:textSize="16sp" />
@@ -192,10 +165,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="SAT"
+            android:text="@string/sat"
             android:textAlignment="center"
             android:textColor="@color/blueDark"
             android:textSize="16sp" />
+
 
     </LinearLayout>
 

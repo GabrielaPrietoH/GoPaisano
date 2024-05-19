@@ -228,9 +228,8 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
                                         if (clienteDoc.exists()) {
                                             Cliente cliente = clienteDoc.toObject(Cliente.class);
                                             assert cliente != null;
-                                            String detallesEmpresa = String.format("Cliente: %s\nDirección: %sTeléfono: %s",
-                                                    cliente.getNombreCliente(), cliente.getDireccion(),
-                                                    cliente.getTelefono());
+                                            String detallesEmpresa = String.format("Cliente: %s\nTeléfono: %s",
+                                                    cliente.getNombreCliente(), cliente.getTelefono());
                                             citasInfo.append(fechaFormateada).append("\n").append(detallesEmpresa).append("\n");
                                             informacion.setText(String.format("%s%s\nCitas:\n%s", getString(R.string.dia_seleccionado), dayText, citasInfo));
                                         }
@@ -246,7 +245,5 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
                     }
                 });
     }
-
-
 
 }
