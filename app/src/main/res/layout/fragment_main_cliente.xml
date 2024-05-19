@@ -14,7 +14,7 @@
         android:layout_width="405dp"
         android:layout_height="731dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/fondo"
+        android:src="@drawable/fono_main"
         tools:ignore="ContentDescription" />
 
     <!-- Contenedor principal -->

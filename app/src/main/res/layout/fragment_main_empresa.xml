@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/fondo"
+        android:src="@drawable/fono_main"
         tools:ignore="ContentDescription" />
 
 
@@ -51,56 +51,71 @@
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="@string/llamadas_de_clientes"
                 android:textColor="@color/blueDark"
-                android:fontFamily="@font/typo_irregular"
-                android:layout_margin="@dimen/size_extra_extra_small"/>
+                android:background="@color/white"
+                android:padding="@dimen/size_extra_extra_small"
+                android:fontFamily="@font/typo_irregular"/>
 
             <TextView
                 android:id="@+id/textLlamadas"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/amarillo"
-                android:text="@string/llamada"
+                android:layout_height="match_parent"
+                android:background="@color/white"
                 android:fontFamily="@font/typo_irregular"
-                android:layout_margin="@dimen/size_extra_extra_small"/>
+                android:padding="@dimen/size_extra_extra_small"
+                android:text="@string/llamada"
+                android:textColor="@color/amarillo"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:ignore="TextContrastCheck" />
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="@string/tienes_emails"
                 android:textColor="@color/blueDark"
                 android:fontFamily="@font/typo_irregular"
-                android:layout_margin="@dimen/size_extra_extra_small"/>
+                android:padding="@dimen/size_extra_extra_small"
+                android:background="@color/white"/>
 
             <TextView
                 android:id="@+id/textEmails"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/amarillo"
-                android:text="@string/email"
+                android:layout_height="match_parent"
+                android:background="@color/white"
                 android:fontFamily="@font/typo_irregular"
-                android:layout_margin="@dimen/size_extra_extra_small"/>
+                android:padding="@dimen/size_extra_extra_small"
+                android:text="@string/email"
+                android:textColor="@color/amarillo"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:ignore="TextContrastCheck" />
 
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:textColor="@color/blueDark"
                 android:fontFamily="@font/typo_irregular"
                 android:text="@string/los_clientes_han_buscado_tu_direccion"
-                android:layout_margin="@dimen/size_extra_extra_small"/>
+                android:padding="@dimen/size_extra_extra_small"
+                android:background="@color/white"/>
 
             <TextView
                 android:id="@+id/textDirection"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/amarillo"
-                android:text="@string/direccion"
+                android:layout_height="match_parent"
+                android:background="@color/white"
                 android:fontFamily="@font/typo_irregular"
-                android:layout_margin="@dimen/size_extra_extra_small"/>
+                android:padding="@dimen/size_extra_extra_small"
+                android:text="@string/direccion"
+                android:textColor="@color/amarillo"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:ignore="TextContrastCheck" />
 
         </LinearLayout>
 
