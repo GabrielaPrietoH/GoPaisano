@@ -37,6 +37,8 @@ public class registroEmpresa extends Fragment {
     private StorageReference storageRef;
     private ImageView imageView; // ImageView para mostrar la imagen seleccionada
 
+    private String role;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -64,6 +66,8 @@ public class registroEmpresa extends Fragment {
 
         Button registroE = rootView.findViewById(R.id.buttonRegistroEmpresa);
         registroE.setOnClickListener(v -> registerCompany());
+
+        role = "empresa";
 
         return rootView;
     }
@@ -153,6 +157,7 @@ public class registroEmpresa extends Fragment {
                             empresa.put("telefono", telefono);
                             empresa.put("email", userEmail);
                             empresa.put("userID", uid);
+                            empresa.put("role", role);
 
                             db.collection("registroEmpresa").document(uid).set(empresa)
                                     .addOnCompleteListener(task1 -> {

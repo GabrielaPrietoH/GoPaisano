@@ -28,6 +28,8 @@ public class registroCliente extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
+    private String role;
+
     EditText nombreText, direccionText, cpText, telefonoText, emailText, passwordText;
 
     @SuppressLint("MissingInflatedId")
@@ -51,6 +53,8 @@ public class registroCliente extends Fragment {
         // Botón de registro
         registroC = rootView.findViewById(R.id.buttonResgistroCliente);
         registroC.setOnClickListener(v -> registerClient());
+
+        role = "cliente";
 
         return rootView;
     }
@@ -111,6 +115,7 @@ public class registroCliente extends Fragment {
                             cliente.put("telefono", telefono);
                             cliente.put("email", userEmail);
                             cliente.put("userID", uid);
+                            cliente.put("role", role);
 
                             db.collection("registroCliente").document(uid).set(cliente)
                                     .addOnCompleteListener(task1 -> {

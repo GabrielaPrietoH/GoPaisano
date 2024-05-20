@@ -19,6 +19,8 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.proyectopaisanogo.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class loginCliente extends Fragment {
 
@@ -66,6 +68,8 @@ public class loginCliente extends Fragment {
 
             }else{
 
+                /*
+
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
@@ -85,6 +89,48 @@ public class loginCliente extends Fragment {
                                 Toast.makeText(getContext(), "Authentication failed.",Toast.LENGTH_SHORT).show();
                             }
                         });
+
+                 */
+
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                if (user != null) {
+                                    String uid = user.getUid();
+                                    // Consulta a Firestore para obtener el documento del usuario y su rol
+                                    FirebaseFirestore.getInstance().collection("registroCliente").document(uid)
+                                            .get()
+                                            .addOnCompleteListener(task1 -> {
+                                                if (task1.isSuccessful() && task1.getResult() != null) {
+                                                    String userRole = task1.getResult().getString("role");
+
+                                                    if ("cliente".equals(userRole)) {
+
+                                                        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                                                        fragmentManager.beginTransaction()
+                                                                .replace(R.id.fragment_container, mainCliente.class, null)
+                                                                .setReorderingAllowed(true)
+                                                                .addToBackStack("nombre")
+                                                                .commit();
+                                                        Toast.makeText(getContext(), "¡Estás dentro! Explora todas las novedades que tenemos para ti", Toast.LENGTH_SHORT).show();
+                                                    } else {
+
+                                                        Toast.makeText(getContext(), "¡Acceso permitido solo para clientes!", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                } else {
+
+                                                    Toast.makeText(getContext(), "Usuario no registrado", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
+                            } else {
+                                // Manejo de error de autenticación
+                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                Toast.makeText(getContext(), "Error de autenticación", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
             }
         });
 

@@ -15,6 +15,8 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.proyectopaisanogo.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class loginEmpresa extends Fragment {
     Button loginE, registroE;
@@ -58,6 +60,7 @@ public class loginEmpresa extends Fragment {
 
             }else{
 
+                /*
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
@@ -71,16 +74,51 @@ public class loginEmpresa extends Fragment {
                                         .commit();
 
                             } else {
-                                /*
-                                //Un toast para avisar que las credenciales son incorrectas
-                                // If sign in fails, display a message to the user.
-                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                Toast.makeText(loginEmpresa.this , "Authentication failed.",Toast.LENGTH_SHORT).show();
-                                 */
-                                // Mostrar un Toast indicando que las credenciales son incorrectas
+
                                 Toast.makeText(getContext(), "Autenticación fallida", Toast.LENGTH_SHORT).show();
                             }
                         });
+                    */
+
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                if (user != null) {
+                                    String uid = user.getUid();
+                                    // Consulta a Firestore para obtener el documento del usuario
+                                    FirebaseFirestore.getInstance().collection("registroEmpresa").document(uid)
+                                            .get()
+                                            .addOnCompleteListener(task1 -> {
+                                                if (task1.isSuccessful() && task1.getResult() != null) {
+                                                    String userRole = task1.getResult().getString("role");
+                                                    // Verifica si el rol es 'empresa'
+                                                    if ("empresa".equals(userRole)) {
+                                                        // Si es empresa, permitir acceso
+                                                        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                                                        fragmentManager.beginTransaction()
+                                                                .replace(R.id.fragment_container, mainEmpresa.class, null)
+                                                                .setReorderingAllowed(true)
+                                                                .addToBackStack("nombre")
+                                                                .commit();
+                                                        Toast.makeText(getContext(), "¡Estás dentro! Explora todas las novedades que tenemos para ti", Toast.LENGTH_SHORT).show();
+                                                    } else {
+                                                        // Si no es empresa, mostrar mensaje y no permitir acceso
+                                                        Toast.makeText(getContext(), "¡Acceso permitido solo para empresas!", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                } else {
+                                                    // Manejo de errores o documento no encontrado
+                                                    Toast.makeText(getContext(), "Empresa no registrada", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
+                            } else {
+                                // Mostrar un Toast indicando que las credenciales son incorrectas
+                                Toast.makeText(getContext(), "Error de autenticación", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+
             }
 
 
