@@ -171,7 +171,7 @@ public class calendarioCliente extends Fragment implements NavigationView.OnNavi
                                         if (empresaDoc.exists()) {
                                             Empresa empresa = empresaDoc.toObject(Empresa.class);
                                             assert empresa != null;
-                                            String detallesEmpresa = String.format("Empresa: %s\nTeléfono: %s",
+                                            String detallesEmpresa = String.format("Empresa: %s Teléfono: %s",
                                                     empresa.getNombreEmpresa(), empresa.getTelefono());
                                             citasInfo.append(fechaFormateada).append("\n").append(detallesEmpresa).append("\n");
                                             informacion.setText(String.format("%s%s\nCitas:\n%s", getString(R.string.dia_seleccionado), dayText, citasInfo));
