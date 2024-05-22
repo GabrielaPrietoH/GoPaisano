@@ -31,7 +31,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Objects;
 
 public class calendarioCliente extends Fragment implements NavigationView.OnNavigationItemSelectedListener, CalendarAdapter.OnItemListener {
 
@@ -73,8 +72,15 @@ public class calendarioCliente extends Fragment implements NavigationView.OnNavi
         Toolbar toolbar = view.findViewById(R.id.toolbarCalendarioCliente);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
         activity.setSupportActionBar(toolbar);
-        Objects.requireNonNull(activity.getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        activity.getSupportActionBar().setTitle("Calendario Cliente");
+        if (activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            activity.getSupportActionBar().setTitle("Calendario Cliente");
+        }
+
+        toolbar.setNavigationOnClickListener(v -> {
+            // Manejo de la flecha de retroceso
+            requireActivity().onBackPressed();
+        });
     }
 
     private void setupRecyclerView(View view) {

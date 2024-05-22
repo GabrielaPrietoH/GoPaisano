@@ -1,5 +1,6 @@
 package com.example.proyectopaisanogo.Presentation;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -45,6 +46,7 @@ public class settingEmpresa extends Fragment implements NavigationView.OnNavigat
     }
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -123,10 +125,16 @@ public class settingEmpresa extends Fragment implements NavigationView.OnNavigat
         Toolbar toolbar = view.findViewById(R.id.toolbarSettingEmpresa);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
         activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        activity.getSupportActionBar().setTitle("Setting Empresa");
-    }
+        if (activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            activity.getSupportActionBar().setTitle("Configuración Empresa");
+        }
 
+        toolbar.setNavigationOnClickListener(v -> {
+            // Manejo de la flecha de retroceso
+            requireActivity().onBackPressed();
+        });
+    }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         // Manejar el clic en el ícono de retroceso en la barra de herramientas

@@ -85,8 +85,15 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
         Toolbar toolbar = view.findViewById(R.id.toolbarCalendarioEmpresa);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
         activity.setSupportActionBar(toolbar);
-        Objects.requireNonNull(activity.getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        activity.getSupportActionBar().setTitle("Calendario Empresa");
+        if (activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            activity.getSupportActionBar().setTitle("Calendario Empresa");
+        }
+
+        toolbar.setNavigationOnClickListener(v -> {
+            // Manejo de la flecha de retroceso
+            requireActivity().onBackPressed();
+        });
     }
 
     @Override

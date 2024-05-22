@@ -117,10 +117,16 @@ public class settingCliente extends Fragment implements NavigationView.OnNavigat
         Toolbar toolbar = view.findViewById(R.id.toolbarSettingCliente);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
         activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        activity.getSupportActionBar().setTitle("Setting Cliente");
-    }
+        if (activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            activity.getSupportActionBar().setTitle("Configuración Cliente");
+        }
 
+        toolbar.setNavigationOnClickListener(v -> {
+            // Manejo de la flecha de retroceso
+            requireActivity().onBackPressed();
+        });
+    }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         // Manejar el clic en el ícono de retroceso en la barra de herramientas
