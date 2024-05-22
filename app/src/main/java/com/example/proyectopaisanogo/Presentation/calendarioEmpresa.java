@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.proyectopaisanogo.Adapter.CalendarAdapter;
 import com.example.proyectopaisanogo.Model.Cliente;
 import com.example.proyectopaisanogo.R;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,7 +33,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-public class calendarioEmpresa extends Fragment  implements NavigationView.OnNavigationItemSelectedListener, CalendarAdapter.OnItemListener  {
+public class calendarioEmpresa extends Fragment  implements  CalendarAdapter.OnItemListener  {
 
     private CalendarView calendarView;
     private FirebaseFirestore db;
@@ -94,15 +92,6 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
             // Manejo de la flecha de retroceso
             requireActivity().onBackPressed();
         });
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        if (menuItem.getItemId() == android.R.id.home) {
-            requireActivity().onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(menuItem);
     }
 
     private void setupCalendarListener() {
