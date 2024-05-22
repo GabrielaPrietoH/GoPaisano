@@ -185,33 +185,6 @@
                     android:inputType="phone" />
             </LinearLayout>
 
-            <!-- Correo Electrónico -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="16dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Correo Electrónico"
-                    android:textStyle="bold"
-                    android:textColor="@color/blueDark"
-                    android:gravity="end"
-                    android:paddingEnd="8dp" />
-
-                <EditText
-                    android:id="@+id/editTextEmailCliente"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="2"
-                    android:hint="Correo Electrónico"
-                    android:inputType="textEmailAddress" />
-            </LinearLayout>
-
             <!-- Contraseña -->
             <LinearLayout
                 android:layout_width="match_parent"
