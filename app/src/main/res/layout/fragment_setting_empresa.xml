@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.proyectopaisanogo.Presentation.settingEmpresa"
-    android:orientation="vertical">
-
+    tools:context=".Presentation.settingEmpresa"
+    android:background="@color/white">
 
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
@@ -18,106 +15,303 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimaryDark"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        android:titleTextColor="@color/white"
+        android:subtitleTextColor="@color/white"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:layout_alignParentTop="true" />
 
+    <!-- Cabecera -->
     <LinearLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="UseCompoundDrawables">
+        android:orientation="horizontal"
+        android:background="@color/amarillo"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:layout_below="@id/toolbarSettingEmpresa">
 
         <ImageView
             android:id="@+id/imageView5"
-            android:layout_width="171dp"
-            android:layout_height="144dp"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/size_extra_small"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:src="@drawable/paisano"
             tools:ignore="ContentDescription" />
 
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/setting_empresas"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:textColor="@color/blue"
-            android:textSize="34sp" />
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="16dp">
 
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/actualiza_tu_informacion"
+                android:textColor="@color/blueDark"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/textViewSubtitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/manten_informacion"
+                android:textColor="@color/blueDark"
+                android:textSize="14sp" />
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <!-- Campos de Entrada -->
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_below="@id/header"
+        android:layout_above="@id/buttonContainer"
+        android:padding="16dp">
 
-        <EditText
-            android:id="@+id/editTextUsuarioCliente"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/icon_size_large"
-            android:layout_margin="@dimen/size_extra_small"
-            android:hint="@string/usuario"
-            android:inputType="text"
-            tools:ignore="Autofill" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/editTextPasswordCliente"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/icon_size_large"
-            android:layout_margin="@dimen/size_extra_small"
-            android:hint="@string/modificar_password"
-            android:inputType="textPassword"
-            tools:ignore="Autofill" />
+            <!-- CIF -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="16dp">
 
-        <EditText
-            android:id="@+id/editTextEmailEmpresa"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/icon_size_large"
-            android:layout_margin="@dimen/size_extra_small"
-            android:hint="@string/modificar_email"
-            android:inputType="textEmailAddress"
-            tools:ignore="Autofill" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="CIF"
+                    android:textStyle="bold"
+                    android:textColor="@color/blueDark"
+                    android:gravity="end"
+                    android:paddingEnd="8dp" />
 
-        <EditText
-            android:id="@+id/editTextTelefonoEmpresa"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/icon_size_large"
-            android:layout_margin="@dimen/size_extra_small"
-            android:hint="@string/modificar_telefono"
-            android:inputType="phone"
-            tools:ignore="Autofill" />
+                <EditText
+                    android:id="@+id/editTextCifEmpresa"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="2"
+                    android:hint="CIF"
+                    android:inputType="text" />
+            </LinearLayout>
 
-        <EditText
-            android:id="@+id/editTextDireccionEmpresa"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/icon_size_large"
-            android:layout_margin="@dimen/size_extra_small"
-            android:hint="@string/modificar_direccion"
-            android:inputType="textEmailAddress"
-            tools:ignore="Autofill" />
+            <!-- Nombre de la Empresa -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="16dp">
 
-        <EditText
-            android:id="@+id/editTextCpEmpresa"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/icon_size_large"
-            android:layout_margin="@dimen/size_extra_small"
-            android:hint="@string/modificar_codigo_postal"
-            android:inputType="textEmailAddress"
-            tools:ignore="Autofill" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Nombre Empresa"
+                    android:textStyle="bold"
+                    android:textColor="@color/blueDark"
+                    android:gravity="end"
+                    android:paddingEnd="8dp" />
+
+                <EditText
+                    android:id="@+id/editTextNomEmpresa"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="2"
+                    android:hint="Nombre Empresa"
+                    android:inputType="text" />
+            </LinearLayout>
+
+            <!-- Dirección -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Dirección"
+                    android:textStyle="bold"
+                    android:textColor="@color/blueDark"
+                    android:gravity="end"
+                    android:paddingEnd="8dp" />
+
+                <EditText
+                    android:id="@+id/editTextDireccionEmpresa"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="2"
+                    android:hint="Dirección"
+                    android:inputType="text" />
+            </LinearLayout>
+
+            <!-- Código Postal -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Código Postal"
+                    android:textStyle="bold"
+                    android:textColor="@color/blueDark"
+                    android:gravity="end"
+                    android:paddingEnd="8dp" />
+
+                <EditText
+                    android:id="@+id/editTextCpEmpresa"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="2"
+                    android:hint="Código Postal"
+                    android:inputType="textPostalAddress" />
+            </LinearLayout>
+
+            <!-- Teléfono -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Teléfono"
+                    android:textStyle="bold"
+                    android:textColor="@color/blueDark"
+                    android:gravity="end"
+                    android:paddingEnd="8dp" />
+
+                <EditText
+                    android:id="@+id/editTextTelefonoEmpresa"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="2"
+                    android:hint="Teléfono"
+                    android:inputType="phone" />
+            </LinearLayout>
+
+            <!-- Contraseña -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Contraseña"
+                    android:textStyle="bold"
+                    android:textColor="@color/blueDark"
+                    android:gravity="end"
+                    android:paddingEnd="8dp" />
+
+                <EditText
+                    android:id="@+id/editTextTextPassword3"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="2"
+                    android:hint="Contraseña"
+                    android:inputType="textPassword" />
+            </LinearLayout>
+
+            <!-- Imagen de la Empresa -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Imagen"
+                    android:textStyle="bold"
+                    android:textColor="@color/blueDark"
+                    android:gravity="end"
+                    android:paddingEnd="8dp" />
+
+                <ImageView
+                    android:id="@+id/imageEmpresa"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_weight="2"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:layout_marginBottom="8dp" />
+            </LinearLayout>
+
+            <!-- Botones para Imagen -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="16dp">
+
+                <Button
+                    android:id="@+id/subirImagen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Subir Imagen"
+                    android:background="@color/blue"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/cancelarImagen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cancelar"
+                    android:background="#E40303"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Botón de Guardar Cambios -->
+    <LinearLayout
+        android:id="@+id/buttonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_alignParentBottom="true">
 
         <Button
             android:id="@+id/buttonResgistroEmpresa"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/icon_size_large"
-            android:layout_marginStart="@dimen/icon_size_medium"
-            android:layout_marginEnd="@dimen/icon_size_medium"
-            android:backgroundTint="@color/blue"
-            android:text="@string/guardar_cambios"
-            android:textSize="@dimen/buttom_letter"
-            android:textColor="@color/white" />
-
+            android:layout_height="wrap_content"
+            android:background="@color/blue"
+            android:text="Guardar Cambios"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
     </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>
