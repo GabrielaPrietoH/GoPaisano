@@ -24,6 +24,7 @@ import com.example.proyectopaisanogo.Model.Cliente;
 import com.example.proyectopaisanogo.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -38,9 +39,8 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
 
     private CalendarView calendarView;
     private FirebaseFirestore db;
-    private final Cliente cliente = new Cliente();
+    private String userID;
 
-    //CRISTIAN
     private CalendarAdapter adapter;
     private ArrayList<String> daysOfMonth;
     private TextView informacion;
@@ -57,8 +57,8 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
         setHasOptionsMenu(true);
         db = FirebaseFirestore.getInstance();
         calendar = Calendar.getInstance();
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Obtener el userID del usuario activo
     }
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -66,7 +66,6 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
         View view = inflater.inflate(R.layout.fragment_calendario_empresa, container, false);
         View v = inflater.inflate(R.layout.calendar_dialog, container, false);
         calendarView = v.findViewById(R.id.calendarViewDialog);
-        //prueba-------------------
 
         setupRecyclerView(view);
         setupMonthNavigation(view);
@@ -92,15 +91,12 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        // Manejar el clic en el ícono de retroceso en la barra de herramientas
         if (menuItem.getItemId() == android.R.id.home) {
-            // Navegar hacia atrás
             requireActivity().onBackPressed();
-            return true; // Devolver true para indicar que el evento fue manejado
+            return true;
         }
         return super.onOptionsItemSelected(menuItem);
     }
-
 
     private void setupCalendarListener() {
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
@@ -117,7 +113,7 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
 
     private void loadCitasForDate(Date startDate, Date endDate) {
         db.collection("Citas")
-                .whereEqualTo("userID", cliente.getUserID()) // Reemplazar con el ID de la empresa
+                .whereEqualTo("empresaId", userID) // Filtrar por userID de la empresa
                 .whereGreaterThanOrEqualTo("fecha", new Timestamp(startDate))
                 .whereLessThan("fecha", new Timestamp(endDate))
                 .get()
@@ -140,16 +136,12 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
                 });
     }
 
-
-    // ----------------------------------- CRISTIAN prueba-------------------------------------
-
     private void setupRecyclerView(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.calendarEmpresaRecyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 7)); // 7 columnas para los días de la semana
 
-        // Inicializar la lista de días del mes
         daysOfMonth = new ArrayList<>();
-        adapter = new CalendarAdapter(daysOfMonth, this);
+        adapter = new CalendarAdapter(daysOfMonth, this, userID); // Pasar el userID al adapter
         recyclerView.setAdapter(adapter);
     }
 
@@ -187,20 +179,13 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
             daysOfMonth.add(String.valueOf(i));
         }
 
-        // Limpiar las citas existentes antes de cargar nuevas citas
-        adapter.clearCitasMap();
-
-        // Actualizar el RecyclerView con los nuevos días del mes
         adapter.notifyDataSetChanged();
 
-        // Comprobar las citas para el nuevo mes
         for (int i = 1; i <= daysInMonth; i++) {
             String dayText = String.valueOf(i);
             onItemClick(i - 1, dayText);
         }
     }
-
-
 
     @Override
     public void onItemClick(int position, String dayText) {
@@ -208,8 +193,8 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
             informacion.setText(String.format("%s%s", getString(R.string.dia_seleccionado), dayText));
         }
 
-        // Fetch appointments from Firestore
         db.collection("Citas")
+                .whereEqualTo("empresaId", userID) // Filtrar por userID de la empresa
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -233,7 +218,7 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
                                             citasInfo.append(fechaFormateada).append("\n").append(detallesEmpresa).append("\n");
                                             informacion.setText(String.format("%s%s\nCitas:\n%s", getString(R.string.dia_seleccionado), dayText, citasInfo));
                                         }
-                                    }).addOnFailureListener(e -> Log.e("calendarioCliente", "Error al cargar datos de la empresa", e));
+                                    }).addOnFailureListener(e -> Log.e("calendarioEmpresa", "Error al cargar datos del cliente", e));
                                 }
                             }
                         }
@@ -245,5 +230,4 @@ public class calendarioEmpresa extends Fragment  implements NavigationView.OnNav
                     }
                 });
     }
-
 }

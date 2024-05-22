@@ -23,6 +23,7 @@ import com.example.proyectopaisanogo.Model.Empresa;
 import com.example.proyectopaisanogo.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -40,6 +41,7 @@ public class calendarioCliente extends Fragment implements NavigationView.OnNavi
     private TextView monthYearText;
     private FirebaseFirestore db;
     private Calendar calendar;
+    private String userID;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class calendarioCliente extends Fragment implements NavigationView.OnNavi
         setHasOptionsMenu(true);
         db = FirebaseFirestore.getInstance();
         calendar = Calendar.getInstance();
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Obtener el userID del usuario activo
     }
 
     @Override
@@ -80,7 +83,7 @@ public class calendarioCliente extends Fragment implements NavigationView.OnNavi
 
         // Inicializar la lista de días del mes
         daysOfMonth = new ArrayList<>();
-        adapter = new CalendarAdapter(daysOfMonth, this);
+        adapter = new CalendarAdapter(daysOfMonth, this, userID); // Pasar el userID al adapter
         recyclerView.setAdapter(adapter);
     }
 
@@ -118,8 +121,6 @@ public class calendarioCliente extends Fragment implements NavigationView.OnNavi
             daysOfMonth.add(String.valueOf(i));
         }
 
-        // Limpiar las citas existentes antes de cargar nuevas citas
-        adapter.clearCitasMap();
 
         // Actualizar el RecyclerView con los nuevos días del mes
         adapter.notifyDataSetChanged();
@@ -130,11 +131,6 @@ public class calendarioCliente extends Fragment implements NavigationView.OnNavi
             onItemClick(i - 1, dayText);
         }
     }
-
-
-
-
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -153,6 +149,7 @@ public class calendarioCliente extends Fragment implements NavigationView.OnNavi
 
         // Fetch appointments from Firestore
         db.collection("Citas")
+                .whereEqualTo("userID", userID) // Filtrar citas por userID
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -188,6 +185,5 @@ public class calendarioCliente extends Fragment implements NavigationView.OnNavi
                     }
                 });
     }
-
 }
 

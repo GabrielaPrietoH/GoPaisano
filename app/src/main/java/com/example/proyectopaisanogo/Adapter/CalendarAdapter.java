@@ -1,6 +1,7 @@
-// CalendarAdapter.java
-package com.example.proyectopaisanogo.Adapter;
+package com.example.proyectopaisanogo.Adapter;// CalendarAdapter.java
 
+import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
     private final ArrayList<String> daysOfMonth;
     private final OnItemListener onItemListener;
     private final FirebaseFirestore db;
-    private final Map<String, Boolean> citasMap; // Para almacenar días con citas
+    private final String userID;
+    private final Map<String, String> citasMap; // Para almacenar días con citas del cliente activo
 
-    public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener) {
+    public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener, String userID) {
         this.daysOfMonth = daysOfMonth;
         this.onItemListener = onItemListener;
         this.db = FirebaseFirestore.getInstance();
+        this.userID = userID;
         this.citasMap = new HashMap<>();
         fetchCitas();
     }
@@ -48,7 +51,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         String day = daysOfMonth.get(position);
         holder.dayOfMonth.setText(day);
 
-        // Marca el día si hay una cita
+        // Marcar el día si hay una cita para el cliente activo
         if (citasMap.containsKey(day)) {
             holder.dayOfMonth.setBackgroundResource(R.drawable.circle_background);
         } else {
@@ -56,38 +59,79 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         }
     }
 
-
     @Override
     public int getItemCount() {
         return daysOfMonth.size();
     }
 
-
-    //AQUÍ CÓMO sabes qué cita de qué empresa/cliente la coges???????????????????????
     private void fetchCitas() {
-        db.collection("Citas")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Timestamp timestamp = document.getTimestamp("fecha");
-                            if (timestamp != null) {
-                                // Convert Timestamp to a formatted date string
-                                SimpleDateFormat sdf = new SimpleDateFormat("d", Locale.getDefault());
-                                String day = sdf.format(timestamp.toDate());
-                                citasMap.put(day, true);
-                            }
-                        }
-                        notifyDataSetChanged(); // Refresca el adaptador después de cargar las citas
+        // Primero, determinar el rol del usuario
+        db.collection("registroEmpresa").document(userID).get()
+                .addOnCompleteListener(taskEmpresa -> {
+                    if (taskEmpresa.isSuccessful() && taskEmpresa.getResult().exists()) {
+                        // Si existe en registroEmpresa, es una empresa
+                        String role = "empresa";
+                        fetchCitasByRole(role);
+                    } else {
+                        // Si no existe en registroEmpresa, verificar en registroCliente
+                        db.collection("registroCliente").document(userID).get()
+                                .addOnCompleteListener(taskCliente -> {
+                                    if (taskCliente.isSuccessful() && taskCliente.getResult().exists()) {
+                                        // Si existe en registroCliente, es un cliente
+                                        String role = "cliente";
+                                        fetchCitasByRole(role);
+                                    } else {
+                                        // Manejar el caso donde el usuario no se encuentra en ninguna colección
+                                        Log.e("fetchCitas", "Usuario no encontrado en registroEmpresa ni en registroCliente");
+                                    }
+                                });
                     }
                 });
     }
 
-    public interface OnItemListener {
-        void onItemClick(int position, String dayText);
+    @SuppressLint("NotifyDataSetChanged")
+    private void fetchCitasByRole(String role) {
+        if ("empresa".equals(role)) {
+            db.collection("Citas")
+                    .whereEqualTo("empresaId", userID) // Filtrar por el ID de la empresa
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Timestamp timestamp = document.getTimestamp("fecha");
+                                if (timestamp != null) {
+                                    // Convertir Timestamp a una cadena de fecha formateada
+                                    SimpleDateFormat sdf = new SimpleDateFormat("d", Locale.getDefault());
+                                    String day = sdf.format(timestamp.toDate());
+                                    citasMap.put(day, document.getId()); // Almacenar el ID de la cita
+                                }
+                            }
+                            notifyDataSetChanged(); // Refrescar el adaptador después de cargar todas las citas
+                        }
+                    });
+        } else if ("cliente".equals(role)) {
+            db.collection("Citas")
+                    .whereEqualTo("userID", userID) // Filtrar por el ID del cliente
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Timestamp timestamp = document.getTimestamp("fecha");
+                                if (timestamp != null) {
+                                    // Convertir Timestamp a una cadena de fecha formateada
+                                    SimpleDateFormat sdf = new SimpleDateFormat("d", Locale.getDefault());
+                                    String day = sdf.format(timestamp.toDate());
+                                    citasMap.put(day, document.getId()); // Almacenar el ID de la cita
+                                }
+                            }
+                            notifyDataSetChanged(); // Refrescar el adaptador después de cargar todas las citas
+                        }
+                    });
+        }
     }
 
-    public void clearCitasMap() {
-        citasMap.clear();
+
+    public interface OnItemListener {
+        void onItemClick(int position, String dayText);
     }
 }
