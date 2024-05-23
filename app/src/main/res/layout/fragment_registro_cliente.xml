@@ -6,6 +6,16 @@
     android:orientation="vertical"
     tools:context="com.example.proyectopaisanogo.Presentation.registroCliente">
 
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarRegistroCliente"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimaryDark"
+        android:titleTextColor="@color/white"
+        android:subtitleTextColor="@color/white"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

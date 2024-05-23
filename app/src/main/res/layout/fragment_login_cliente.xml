@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/fondo"
+        android:src="@drawable/fondo_login"
         tools:ignore="ContentDescription" />
 
     <LinearLayout
@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/size_small"
+            android:layout_marginTop="@dimen/icon_size_medium"
             android:background="@drawable/round_corner"
             android:src="@drawable/paisano"
             android:contentDescription="@string/salir_a_login_anterior" />
@@ -36,14 +36,15 @@
             android:text="@string/clientes"
             android:textAlignment="center"
             android:textColor="@color/blueDark"
-            android:textSize="24sp"
+            android:textSize="34sp"
+            android:fontFamily="@font/heading_now_trial_bold"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/cajaCorreo"
             android:layout_width="match_parent"
             android:layout_height="@dimen/icon_size_large"
-            android:layout_margin="@dimen/size_extra_small"
+            android:layout_margin="@dimen/buttom_letter"
             android:hint="@string/usuario"
             android:inputType="text"
             tools:ignore="Autofill" />
@@ -52,7 +53,7 @@
             android:id="@+id/cajaPass"
             android:layout_width="match_parent"
             android:layout_height="@dimen/icon_size_large"
-            android:layout_margin="@dimen/size_extra_small"
+            android:layout_margin="@dimen/buttom_letter"
             android:hint="@string/password"
             android:inputType="textPassword"
             tools:ignore="Autofill" />

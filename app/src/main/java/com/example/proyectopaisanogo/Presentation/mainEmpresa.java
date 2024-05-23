@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +31,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
@@ -39,6 +42,10 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
     private DrawerLayout drawerLayout;
     private FirestoreRecyclerAdapter<Empresa, HelperViewHolder> firestoreAdapter;
     private StorageReference storageRef;
+
+    private FirebaseFirestore db;
+
+    private TextView llamadas, direciones, emails;
     private FirebaseAuth mAuth;
     private String userID;
 
@@ -56,7 +63,6 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
         }
     }
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -69,10 +75,13 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
         Toolbar toolbar = v.findViewById(R.id.toolbar);
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
 
+        llamadas = v.findViewById(R.id.textLlamadas);
+        emails = v.findViewById(R.id.textEmails);
+        direciones = v.findViewById(R.id.textDirection);
+        db = FirebaseFirestore.getInstance();
         drawerLayout = v.findViewById(R.id.drawerLayout);
         NavigationView navigationView = v.findViewById(R.id.navView);
         navigationView.setNavigationItemSelectedListener(this);
-
 
         // Construir la consulta para obtener la empresa del usuario actual
         Query query = firestore.collection("registroEmpresa").whereEqualTo("userID", userID);
@@ -84,12 +93,12 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
 
             @Override
             protected void onBindViewHolder(@NonNull HelperViewHolder viewHolder, int i, @NonNull Empresa empresa) {
-                viewHolder.nombreEmpresa.setText(String.format(empresa.getNombreEmpresa()));
-                viewHolder.cif.setText(String.format(empresa.getCif()));
-                viewHolder.cp.setText(String.format(empresa.getCp()));
-                viewHolder.direccion.setText(String.format(empresa.getDireccion()));
-                viewHolder.email.setText(String.format(empresa.getEmail()));
-                viewHolder.telefono.setText(String.format(empresa.getTelefono()));
+                viewHolder.nombreEmpresa.setText(empresa.getNombreEmpresa());
+                viewHolder.cif.setText(empresa.getCif());
+                viewHolder.cp.setText(empresa.getCp());
+                viewHolder.direccion.setText(empresa.getDireccion());
+                viewHolder.email.setText(empresa.getEmail());
+                viewHolder.telefono.setText(empresa.getTelefono());
 
                 // Cargar la imagen utilizando Glide
                 loadImage(requireContext(), empresa.getUserID(), viewHolder.imageView);
@@ -101,8 +110,10 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_item, parent, false);
                 return new HelperViewHolder(view);
             }
-
         };
+
+        fetchAndDisplayData(userID); // Llama al método para obtener y mostrar los datos
+
         setupToolbar(v);
         recyclerView.setAdapter(firestoreAdapter);
         return v;
@@ -120,42 +131,35 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
         firestoreAdapter.stopListening();
     }
 
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
 
         if (id == R.id.setting) {
-            FragmentManager fragmentManager = getParentFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, settingCliente.class, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("Setting")
-                    .commit();
-
+            navigateToFragment(settingEmpresa.class, "Setting");
         } else if (id == R.id.calendar) {
-            FragmentManager fragmentManager = getParentFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, calendarioCliente.class, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("Calendario")
-                    .commit();
-
+            navigateToFragment(calendarioEmpresa.class, "Calendario");
         } else if (id == R.id.logout) {
             mAuth.signOut();
-            FragmentManager fragmentManager = getParentFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, loginCliente.class, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("Logout")
-                    .commit();
+            navigateToFragment(loginEmpresa.class, "Logout");
+            Toast.makeText(getContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show();
         }
 
         drawerLayout.closeDrawers();
         return true;
     }
 
+    private void navigateToFragment(Class<? extends Fragment> fragmentClass, String tag) {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragmentClass, null)
+                .setReorderingAllowed(true)
+                .addToBackStack(tag)
+                .commit();
+    }
+
     private void setupToolbar(View view) {
-        Toolbar toolbar;
-        toolbar = view.findViewById(R.id.toolbar);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(requireActivity(), drawerLayout, toolbar,
                 R.string.open, R.string.close);
         drawerLayout.addDrawerListener(toggle);
@@ -164,13 +168,40 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
 
     private void loadImage(Context context, String userID, ImageView imageView) {
         StorageReference imageRef = storageRef.child("images/" + userID);
-        imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            Glide.with(context)
-                    .load(uri)
-                    .into(imageView);
-        }).addOnFailureListener(exception -> imageView.setVisibility(View.GONE));
+        imageRef.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(context)
+                .load(uri)
+                .into(imageView)).addOnFailureListener(exception -> imageView.setVisibility(View.GONE));
     }
 
+    private void fetchAndDisplayData(String userID) {
+        db.collection("registroEmpresa").document(userID)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            // Obtén los datos del documento
+                            Long contadorLlamadas = document.getLong("contadorLlamadas");
+                            Long contadorEmails = document.getLong("contadorEmails");
+                            Long contadorDirecciones = document.getLong("contadorDirecciones");
+
+                            // Actualiza los TextViews
+                            llamadas.setText(String.valueOf(contadorLlamadas != null ? contadorLlamadas : 0));
+                            emails.setText(String.valueOf(contadorEmails != null ? contadorEmails : 0));
+                            direciones.setText(String.valueOf(contadorDirecciones != null ? contadorDirecciones : 0));
+                        } else {
+                            // El documento no existe, establecer valores por defecto
+                            llamadas.setText("0");
+                            emails.setText("0");
+                            direciones.setText("0");
+                        }
+                    } else {
+                        // Error al obtener el documento
+                        llamadas.setText(R.string.error);
+                        emails.setText(R.string.error);
+                        direciones.setText(R.string.error);
+                    }
+                });
+    }
 
 }
-
