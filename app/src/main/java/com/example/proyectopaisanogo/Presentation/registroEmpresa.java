@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.example.proyectopaisanogo.R;
@@ -68,7 +70,7 @@ public class registroEmpresa extends Fragment {
         registroE.setOnClickListener(v -> registerCompany());
 
         role = "empresa";
-
+        setupToolbar(rootView);
         return rootView;
     }
 
@@ -224,5 +226,20 @@ public class registroEmpresa extends Fragment {
             imageView.setImageURI(filePath); // Mostrar vista previa de la imagen
             imageView.setBackgroundResource(0); // Quitar el fondo de error si la imagen se selecciona correctamente
         }
+    }
+
+    private void setupToolbar(View view) {
+        Toolbar toolbar = view.findViewById(R.id.toolbarRegistroEmpresa);
+        AppCompatActivity activity = (AppCompatActivity) requireActivity();
+        activity.setSupportActionBar(toolbar);
+        if (activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            activity.getSupportActionBar().setTitle(" Registro Empresas");
+        }
+
+        toolbar.setNavigationOnClickListener(v -> {
+            // Manejo de la flecha de retroceso
+            requireActivity().onBackPressed();
+        });
     }
 }

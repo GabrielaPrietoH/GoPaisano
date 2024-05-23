@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.example.proyectopaisanogo.R;
@@ -55,7 +57,7 @@ public class registroCliente extends Fragment {
         registroC.setOnClickListener(v -> registerClient());
 
         role = "cliente";
-
+        setupToolbar(rootView);
         return rootView;
     }
 
@@ -136,5 +138,20 @@ public class registroCliente extends Fragment {
                         Toast.makeText(getContext(), "Error al registrar", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void setupToolbar(View view) {
+        Toolbar toolbar = view.findViewById(R.id.toolbarRegistroCliente);
+        AppCompatActivity activity = (AppCompatActivity) requireActivity();
+        activity.setSupportActionBar(toolbar);
+        if (activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            activity.getSupportActionBar().setTitle(" Registro Clientes");
+        }
+
+        toolbar.setNavigationOnClickListener(v -> {
+            // Manejo de la flecha de retroceso
+            requireActivity().onBackPressed();
+        });
     }
 }
