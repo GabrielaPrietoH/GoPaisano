@@ -37,7 +37,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-public class mainEmpresa extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
+public class MainEmpresa extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     private FirestoreRecyclerAdapter<Empresa, HelperViewHolder> firestoreAdapter;
@@ -136,12 +136,12 @@ public class mainEmpresa extends Fragment implements NavigationView.OnNavigation
         int id = menuItem.getItemId();
 
         if (id == R.id.setting) {
-            navigateToFragment(settingEmpresa.class, "Setting");
+            navigateToFragment(SettingEmpresa.class, "Setting");
         } else if (id == R.id.calendar) {
-            navigateToFragment(calendarioEmpresa.class, "Calendario");
+            navigateToFragment(CalendarioEmpresa.class, "Calendario");
         } else if (id == R.id.logout) {
             mAuth.signOut();
-            navigateToFragment(loginEmpresa.class, "Logout");
+            navigateToFragment(LoginEmpresa.class, "Logout");
             Toast.makeText(getContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show();
         }
 

@@ -1,6 +1,10 @@
 package com.example.proyectopaisanogo.Presentation;
 
+import static android.content.ContentValues.TAG;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,27 +22,31 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class loginEmpresa extends Fragment {
-    Button loginE, registroE;
+public class LoginCliente extends Fragment {
+
+    Button loginC, registroC;
+
+    @SuppressLint("ResourceType")
+
+    //FIREBASE AUTHENTICATOR.
     private FirebaseAuth mAuth;
     //signUp
     EditText emailText, passText;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_login_empresa, container, false);
-        ImageButton botonLogout = rootView.findViewById(R.id.botonLogoutEmpresa);
+        View rootView = inflater.inflate(R.layout.fragment_login_cliente, container, false);
+        ImageButton botonLogout = rootView.findViewById(R.id.botonLogoutCliente);
+
         //FIREBASE AUTHENTICATOR
         mAuth = FirebaseAuth.getInstance();
+
         emailText = rootView.findViewById(R.id.cajaCorreo);
         passText = rootView.findViewById(R.id.cajaPass);
 
-        loginE = rootView.findViewById(R.id.buttonLoginE);
-        registroE = rootView.findViewById(R.id.buttonRegistroE);
-
-        loginE.setOnClickListener(v -> {
+        loginC = rootView.findViewById(R.id.buttonLoginC);
+        loginC.setOnClickListener(v -> {
 
 
             //Firebase AUTH
@@ -61,6 +69,7 @@ public class loginEmpresa extends Fragment {
             }else{
 
                 /*
+
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
@@ -68,17 +77,20 @@ public class loginEmpresa extends Fragment {
                                 // Crear un nuevo fragmento y transacción
                                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                                 fragmentManager.beginTransaction()
-                                        .replace(R.id.fragment_container, mainEmpresa.class, null)
+                                        .replace(R.id.fragment_container, mainCliente.class, null)
                                         .setReorderingAllowed(true)
                                         .addToBackStack("nombre") // El nombre puede ser nulo
                                         .commit();
 
                             } else {
-
-                                Toast.makeText(getContext(), "Autenticación fallida", Toast.LENGTH_SHORT).show();
+                                //Un toast para avisar que las credenciales son incorrectas
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                Toast.makeText(getContext(), "Authentication failed.",Toast.LENGTH_SHORT).show();
                             }
                         });
-                    */
+
+                 */
 
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(task -> {
@@ -86,55 +98,53 @@ public class loginEmpresa extends Fragment {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 if (user != null) {
                                     String uid = user.getUid();
-                                    // Consulta a Firestore para obtener el documento del usuario
-                                    FirebaseFirestore.getInstance().collection("registroEmpresa").document(uid)
+                                    // Consulta a Firestore para obtener el documento del usuario y su rol
+                                    FirebaseFirestore.getInstance().collection("registroCliente").document(uid)
                                             .get()
                                             .addOnCompleteListener(task1 -> {
                                                 if (task1.isSuccessful() && task1.getResult() != null) {
                                                     String userRole = task1.getResult().getString("role");
-                                                    // Verifica si el rol es 'empresa'
-                                                    if ("empresa".equals(userRole)) {
-                                                        // Si es empresa, permitir acceso
+
+                                                    if ("cliente".equals(userRole)) {
+
                                                         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                                                         fragmentManager.beginTransaction()
-                                                                .replace(R.id.fragment_container, mainEmpresa.class, null)
+                                                                .replace(R.id.fragment_container, MainCliente.class, null)
                                                                 .setReorderingAllowed(true)
                                                                 .addToBackStack("nombre")
                                                                 .commit();
                                                         Toast.makeText(getContext(), "¡Estás dentro! Explora todas las novedades que tenemos para ti", Toast.LENGTH_SHORT).show();
                                                     } else {
-                                                        // Si no es empresa, mostrar mensaje y no permitir acceso
-                                                        Toast.makeText(getContext(), "¡Acceso permitido solo para empresas!", Toast.LENGTH_SHORT).show();
+
+                                                        Toast.makeText(getContext(), "¡Acceso permitido solo para clientes!", Toast.LENGTH_SHORT).show();
                                                     }
                                                 } else {
-                                                    // Manejo de errores o documento no encontrado
-                                                    Toast.makeText(getContext(), "Empresa no registrada", Toast.LENGTH_SHORT).show();
+
+                                                    Toast.makeText(getContext(), "Usuario no registrado", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
                                 }
                             } else {
-                                // Mostrar un Toast indicando que las credenciales son incorrectas
+                                // Manejo de error de autenticación
+                                Log.w(TAG, "signInWithEmail:failure", task.getException());
                                 Toast.makeText(getContext(), "Error de autenticación", Toast.LENGTH_SHORT).show();
                             }
                         });
 
-
             }
-
-
-
         });
 
-        // Listener para el botón de transición al fragmento de registro
-        registroE.setOnClickListener(v -> {
+        registroC = rootView.findViewById(R.id.buttonRegistroC);
+        registroC.setOnClickListener(v -> {
             // Crear un nuevo fragmento y transacción para ir al fragmento de registro
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, registroEmpresa.class, null)
+                    .replace(R.id.fragment_container, RegistroCliente.class, null)
                     .setReorderingAllowed(true)
                     .addToBackStack("nombre") // El nombre puede ser nulo
                     .commit();
         });
+
         botonLogout.setOnClickListener(v -> {
 
             // Crear un nuevo fragmento y transacción
@@ -144,7 +154,10 @@ public class loginEmpresa extends Fragment {
                     .setReorderingAllowed(true)
                     .addToBackStack("nombre") // El nombre puede ser nulo
                     .commit();
+            // Mostrar un Toast indicando que se ha cerrado la sesión
+            Toast.makeText(getContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show();
         });
+
         return rootView;
     }
 

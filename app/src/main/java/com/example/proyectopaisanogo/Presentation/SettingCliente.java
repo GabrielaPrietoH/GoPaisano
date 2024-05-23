@@ -28,7 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class settingCliente extends Fragment {
+public class SettingCliente extends Fragment {
 
     // Settings
     EditText nombreText, direccionText, cpText, telefonoText, passwordText;

@@ -22,7 +22,7 @@ public class FragmentLogin extends Fragment {
                 // Crear un nuevo fragmento y transacción
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, loginCliente.class, null)
+                        .replace(R.id.fragment_container, LoginCliente.class, null)
                         .setReorderingAllowed(true)
                         .addToBackStack("nombre") // El nombre puede ser nulo
                         .commit();
@@ -33,7 +33,7 @@ public class FragmentLogin extends Fragment {
                 // Crear un nuevo fragmento y transacción
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, loginEmpresa.class, null)
+                        .replace(R.id.fragment_container, LoginEmpresa.class, null)
                         .setReorderingAllowed(true)
                         .addToBackStack("nombre") // El nombre puede ser nulo
                         .commit();

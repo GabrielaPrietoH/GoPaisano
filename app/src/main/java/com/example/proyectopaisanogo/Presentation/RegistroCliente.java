@@ -24,7 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class registroCliente extends Fragment {
+public class RegistroCliente extends Fragment {
     Button registroC;
 
     private FirebaseAuth mAuth;
@@ -125,7 +125,7 @@ public class registroCliente extends Fragment {
                                             Toast.makeText(getContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
                                             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                                             fragmentManager.beginTransaction()
-                                                    .replace(R.id.fragment_container, new mainCliente())
+                                                    .replace(R.id.fragment_container, new MainCliente())
                                                     .setReorderingAllowed(true)
                                                     .addToBackStack(null)
                                                     .commit();

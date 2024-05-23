@@ -28,7 +28,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 import java.util.Map;
 
-public class registroEmpresa extends Fragment {
+public class RegistroEmpresa extends Fragment {
 
     private static final int PICK_IMAGE_REQUEST = 1;
 
@@ -212,7 +212,7 @@ public class registroEmpresa extends Fragment {
     private void goToMainEmpresaFragment() {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, new mainEmpresa())
+                .replace(R.id.fragment_container, new MainEmpresa())
                 .setReorderingAllowed(true)
                 .addToBackStack("nombre")
                 .commit();

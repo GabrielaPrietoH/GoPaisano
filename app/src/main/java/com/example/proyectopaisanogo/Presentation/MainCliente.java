@@ -39,7 +39,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-public class mainCliente extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
+public class MainCliente extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
     private FirestoreRecyclerAdapter<Empresa, HelperViewHolder> firestoreAdapter;
     private StorageReference storageRef;
@@ -154,16 +154,16 @@ public class mainCliente extends Fragment implements NavigationView.OnNavigation
         int id = menuItem.getItemId();
 
         if (id == R.id.setting) {
-            navigateToFragment(settingCliente.class, "Setting");
+            navigateToFragment(SettingCliente.class, "Setting");
         } else if (id == R.id.calendar) {
-            navigateToFragment(calendarioCliente.class, "Calendario");
+            navigateToFragment(CalendarioCliente.class, "Calendario");
         } else if (id == R.id.logout) {
             mAuth.signOut();
-            navigateToFragment(loginCliente.class, "Logout");
+            navigateToFragment(LoginCliente.class, "Logout");
             // Crear un nuevo fragmento y transacción
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, loginCliente.class, null)
+                    .replace(R.id.fragment_container, LoginCliente.class, null)
                     .setReorderingAllowed(true)
                     .addToBackStack("Logout") // El nombre puede ser nulo
                     .commit();

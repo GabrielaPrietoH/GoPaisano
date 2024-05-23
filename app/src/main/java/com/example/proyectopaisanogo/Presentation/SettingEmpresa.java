@@ -37,7 +37,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 import java.util.Map;
 
-public class settingEmpresa extends Fragment {
+public class SettingEmpresa extends Fragment {
 
     private static final int PICK_IMAGE_REQUEST = 1;
 
@@ -51,7 +51,7 @@ public class settingEmpresa extends Fragment {
     private boolean imageUpdated = false;
     private String currentImageUrl; // URL de la imagen actual
 
-    public settingEmpresa() {
+    public SettingEmpresa() {
         // Requerido por Android
     }
 
@@ -318,7 +318,7 @@ public class settingEmpresa extends Fragment {
     private void goToMainEmpresaFragment() {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, new mainEmpresa())
+                .replace(R.id.fragment_container, new MainEmpresa())
                 .setReorderingAllowed(true)
                 .addToBackStack("nombre")
                 .commit();
