@@ -137,7 +137,7 @@ public class calendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 7)); // 7 columnas para los días de la semana
 
         daysOfMonth = new ArrayList<>();
-        adapter = new CalendarAdapter(daysOfMonth, this, userID); // Pasar el userID al adapter
+        adapter = new CalendarAdapter(daysOfMonth, daysOfMonth,this, userID); // Pasar el userID al adapter
         recyclerView.setAdapter(adapter);
     }
 

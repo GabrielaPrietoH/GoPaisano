@@ -34,6 +34,7 @@ public class calendarioCliente extends Fragment implements CalendarAdapter.OnIte
 
     private CalendarAdapter adapter;
     private ArrayList<String> daysOfMonth;
+    private ArrayList<String> currentMonth;
     private TextView informacion;
     private TextView monthYearText;
     private FirebaseFirestore db;
@@ -87,7 +88,8 @@ public class calendarioCliente extends Fragment implements CalendarAdapter.OnIte
 
         // Inicializar la lista de días del mes
         daysOfMonth = new ArrayList<>();
-        adapter = new CalendarAdapter(daysOfMonth, this, userID); // Pasar el userID al adapter
+        currentMonth = new ArrayList<>();
+        adapter = new CalendarAdapter(daysOfMonth, currentMonth, this, userID); // Pasar el userID al adapter
         recyclerView.setAdapter(adapter);
     }
 
@@ -112,8 +114,10 @@ public class calendarioCliente extends Fragment implements CalendarAdapter.OnIte
         monthYearText.setText(sdf.format(calendar.getTime()));
 
         daysOfMonth.clear();
+        currentMonth.clear();
         Calendar tempCalendar = (Calendar) calendar.clone();
         tempCalendar.set(Calendar.DAY_OF_MONTH, 1);
+        currentMonth.add(String.valueOf(tempCalendar.get(Calendar.MONTH) +1));
         int firstDayOfMonth = tempCalendar.get(Calendar.DAY_OF_WEEK);
         int daysInMonth = tempCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 

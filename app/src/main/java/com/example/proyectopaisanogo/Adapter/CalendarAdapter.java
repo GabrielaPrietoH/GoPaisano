@@ -1,5 +1,7 @@
 package com.example.proyectopaisanogo.Adapter;// CalendarAdapter.java
 
+import static java.sql.DriverManager.println;
+
 import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,18 +24,20 @@ import java.util.Map;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
     private final ArrayList<String> daysOfMonth;
+    private final ArrayList<String> currentMonth;
     private final OnItemListener onItemListener;
     private final FirebaseFirestore db;
     private final String userID;
-    private final Map<String, String> citasMap; // Para almacenar días con citas del cliente activo
+    private Map<String, String> citasMap; // Para almacenar días con citas del cliente activo
 
-    public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener, String userID) {
+    public CalendarAdapter(ArrayList<String> daysOfMonth, ArrayList<String> currentMonth,  OnItemListener onItemListener, String userID) {
         this.daysOfMonth = daysOfMonth;
+        this.currentMonth = currentMonth;
         this.onItemListener = onItemListener;
         this.db = FirebaseFirestore.getInstance();
         this.userID = userID;
         this.citasMap = new HashMap<>();
-        fetchCitas();
+
     }
 
     @NonNull
@@ -50,7 +54,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
         String day = daysOfMonth.get(position);
         holder.dayOfMonth.setText(day);
-
+        citasMap = new HashMap<>();
+        fetchCitas();
         // Marcar el día si hay una cita para el cliente activo
         if (citasMap.containsKey(day)) {
             holder.dayOfMonth.setBackgroundResource(R.drawable.circle_background);
@@ -120,8 +125,13 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
                                 if (timestamp != null) {
                                     // Convertir Timestamp a una cadena de fecha formateada
                                     SimpleDateFormat sdf = new SimpleDateFormat("d", Locale.getDefault());
+                                    SimpleDateFormat sdf2 = new SimpleDateFormat("M", Locale.getDefault());
                                     String day = sdf.format(timestamp.toDate());
-                                    citasMap.put(day, document.getId()); // Almacenar el ID de la cita
+                                    String month = sdf2.format(timestamp.toDate());
+                                    if(currentMonth.contains(month)){
+                                        citasMap.put(day, document.getId()); // Almacenar el ID de la cita
+                                    }
+
                                 }
                             }
                             notifyDataSetChanged(); // Refrescar el adaptador después de cargar todas las citas
