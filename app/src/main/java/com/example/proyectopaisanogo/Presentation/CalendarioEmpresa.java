@@ -29,25 +29,19 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
 public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnItemListener  {
 
-    private CalendarView calendarView;
-    private FirebaseFirestore db;
-    private String userID;
-
     private CalendarAdapter adapter;
-    private ArrayList<String> daysOfMonth;
+    private ArrayList<DayOfTheMonth> daysOfMonth;
     private TextView informacion;
     private TextView monthYearText;
+    private CalendarView calendarView;
+    private FirebaseFirestore db;
     private Calendar calendar;
+    private String userID;
 
-    public CalendarioEmpresa() {
-        // Requerido por Android
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,8 +59,10 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
         View v = inflater.inflate(R.layout.calendar_dialog, container, false);
         calendarView = v.findViewById(R.id.calendarViewDialog);
 
+        setupToolbar(view);
         setupRecyclerView(view);
         setupMonthNavigation(view);
+
         informacion = view.findViewById(R.id.tvCitaInfoE); // Asegúrate de que este ID sea correcto en tu XML
         monthYearText = view.findViewById(R.id.monthYearTV);
         calendar = Calendar.getInstance();
@@ -74,8 +70,8 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
         db = FirebaseFirestore.getInstance();
 
         updateCalendar();
-        setupCalendarListener();
-        setupToolbar(view);
+
+
         return view;
     }
 
@@ -94,50 +90,48 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
         });
     }
 
-    private void setupCalendarListener() {
-        calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
-            Calendar date = Calendar.getInstance();
-            date.set(year, month, dayOfMonth, 0, 0, 0);
-            date.set(Calendar.MILLISECOND, 0);
-            Date startDate = date.getTime(); // Midnight of the selected day
-            date.add(Calendar.DATE, 1);
-            Date endDate = date.getTime(); // Midnight of the next day
-
-            loadCitasForDate(startDate, endDate);
-        });
-    }
-
-    private void loadCitasForDate(Date startDate, Date endDate) {
-        db.collection("Citas")
-                .whereEqualTo("empresaId", userID) // Filtrar por userID de la empresa
-                .whereGreaterThanOrEqualTo("fecha", new Timestamp(startDate))
-                .whereLessThan("fecha", new Timestamp(endDate))
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        StringBuilder citasDetails = new StringBuilder();
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Date citaDate = Objects.requireNonNull(document.getTimestamp("fecha")).toDate();
-                            String citaID = document.getId();
-                            citasDetails.append("Cita ID: ").append(citaID)
-                                    .append(", Fecha: ").append(citaDate)
-                                    .append("\n");
-                        }
-                        informacion.setText(citasDetails.toString());
-                        informacion.setVisibility(View.VISIBLE);
+    private void fetchCitas() {
+        db.collection("registroEmpresa").document(userID).get()
+                .addOnCompleteListener(taskEmpresa -> {
+                    if (taskEmpresa.isSuccessful() && taskEmpresa.getResult().exists()) {
+                        fetchCitasDeEmpresa();
                     } else {
-                        informacion.setText(R.string.error_cargando_citas);
-                        informacion.setVisibility(View.VISIBLE);
+                        // Manejar el caso donde el usuario no se encuentra en ninguna colección
+                        Log.e("fetchCitas", "Usuario no encontrado en registroEmpresa ni en registroCliente");
                     }
                 });
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    private void fetchCitasDeEmpresa() {
+        db.collection("Citas").whereEqualTo("empresaId", userID).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Timestamp timestamp = document.getTimestamp("fecha");
+                            if (timestamp != null) {
+                                SimpleDateFormat sdf = new SimpleDateFormat("d", Locale.getDefault());
+                                SimpleDateFormat sdf2 = new SimpleDateFormat("M", Locale.getDefault());
+                                String day = sdf.format(timestamp.toDate());
+                                String month = sdf2.format(timestamp.toDate());
+                                for (int i = 0; i < daysOfMonth.size(); i++) {
+                                    String dayOfMonth = daysOfMonth.get(i).getDay();
+                                    if (dayOfMonth.equals(day)) {
+                                        daysOfMonth.get(i).setCita(daysOfMonth.get(i).getMonth().equals(month));
+                                    }
+                                }
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+    }
     private void setupRecyclerView(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.calendarEmpresaRecyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 7)); // 7 columnas para los días de la semana
 
         daysOfMonth = new ArrayList<>();
-        adapter = new CalendarAdapter(daysOfMonth, daysOfMonth,this, userID); // Pasar el userID al adapter
+        adapter = new CalendarAdapter(daysOfMonth,this); // Pasar el userID al adapter
         recyclerView.setAdapter(adapter);
     }
 
@@ -160,27 +154,25 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
     private void updateCalendar() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
         monthYearText.setText(sdf.format(calendar.getTime()));
-
         daysOfMonth.clear();
+
         Calendar tempCalendar = (Calendar) calendar.clone();
         tempCalendar.set(Calendar.DAY_OF_MONTH, 1);
+
+        String currentMonth = String.valueOf(tempCalendar.get(Calendar.MONTH) + 1);
         int firstDayOfMonth = tempCalendar.get(Calendar.DAY_OF_WEEK);
         int daysInMonth = tempCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
         for (int i = 1; i < firstDayOfMonth; i++) {
-            daysOfMonth.add("");
+            daysOfMonth.add(new DayOfTheMonth("", false, currentMonth));
         }
 
         for (int i = 1; i <= daysInMonth; i++) {
-            daysOfMonth.add(String.valueOf(i));
+            daysOfMonth.add(new DayOfTheMonth(String.valueOf(i), false, currentMonth));
         }
 
-        adapter.notifyDataSetChanged();
+        fetchCitas();
 
-        for (int i = 1; i <= daysInMonth; i++) {
-            String dayText = String.valueOf(i);
-            onItemClick(i - 1, dayText);
-        }
     }
 
     @Override

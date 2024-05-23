@@ -1,7 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/menu"
-    tools:showIn="navigation_view">
+
+    android:id="@+id/menu">
 
 
        <item
@@ -10,7 +9,7 @@
 
        <item
            android:id="@+id/setting"
-           android:title="@string/setting"/>
+           android:title="@string/configuración"/>
 
        <item
            android:id="@+id/logout"

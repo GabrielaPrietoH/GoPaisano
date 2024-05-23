@@ -33,8 +33,7 @@ import java.util.Locale;
 public class CalendarioCliente extends Fragment implements CalendarAdapter.OnItemListener {
 
     private CalendarAdapter adapter;
-    private ArrayList<String> daysOfMonth;
-    private ArrayList<String> currentMonth;
+    private ArrayList<DayOfTheMonth> daysOfMonth;
     private TextView informacion;
     private TextView monthYearText;
     private FirebaseFirestore db;
@@ -51,8 +50,7 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendario_cliente, container, false);
 
         setupToolbar(view);
@@ -88,8 +86,7 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
 
         // Inicializar la lista de días del mes
         daysOfMonth = new ArrayList<>();
-        currentMonth = new ArrayList<>();
-        adapter = new CalendarAdapter(daysOfMonth, currentMonth, this, userID); // Pasar el userID al adapter
+        adapter = new CalendarAdapter(daysOfMonth, this); // Pasar el userID al adapter
         recyclerView.setAdapter(adapter);
     }
 
@@ -108,38 +105,65 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
         });
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    private void fetchCitas() {
+        db.collection("registroCliente").document(userID).get()
+                .addOnCompleteListener(taskCliente -> {
+                    if (taskCliente.isSuccessful() && taskCliente.getResult().exists()) {
+                        fetchCitasDelCliente();
+                    } else {
+                        // Manejar el caso donde el usuario no se encuentra en ninguna colección
+                        Log.e("fetchCitas", "Usuario no encontrado en registroEmpresa ni en registroCliente");
+                    }
+                });
+    }
+
     private void updateCalendar() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
         monthYearText.setText(sdf.format(calendar.getTime()));
-
         daysOfMonth.clear();
-        currentMonth.clear();
+
         Calendar tempCalendar = (Calendar) calendar.clone();
         tempCalendar.set(Calendar.DAY_OF_MONTH, 1);
-        currentMonth.add(String.valueOf(tempCalendar.get(Calendar.MONTH) +1));
+
+        String currentMonth = String.valueOf(tempCalendar.get(Calendar.MONTH) + 1);
         int firstDayOfMonth = tempCalendar.get(Calendar.DAY_OF_WEEK);
         int daysInMonth = tempCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
         for (int i = 1; i < firstDayOfMonth; i++) {
-            daysOfMonth.add("");
+            daysOfMonth.add(new DayOfTheMonth("", false, currentMonth));
         }
 
         for (int i = 1; i <= daysInMonth; i++) {
-            daysOfMonth.add(String.valueOf(i));
+            daysOfMonth.add(new DayOfTheMonth(String.valueOf(i), false, currentMonth));
         }
 
-
-        // Actualizar el RecyclerView con los nuevos días del mes
-        adapter.notifyDataSetChanged();
-
-        // Comprobar las citas para el nuevo mes
-        for (int i = 1; i <= daysInMonth; i++) {
-            String dayText = String.valueOf(i);
-            onItemClick(i - 1, dayText);
-        }
+        fetchCitas();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    private void fetchCitasDelCliente() {
+        db.collection("Citas").whereEqualTo("userID", userID).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Timestamp timestamp = document.getTimestamp("fecha");
+                            if (timestamp != null) {
+                                SimpleDateFormat sdf = new SimpleDateFormat("d", Locale.getDefault());
+                                SimpleDateFormat sdf2 = new SimpleDateFormat("M", Locale.getDefault());
+                                String day = sdf.format(timestamp.toDate());
+                                String month = sdf2.format(timestamp.toDate());
+                                for (int i = 0; i < daysOfMonth.size(); i++) {
+                                    String dayOfMonth = daysOfMonth.get(i).getDay();
+                                    if (dayOfMonth.equals(day)) {
+                                        daysOfMonth.get(i).setCita(daysOfMonth.get(i).getMonth().equals(month));
+                                    }
+                                }
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+    }
 
     @Override
     public void onItemClick(int position, String dayText) {
@@ -148,9 +172,7 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
         }
 
         // Fetch appointments from Firestore
-        db.collection("Citas")
-                .whereEqualTo("userID", userID) // Filtrar citas por userID
-                .get()
+        db.collection("Citas").whereEqualTo("userID", userID).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         StringBuilder citasInfo = new StringBuilder();
@@ -164,16 +186,17 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
                                 if (diaCita.equals(dayText)) {
                                     String empresaId = document.getString("empresaId");
                                     assert empresaId != null;
-                                    db.collection("registroEmpresa").document(empresaId).get().addOnSuccessListener(empresaDoc -> {
-                                        if (empresaDoc.exists()) {
-                                            Empresa empresa = empresaDoc.toObject(Empresa.class);
-                                            assert empresa != null;
-                                            String detallesEmpresa = String.format("Empresa: %s Teléfono: %s",
-                                                    empresa.getNombreEmpresa(), empresa.getTelefono());
-                                            citasInfo.append(fechaFormateada).append("\n").append(detallesEmpresa).append("\n");
-                                            informacion.setText(String.format("%s%s\nCitas:\n%s", getString(R.string.dia_seleccionado), dayText, citasInfo));
-                                        }
-                                    }).addOnFailureListener(e -> Log.e("calendarioCliente", "Error al cargar datos de la empresa", e));
+                                    db.collection("registroEmpresa").document(empresaId).get()
+                                            .addOnSuccessListener(empresaDoc -> {
+                                                if (empresaDoc.exists()) {
+                                                    Empresa empresa = empresaDoc.toObject(Empresa.class);
+                                                    assert empresa != null;
+                                                    String detallesEmpresa = String.format("Empresa: %s Teléfono: %s", empresa.getNombreEmpresa(), empresa.getTelefono());
+                                                    citasInfo.append(fechaFormateada).append("\n").append(detallesEmpresa).append("\n");
+                                                    informacion.setText(String.format("%s%s\nCitas:\n%s", getString(R.string.dia_seleccionado), dayText, citasInfo));
+                                                }
+                                            })
+                                            .addOnFailureListener(e -> Log.e("calendarioCliente", "Error al cargar datos de la empresa", e));
                                 }
                             }
                         }
@@ -185,5 +208,6 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
                     }
                 });
     }
+
 }
 
