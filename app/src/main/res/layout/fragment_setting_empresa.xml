@@ -89,19 +89,21 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="CIF"
+                    android:text="@string/cif"
                     android:textStyle="bold"
                     android:textColor="@color/blueDark"
                     android:gravity="end"
-                    android:paddingEnd="8dp" />
+                    android:paddingEnd="8dp"
+                    tools:ignore="RtlSymmetry" />
 
                 <EditText
                     android:id="@+id/editTextCifEmpresa"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="2"
-                    android:hint="CIF"
-                    android:inputType="text" />
+                    android:hint="@string/cif"
+                    android:inputType="text"
+                    android:importantForAutofill="no" />
             </LinearLayout>
 
             <!-- Nombre de la Empresa -->
@@ -116,19 +118,21 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Nombre Empresa"
+                    android:text="@string/nombre_empresa"
                     android:textStyle="bold"
                     android:textColor="@color/blueDark"
                     android:gravity="end"
-                    android:paddingEnd="8dp" />
+                    android:paddingEnd="8dp"
+                    tools:ignore="RtlSymmetry" />
 
                 <EditText
                     android:id="@+id/editTextNomEmpresa"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="2"
-                    android:hint="Nombre Empresa"
-                    android:inputType="text" />
+                    android:hint="@string/nombre_empresa"
+                    android:inputType="text"
+                    android:importantForAutofill="no" />
             </LinearLayout>
 
             <!-- Dirección -->
@@ -143,19 +147,21 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Dirección"
+                    android:text="@string/direccion"
                     android:textStyle="bold"
                     android:textColor="@color/blueDark"
                     android:gravity="end"
-                    android:paddingEnd="8dp" />
+                    android:paddingEnd="8dp"
+                    tools:ignore="RtlSymmetry" />
 
                 <EditText
                     android:id="@+id/editTextDireccionEmpresa"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="2"
-                    android:hint="Dirección"
-                    android:inputType="text" />
+                    android:hint="@string/direccion"
+                    android:inputType="text"
+                    android:importantForAutofill="no" />
             </LinearLayout>
 
             <!-- Código Postal -->
@@ -170,19 +176,21 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Código Postal"
+                    android:text="@string/codigo_postal"
                     android:textStyle="bold"
                     android:textColor="@color/blueDark"
                     android:gravity="end"
-                    android:paddingEnd="8dp" />
+                    android:paddingEnd="8dp"
+                    tools:ignore="RtlSymmetry" />
 
                 <EditText
                     android:id="@+id/editTextCpEmpresa"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="2"
-                    android:hint="Código Postal"
-                    android:inputType="textPostalAddress" />
+                    android:hint="@string/codigo_postal"
+                    android:inputType="textPostalAddress"
+                    android:importantForAutofill="no" />
             </LinearLayout>
 
             <!-- Teléfono -->
@@ -197,19 +205,21 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Teléfono"
+                    android:text="@string/telefono"
                     android:textStyle="bold"
                     android:textColor="@color/blueDark"
                     android:gravity="end"
-                    android:paddingEnd="8dp" />
+                    android:paddingEnd="8dp"
+                    tools:ignore="RtlSymmetry" />
 
                 <EditText
                     android:id="@+id/editTextTelefonoEmpresa"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="2"
-                    android:hint="Teléfono"
-                    android:inputType="phone" />
+                    android:hint="@string/telefono"
+                    android:inputType="phone"
+                    android:importantForAutofill="no" />
             </LinearLayout>
 
             <!-- Contraseña -->
@@ -224,19 +234,21 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Contraseña"
+                    android:text="@string/contrasena"
                     android:textStyle="bold"
                     android:textColor="@color/blueDark"
                     android:gravity="end"
-                    android:paddingEnd="8dp" />
+                    android:paddingEnd="8dp"
+                    tools:ignore="RtlSymmetry" />
 
                 <EditText
                     android:id="@+id/editTextTextPassword3"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="2"
-                    android:hint="Contraseña"
-                    android:inputType="textPassword" />
+                    android:hint="@string/contrasena"
+                    android:inputType="textPassword"
+                    android:importantForAutofill="no" />
             </LinearLayout>
 
             <!-- Imagen de la Empresa -->
@@ -251,11 +263,12 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Imagen"
+                    android:text="@string/imagen"
                     android:textStyle="bold"
                     android:textColor="@color/blueDark"
                     android:gravity="end"
-                    android:paddingEnd="8dp" />
+                    android:paddingEnd="8dp"
+                    tools:ignore="RtlSymmetry" />
 
                 <ImageView
                     android:id="@+id/imageEmpresa"
@@ -264,7 +277,8 @@
                     android:layout_weight="2"
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_marginBottom="8dp"
+                    tools:ignore="ContentDescription" />
             </LinearLayout>
 
             <!-- Botones para Imagen -->
@@ -280,18 +294,20 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Subir Imagen"
+                    android:text="@string/subir_imagen"
                     android:background="@color/blue"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    tools:ignore="ButtonStyle" />
 
                 <Button
                     android:id="@+id/cancelarImagen"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Cancelar"
+                    android:text="@string/cancelar"
                     android:background="#E40303"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    tools:ignore="ButtonStyle" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -309,8 +325,8 @@
             android:id="@+id/buttonResgistroEmpresa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/blue"
-            android:text="Guardar Cambios"
+            android:background="@color/blueDark"
+            android:text="@string/guardar_cambios"
             android:textColor="@color/white"
             android:textSize="16sp" />
     </LinearLayout>

@@ -150,7 +150,6 @@ public class RegistroCliente extends Fragment {
         }
 
         toolbar.setNavigationOnClickListener(v -> {
-            // Manejo de la flecha de retroceso
             requireActivity().onBackPressed();
         });
     }

@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/icon_size_medium"
-            android:background="@color/blue"
+            android:background="@color/blueDark"
             android:text="@string/cliente"
             android:textColor="@color/white"
             android:textSize="@dimen/buttom_letter" />
@@ -48,7 +48,7 @@
             android:text="@string/eres_cliente_o_empresa_largo"
             android:background="@color/white"
             android:textAlignment="center"
-            android:textColor="@color/amarillo"
+            android:textColor="#FF5722"
             android:textStyle="bold"
             android:textSize="@dimen/letter_big" />
 
@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/icon_size_medium"
-            android:background="@color/blue"
+            android:background="@color/blueDark"
             android:text="@string/empresa"
             android:textColor="@color/white"
             android:textSize="@dimen/buttom_letter" />

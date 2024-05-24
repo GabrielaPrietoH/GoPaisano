@@ -11,8 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -284,9 +284,7 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
                     direccion.setText(String.valueOf(contadorDirecciones));
                 });
             }
-        }).addOnFailureListener(e -> {
-            // Manejar cualquier error de consulta
-        });
+        }).addOnFailureListener(e -> Log.e("mainCliente", "Error al cargar datos del cliente", e));
     }
 
 }

@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,7 +36,6 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
     private ArrayList<DayOfTheMonth> daysOfMonth;
     private TextView informacion;
     private TextView monthYearText;
-    private CalendarView calendarView;
     private FirebaseFirestore db;
     private Calendar calendar;
     private String userID;
@@ -57,7 +55,6 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendario_empresa, container, false);
         View v = inflater.inflate(R.layout.calendar_dialog, container, false);
-        calendarView = v.findViewById(R.id.calendarViewDialog);
 
         setupToolbar(view);
         setupRecyclerView(view);
@@ -84,10 +81,7 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
             activity.getSupportActionBar().setTitle("Calendario Empresa");
         }
 
-        toolbar.setNavigationOnClickListener(v -> {
-            // Manejo de la flecha de retroceso
-            requireActivity().onBackPressed();
-        });
+        toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
     }
 
     private void fetchCitas() {

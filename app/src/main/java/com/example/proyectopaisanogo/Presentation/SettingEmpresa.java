@@ -40,7 +40,7 @@ import java.util.Map;
 
 /**
  * Fragmento para ajsutar la configuración de cada usuario de tipo empresa.
- *
+
  * Este fragmento permite a las empresas actualizar su información y modificar su contraseña.
  */
 public class SettingEmpresa extends Fragment {

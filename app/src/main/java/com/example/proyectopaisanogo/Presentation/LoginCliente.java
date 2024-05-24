@@ -68,30 +68,6 @@ public class LoginCliente extends Fragment {
 
             }else{
 
-                /*
-
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-
-                                // Crear un nuevo fragmento y transacción
-                                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                                fragmentManager.beginTransaction()
-                                        .replace(R.id.fragment_container, mainCliente.class, null)
-                                        .setReorderingAllowed(true)
-                                        .addToBackStack("nombre") // El nombre puede ser nulo
-                                        .commit();
-
-                            } else {
-                                //Un toast para avisar que las credenciales son incorrectas
-                                // If sign in fails, display a message to the user.
-                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                Toast.makeText(getContext(), "Authentication failed.",Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                 */
-
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {

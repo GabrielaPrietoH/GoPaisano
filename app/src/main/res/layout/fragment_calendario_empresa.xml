@@ -100,7 +100,7 @@
         android:fontFamily="@font/typo_irregular"
         android:padding="@dimen/size_extra_small"
         android:text="@string/detalles_de_la_cita"
-        android:background="@color/blue"
+        android:background="@color/blueDark"
         android:textColor="@color/white" />
 
     <LinearLayout

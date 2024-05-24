@@ -279,9 +279,6 @@ public class RegistroEmpresa extends Fragment {
             activity.getSupportActionBar().setTitle(" Registro Empresas");
         }
 
-        toolbar.setNavigationOnClickListener(v -> {
-
-            requireActivity().onBackPressed();
-        });
+        toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
     }
 }

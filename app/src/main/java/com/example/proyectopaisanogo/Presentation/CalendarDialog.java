@@ -75,15 +75,6 @@ public class CalendarDialog extends DialogFragment {
         return dialog;
     }
 
-    /*Cita sin userID
-     private void createCita(Map<String, Object> cita) {
-        Log.d("CalendarDialog", "Guardando cita con empresa ID: " + empresa.getUserID()); // Debería mostrar el ID correcto
-        db.collection("Citas").add(cita)
-                .addOnSuccessListener(documentReference -> Log.d("CalendarDialog", "Cita guardada con éxito"))
-                .addOnFailureListener(e -> Log.w("CalendarDialog", "Error al guardar cita", e));
-    }
-     */
-
     //CITA CON USERID MODIFICADO ----------------------------------
     private void createCita(Map<String, Object> cita) {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();

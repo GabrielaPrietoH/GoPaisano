@@ -35,5 +35,4 @@ public class DayOfTheMonth {
         this.day = day;
     }
 
-    // Getters and Setters can be added here
 }

@@ -39,7 +39,7 @@ import com.google.firebase.storage.StorageReference;
 
 /**
  * Fragmento principal para la visualización de los usuarios de tipo empresa.
- *
+
  * Este fragmento muestra la información de la empresa usuaria, con algunos
  * contadores sobre su interacción con los clientes y el acceso a otros fragmentos
  * como el calendario

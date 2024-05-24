@@ -89,10 +89,7 @@ public class SettingCliente extends Fragment {
             activity.getSupportActionBar().setTitle("Configuración Cliente");
         }
 
-        toolbar.setNavigationOnClickListener(v -> {
-            // Manejo de la flecha de retroceso
-            requireActivity().onBackPressed();
-        });
+        toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
     }
 
     private void showPasswordDialog(FirebaseUser user, String nombreCliente, String direccion, String cp, String telefono, String newPassword) {

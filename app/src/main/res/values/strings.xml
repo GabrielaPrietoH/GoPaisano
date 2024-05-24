@@ -80,4 +80,8 @@
     <string name="error">Error</string>
     <string name="actualiza_tu_informacion">Actualiza tu Información</string>
     <string name="manten_informacion">Mantén tu información al día para una mejor experiencia</string>
+    <string name="day">1</string>
+    <string name="nombre">Nombre</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="imagen">Imagen</string>
 </resources>

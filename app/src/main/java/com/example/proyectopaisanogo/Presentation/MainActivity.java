@@ -20,13 +20,13 @@ public class MainActivity extends AppCompatActivity {
         MainCliente recycleviewfragment = new MainCliente();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction1 = fragmentManager.beginTransaction();
-        fragmentTransaction1.add(R.id.fragment_container, recycleviewfragment); // Reemplaza "fragment_container" con el ID de tu contenedor de fragmentos
+        fragmentTransaction1.add(R.id.fragment_container, recycleviewfragment);
         fragmentTransaction1.commit();
 
-// En tu MainActivity
+
         FragmentLogin login = new FragmentLogin();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, login); // Reemplaza "fragment_container" con el ID de tu contenedor de fragmentos
+        fragmentTransaction.replace(R.id.fragment_container, login);
         fragmentTransaction.commit();
 
     }

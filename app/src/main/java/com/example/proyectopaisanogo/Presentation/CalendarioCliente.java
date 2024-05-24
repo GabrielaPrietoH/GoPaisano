@@ -74,10 +74,7 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
             activity.getSupportActionBar().setTitle("Calendario Cliente");
         }
 
-        toolbar.setNavigationOnClickListener(v -> {
-            // Manejo de la flecha de retroceso
-            requireActivity().onBackPressed();
-        });
+        toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
     }
 
     private void setupRecyclerView(View view) {
