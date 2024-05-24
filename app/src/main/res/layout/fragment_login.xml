@@ -34,23 +34,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/icon_size_medium"
-            android:background="@color/blueDark"
+            android:background="@color/blue"
             android:text="@string/cliente"
             android:textColor="@color/white"
-            android:textSize="@dimen/buttom_letter" />
+            android:textSize="@dimen/buttom_letter"
+            tools:ignore="TextContrastCheck" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:forceDarkAllowed="true"
             android:padding="10dp"
             android:text="@string/eres_cliente_o_empresa_largo"
-            android:background="@color/white"
             android:textAlignment="center"
-            android:textColor="#FF5722"
+            android:textColor="#FF9800"
+            android:textSize="@dimen/letter_big"
             android:textStyle="bold"
-            android:textSize="@dimen/letter_big" />
+            tools:ignore="TextContrastCheck" />
 
 
         <Button
@@ -58,10 +60,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/icon_size_medium"
-            android:background="@color/blueDark"
+            android:background="@color/blue"
             android:text="@string/empresa"
             android:textColor="@color/white"
-            android:textSize="@dimen/buttom_letter" />
+            android:textSize="@dimen/buttom_letter"
+            tools:ignore="TextContrastCheck" />
 
     </LinearLayout>
 </FrameLayout>

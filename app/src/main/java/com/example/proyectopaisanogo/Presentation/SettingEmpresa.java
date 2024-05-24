@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -167,27 +165,22 @@ public class SettingEmpresa extends Fragment {
      * @param %newPassword     La nueva contraseña del usuario.
      */
     private void showPasswordDialog(FirebaseUser user, String nombreEmpresa, String direccion, String cp, String telefono, String newPassword) {
-        // AlertDialog para pedir la contraseña actual
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Reautenticación requerida");
-        builder.setMessage("Por favor, ingrese su contraseña actual para continuar.");
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View dialogView = inflater.inflate(R.layout.password_dialog, null);
+        builder.setView(dialogView);
 
-        final EditText input = new EditText(getContext());
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        builder.setView(input);
+        final EditText input = dialogView.findViewById(R.id.password_input);
 
-        builder.setPositiveButton("Aceptar", null); // Inicialmente sin listener para personalización
+        builder.setPositiveButton("Aceptar", null);
         builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.cancel());
 
         AlertDialog dialog = builder.create();
         dialog.show();
 
         Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-        negativeButton.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
-        negativeButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.amarillo));
         Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
-        positiveButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.blue));
         positiveButton.setOnClickListener(v -> {
             String currentPassword = input.getText().toString().trim();
             if (!currentPassword.isEmpty()) {
@@ -197,6 +190,7 @@ public class SettingEmpresa extends Fragment {
                 showToast("La contraseña no puede estar vacía");
             }
         });
+        negativeButton.setOnClickListener(v -> dialog.dismiss());
     }
 
     /**
@@ -248,7 +242,7 @@ public class SettingEmpresa extends Fragment {
                     if (!newPassword.isEmpty()) {
                         showToast("Contraseña actualizada correctamente");
                     }
-                    goToMainEmpresaFragment();
+                    navigateToFragment();
                 })
                 .addOnFailureListener(e -> showToast("Error al actualizar los datos: " + e.getMessage()));
     }
@@ -323,7 +317,7 @@ public class SettingEmpresa extends Fragment {
             if (imageUpdated) {
                 uploadImage(user.getUid());
             } else {
-                goToMainEmpresaFragment();
+                navigateToFragment();
             }
         } else {
             showToast("El usuario no está autenticado");
@@ -362,7 +356,7 @@ public class SettingEmpresa extends Fragment {
                                 .addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful()) {
                                         showToast("Imagen subida exitosamente");
-                                        goToMainEmpresaFragment();
+                                        navigateToFragment();
                                     } else {
                                         showToast("Error al guardar URL de la imagen");
                                     }
@@ -378,12 +372,11 @@ public class SettingEmpresa extends Fragment {
     /**
      * Método que navega al fragmento principal de empresa.
      */
-    private void goToMainEmpresaFragment() {
+    private void navigateToFragment() {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, new MainEmpresa())
+                .replace(R.id.fragment_container, MainCliente.class, null)
                 .setReorderingAllowed(true)
-                .addToBackStack("nombre")
                 .commit();
     }
 
@@ -420,9 +413,7 @@ public class SettingEmpresa extends Fragment {
             activity.getSupportActionBar().setTitle("Configuración Empresa");
         }
 
-        toolbar.setNavigationOnClickListener(v -> {
-            requireActivity().onBackPressed();
-        });
+        toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
     }
 
     private void showToast(String message) {

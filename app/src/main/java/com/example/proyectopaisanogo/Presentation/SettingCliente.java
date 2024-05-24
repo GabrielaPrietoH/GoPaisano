@@ -2,7 +2,6 @@ package com.example.proyectopaisanogo.Presentation;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.proyectopaisanogo.R;
 import com.google.firebase.auth.AuthCredential;
@@ -93,39 +92,34 @@ public class SettingCliente extends Fragment {
     }
 
     private void showPasswordDialog(FirebaseUser user, String nombreCliente, String direccion, String cp, String telefono, String newPassword) {
-        // Crear un AlertDialog para pedir la contraseña actual
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Reautenticación requerida");
-        builder.setMessage("Por favor, ingrese su contraseña actual para continuar.");
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View dialogView = inflater.inflate(R.layout.password_dialog, null);
+        builder.setView(dialogView);
 
-        // Añadir un EditText al diálogo
-        final EditText input = new EditText(getContext());
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        builder.setView(input);
+        final EditText input = dialogView.findViewById(R.id.password_input);
 
-        // Configurar los botones del diálogo
-        builder.setPositiveButton("Aceptar", null);
-        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.cancel());
-
-        // Crear y mostrar el diálogo
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        // Personalizar botones
-        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-        negativeButton.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
-        negativeButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.amarillo));
-        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
-        positiveButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.blue));
-        positiveButton.setOnClickListener(v -> {
+        Button confirmButton = dialogView.findViewById(R.id.btnConfirm);
+        Button cancelButton = dialogView.findViewById(R.id.btnCancel);
+
+        confirmButton.setOnClickListener(v -> {
             String currentPassword = input.getText().toString().trim();
             if (!currentPassword.isEmpty()) {
                 reauthenticateUser(user, currentPassword, nombreCliente, direccion, cp, telefono, newPassword);
-                dialog.dismiss();
+                showToast("Contraseña cambiada exitosamente");
             } else {
                 showToast("La contraseña no puede estar vacía");
             }
+            dialog.dismiss();
+        });
+
+        cancelButton.setOnClickListener(v -> {
+            showToast("Operación cancelada");
+            dialog.dismiss();
         });
     }
 
@@ -163,6 +157,7 @@ public class SettingCliente extends Fragment {
                         }
                     });
                 }
+                navigateToFragment();
             } else {
                 showToast("Error al actualizar los datos: " + task.getException().getMessage());
             }
@@ -191,6 +186,14 @@ public class SettingCliente extends Fragment {
         } else {
             showToast("Usuario no autenticado");
         }
+    }
+
+    private void navigateToFragment() {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, MainCliente.class, null)
+                .setReorderingAllowed(true)
+                .commit();
     }
 
     private void showToast(String message) {

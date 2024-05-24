@@ -84,4 +84,7 @@
     <string name="nombre">Nombre</string>
     <string name="contrasena">Contraseña</string>
     <string name="imagen">Imagen</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="por_favor_ingrese_su_contrase_a_actual_para_continuar">Por favor, ingrese su contraseña actual para continuar</string>
+    <string name="reautenticaci_n_requerida">Reautenticación requerida</string>
 </resources>
