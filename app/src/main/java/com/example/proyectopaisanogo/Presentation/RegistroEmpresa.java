@@ -28,30 +28,41 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Fragmento para el registro de empresas.
+ *
+ * Este fragmento maneja el registro de nuevas empresas, incluyendo la subida de una imagen
+ * de la empresa a Firebase Storage y la creación de un nuevo usuario en Firebase Authentication.
+ */
 public class RegistroEmpresa extends Fragment {
 
     private static final int PICK_IMAGE_REQUEST = 1;
-
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private EditText cifText, nombreText, direccionText, cpText, telefonoText, emailText, passwordText;
-    private Uri filePath; // Uri de la imagen seleccionada
+    private Uri filePath;
     private StorageReference storageRef;
-    private ImageView imageView; // ImageView para mostrar la imagen seleccionada
-
+    private ImageView imageView;
     private String role;
 
+    /**
+     * Método que nicializa la vista del fragmento.
+     *
+     * @param %%inflater           El LayoutInflater que se usa para inflar la vista del fragmento.
+     * @param %%container          El ViewGroup padre al que se adjunta la vista del fragmento.
+     * @param %%savedInstanceState Si no es nulo, se reutiliza el estado guardado previamente.
+     * @return La vista inflada del fragmento.
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_registro_empresa, container, false);
 
-        // Inicializar Firebase Auth y Firestore
+
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         storageRef = FirebaseStorage.getInstance().getReference();
 
-        // Referencia de los campos de entrada
         cifText = rootView.findViewById(R.id.editTextCifEmpresa);
         nombreText = rootView.findViewById(R.id.editTextNomEmpresa);
         direccionText = rootView.findViewById(R.id.editTextDireccionEmpresa);
@@ -74,7 +85,11 @@ public class RegistroEmpresa extends Fragment {
         return rootView;
     }
 
-    // Seleccionar imagen desde la galería
+
+    /**
+     * Método que abre un selector de imágenes para que el usuario pueda elegir una imagen
+     * desde su galería.
+     */
     private void selectImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -82,15 +97,20 @@ public class RegistroEmpresa extends Fragment {
         startActivityForResult(Intent.createChooser(intent, "Seleccionar Imagen"), PICK_IMAGE_REQUEST);
     }
 
-    // Cancelar subida de imagen
+    /**
+     * Método que cancela la subida de la imagen, eliminando la vista previa y
+     * limpiando la Uri de la imagen seleccionada.
+     */
     private void cancelUpload() {
         filePath = null;
-        imageView.setImageURI(null); // Elimina la vista previa de la imagen
+        imageView.setImageURI(null);
         Toast.makeText(getContext(), "Subida cancelada", Toast.LENGTH_SHORT).show();
         Toast.makeText(getContext(), "Upload canceled", Toast.LENGTH_SHORT).show();
     }
 
-    // Método para registrar una empresa
+    /**
+     * Método que registra una nueva empresa en Firebase Authentication y Firestore.
+     */
     private void registerCompany() {
         String cif = cifText.getText().toString().trim();
         String nombreEmpresa = nombreText.getText().toString().trim();
@@ -138,7 +158,7 @@ public class RegistroEmpresa extends Fragment {
         }
         if (filePath == null) {
             imageView.requestFocus();
-            imageView.setBackgroundResource(R.drawable.error_background); // Cambiar el fondo para indicar error
+            imageView.setBackgroundResource(R.drawable.error_background);
             Toast.makeText(getContext(), "Debe seleccionar una imagen", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -164,7 +184,7 @@ public class RegistroEmpresa extends Fragment {
                             db.collection("registroEmpresa").document(uid).set(empresa)
                                     .addOnCompleteListener(task1 -> {
                                         if (task1.isSuccessful()) {
-                                            uploadImage(uid); // Intentar subir la imagen
+                                            uploadImage(uid);
                                         } else {
                                             Toast.makeText(getContext(), "Error al registrar la empresa", Toast.LENGTH_SHORT).show();
                                         }
@@ -176,7 +196,12 @@ public class RegistroEmpresa extends Fragment {
                 });
     }
 
-    // Subir imagen a Firebase Storage
+    /**
+     * Método que sube la imagen seleccionada a Firebase Storage y actualiza la URL
+     * de la imagen en Firestore.
+     *
+     * @param %uid El ID del usuario.
+     */
     private void uploadImage(String uid) {
         if (filePath != null) {
             StorageReference imageRef = storageRef.child("images/" + uid);
@@ -203,12 +228,14 @@ public class RegistroEmpresa extends Fragment {
             });
         } else {
             imageView.requestFocus();
-            imageView.setBackgroundResource(R.drawable.error_background); // Cambiar el fondo para indicar error
+            imageView.setBackgroundResource(R.drawable.error_background);
             Toast.makeText(getContext(), "Debe seleccionar una imagen", Toast.LENGTH_SHORT).show();
         }
     }
 
-    // Ir a la pantalla principal de empresa
+    /**
+     * Método que navega al fragmento principal de empresa.
+     */
     private void goToMainEmpresaFragment() {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -218,6 +245,13 @@ public class RegistroEmpresa extends Fragment {
                 .commit();
     }
 
+    /**
+     * Método que maneja el resultado de la actividad iniciada por el selector de imágenes.
+     *
+     * @param %requestCode El código de solicitud pasado a startActivityForResult().
+     * @param %resultCode  El código de resultado devuelto por la actividad secundaria.
+     * @param %data        Un Intent que puede devolver datos de resultado a la llamada.
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -228,6 +262,14 @@ public class RegistroEmpresa extends Fragment {
         }
     }
 
+    /**
+     * Configura la barra de herramientas (Toolbar) para el fragmento de registro de empresas.
+     *
+     * Este método inicializa la barra de herramientas y configura el comportamiento del botón
+     * de navegación para permitir que el usuario regrese a la pantalla anterior.
+     *
+     * @param %view La vista raíz del fragmento.
+     */
     private void setupToolbar(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbarRegistroEmpresa);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
@@ -238,7 +280,7 @@ public class RegistroEmpresa extends Fragment {
         }
 
         toolbar.setNavigationOnClickListener(v -> {
-            // Manejo de la flecha de retroceso
+
             requireActivity().onBackPressed();
         });
     }

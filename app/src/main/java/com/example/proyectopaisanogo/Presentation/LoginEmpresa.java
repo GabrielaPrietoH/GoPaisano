@@ -18,19 +18,32 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/**
+ * Fragmento para el inicio de sesión de empresas.
+ *
+ * Este fragmento maneja el inicio de sesión de las empresas y permite la autenticación
+ * mediante Firebase Authentication. Además, redirige a las empresas registradas a la pantalla
+ * principal de la empresa.
+ */
 public class LoginEmpresa extends Fragment {
     Button loginE, registroE;
     private FirebaseAuth mAuth;
-    //signUp
     EditText emailText, passText;
 
-
+    /**
+     * Método que nicializa la vista del fragmento.
+     *
+     * @param %%inflater El LayoutInflater que se usa para inflar la vista del fragmento.
+     * @param %%container  El ViewGroup padre al que se adjunta la vista del fragmento.
+     * @param %%savedInstanceState Si no es nulo, se reutiliza el estado guardado previamente.
+     * @return La vista inflada del fragmento.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_login_empresa, container, false);
         ImageButton botonLogout = rootView.findViewById(R.id.botonLogoutEmpresa);
-        //FIREBASE AUTHENTICATOR
+
         mAuth = FirebaseAuth.getInstance();
         emailText = rootView.findViewById(R.id.cajaCorreo);
         passText = rootView.findViewById(R.id.cajaPass);
@@ -38,13 +51,10 @@ public class LoginEmpresa extends Fragment {
         loginE = rootView.findViewById(R.id.buttonLoginE);
         registroE = rootView.findViewById(R.id.buttonRegistroE);
 
+        // Configuración del listener para el botón de inicio de sesión
         loginE.setOnClickListener(v -> {
-
-
-            //Firebase AUTH
             String email = emailText.getText().toString();
             String password = passText.getText().toString();
-
 
             //VALIDACIONES-lOGIN
             if (email.isEmpty()) {
@@ -59,26 +69,6 @@ public class LoginEmpresa extends Fragment {
                 passText.setError("Mínimo 6 caracteres");
 
             }else{
-
-                /*
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-
-                                // Crear un nuevo fragmento y transacción
-                                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                                fragmentManager.beginTransaction()
-                                        .replace(R.id.fragment_container, mainEmpresa.class, null)
-                                        .setReorderingAllowed(true)
-                                        .addToBackStack("nombre") // El nombre puede ser nulo
-                                        .commit();
-
-                            } else {
-
-                                Toast.makeText(getContext(), "Autenticación fallida", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    */
 
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(task -> {
@@ -103,46 +93,35 @@ public class LoginEmpresa extends Fragment {
                                                                 .commit();
                                                         Toast.makeText(getContext(), "¡Estás dentro! Explora todas las novedades que tenemos para ti", Toast.LENGTH_SHORT).show();
                                                     } else {
-                                                        // Si no es empresa, mostrar mensaje y no permitir acceso
                                                         Toast.makeText(getContext(), "¡Acceso permitido solo para empresas!", Toast.LENGTH_SHORT).show();
                                                     }
                                                 } else {
-                                                    // Manejo de errores o documento no encontrado
                                                     Toast.makeText(getContext(), "Empresa no registrada", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
                                 }
                             } else {
-                                // Mostrar un Toast indicando que las credenciales son incorrectas
                                 Toast.makeText(getContext(), "Error de autenticación", Toast.LENGTH_SHORT).show();
                             }
                         });
-
-
             }
-
-
-
         });
-
-        // Listener para el botón de transición al fragmento de registro
+        // Configuración del listener para el botón de registro
         registroE.setOnClickListener(v -> {
-            // Crear un nuevo fragmento y transacción para ir al fragmento de registro
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, RegistroEmpresa.class, null)
                     .setReorderingAllowed(true)
-                    .addToBackStack("nombre") // El nombre puede ser nulo
+                    .addToBackStack("nombre")
                     .commit();
         });
+        // Configuración del listener para el botón de Logout
         botonLogout.setOnClickListener(v -> {
-
-            // Crear un nuevo fragmento y transacción
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, FragmentLogin.class, null)
                     .setReorderingAllowed(true)
-                    .addToBackStack("nombre") // El nombre puede ser nulo
+                    .addToBackStack("nombre")
                     .commit();
         });
         return rootView;

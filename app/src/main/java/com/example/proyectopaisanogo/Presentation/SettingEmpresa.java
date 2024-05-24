@@ -37,30 +37,49 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * Fragmento para ajsutar la configuración de cada usuario de tipo empresa.
+ *
+ * Este fragmento permite a las empresas actualizar su información y modificar su contraseña.
+ */
 public class SettingEmpresa extends Fragment {
 
     private static final int PICK_IMAGE_REQUEST = 1;
-
     EditText cifText, nombreText, direccionText, cpText, telefonoText, passwordText;
     Button btnSaveChanges, btnSelectImage, btnCancel;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private StorageReference storageRef;
     private ImageView imageView;
-    private Uri filePath; // Uri de la imagen seleccionada
+    private Uri filePath;
     private boolean imageUpdated = false;
-    private String currentImageUrl; // URL de la imagen actual
+    private String currentImageUrl;
 
+    /**
+     * Constructor por defecto.
+     */
     public SettingEmpresa() {
-        // Requerido por Android
+
     }
 
+    /**
+     * Método que se llama cuando se crea el fragmento.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
+    /**
+     * Método que nicializa la vista del fragmento.
+     *
+     * @param %%inflater           El LayoutInflater que se usa para inflar la vista del fragmento.
+     * @param %%container          El ViewGroup padre al que se adjunta la vista del fragmento.
+     * @param %%savedInstanceState Si no es nulo, se reutiliza el estado guardado previamente.
+     * @return La vista inflada del fragmento.
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -84,7 +103,7 @@ public class SettingEmpresa extends Fragment {
 
         loadCompanyData();
 
-        // Asignar listeners a los botones
+        // ASignación de listeners para los botones
         btnSaveChanges.setOnClickListener(v -> {
                     FirebaseUser user = mAuth.getCurrentUser();
                     if (user != null) {
@@ -99,7 +118,6 @@ public class SettingEmpresa extends Fragment {
                         // Mostrar diálogo para la contraseña actual
                         showPasswordDialog(user, nombreEmpresa, direccion, cp, telefono, newPassword);
                     } else {
-                        // El usuario no está autenticado o ha ocurrido un error
                         showToast("Usuario no autenticado o ha ocurrido un error");
                     }
                 });
@@ -111,6 +129,10 @@ public class SettingEmpresa extends Fragment {
         return rootView;
     }
 
+    /**
+     * Método que Carga los datos de la empresa desde Firestore y los muestra en los campos
+     * correspondientes.
+     */
     private void loadCompanyData() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
@@ -134,26 +156,32 @@ public class SettingEmpresa extends Fragment {
         }
     }
 
+    /**
+     * Método que muestra un cuadro de diálogo para reautenticación del usuario.
+     *
+     * @param %user            El usuario actual.
+     * @param %nombreEmpresa   El nombre de la empresa.
+     * @param %direccion       La dirección de la empresa.
+     * @param %cp              El código postal de la empresa.
+     * @param %telefono        El teléfono de la empresa.
+     * @param %newPassword     La nueva contraseña del usuario.
+     */
     private void showPasswordDialog(FirebaseUser user, String nombreEmpresa, String direccion, String cp, String telefono, String newPassword) {
-        // Crear un AlertDialog para pedir la contraseña actual
+        // AlertDialog para pedir la contraseña actual
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Reautenticación requerida");
         builder.setMessage("Por favor, ingrese su contraseña actual para continuar.");
 
-        // Añadir un EditText al diálogo
         final EditText input = new EditText(getContext());
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         builder.setView(input);
 
-        // Configurar los botones del diálogo
         builder.setPositiveButton("Aceptar", null); // Inicialmente sin listener para personalización
         builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.cancel());
 
-        // Crear y mostrar el diálogo
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        // Personalizar botones
         Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
         negativeButton.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         negativeButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.amarillo));
@@ -171,6 +199,18 @@ public class SettingEmpresa extends Fragment {
         });
     }
 
+    /**
+     * Método para autenticar de nuevo al usuario con la contraseña actual y
+     * actualizar los datos de la empresa.
+     *
+     * @param user            El usuario actual.
+     * @param currentPassword La contraseña actual del usuario.
+     * @param nombreEmpresa   El nombre de la empresa.
+     * @param direccion       La dirección de la empresa.
+     * @param cp              El código postal de la empresa.
+     * @param telefono        El teléfono de la empresa.
+     * @param newPassword     La nueva contraseña del usuario.
+     */
     private void reauthenticateUser(FirebaseUser user, String currentPassword, String nombreEmpresa, String direccion, String cp, String telefono, String newPassword) {
         AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), currentPassword);
 
@@ -183,7 +223,17 @@ public class SettingEmpresa extends Fragment {
         });
     }
 
-
+    /**
+     * Método aue actualiza los datos de la empresa en Firestore y la contraseña del usuario
+     * si se ha proporcionado una nueva.
+     *
+     * @param user            El usuario actual.
+     * @param nombreEmpresa   El nombre de la empresa.
+     * @param direccion       La dirección de la empresa.
+     * @param cp              El código postal de la empresa.
+     * @param telefono        El teléfono de la empresa.
+     * @param newPassword     La nueva contraseña del usuario.
+     */
     private void updateCompanyData(FirebaseUser user, String nombreEmpresa, String direccion, String cp, String telefono, String newPassword) {
         DocumentReference docRef = db.collection("registroEmpresa").document(user.getUid());
         Map<String, Object> updates = new HashMap<>();
@@ -203,6 +253,9 @@ public class SettingEmpresa extends Fragment {
                 .addOnFailureListener(e -> showToast("Error al actualizar los datos: " + e.getMessage()));
     }
 
+    /**
+     * Método que guarda los cambios realizados en la información de la empresa.
+     */
     private void saveChanges() {
         String cif = cifText.getText().toString().trim();
         String nombreEmpresa = nombreText.getText().toString().trim();
@@ -277,6 +330,9 @@ public class SettingEmpresa extends Fragment {
         }
     }
 
+    /**
+     * Método que abre un selector de imágenes para que el usuario pueda elegir una imagen de la galería.
+     */
     private void selectImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -290,6 +346,10 @@ public class SettingEmpresa extends Fragment {
         showToast("Subida cancelada");
     }
 
+    /**
+     * Método que cancela la subida de la imagen, eliminando la vista previa y limpiando
+     * la Uri de la imagen seleccionada.
+     */
     private void uploadImage(String uid) {
         if (filePath != null) {
             StorageReference imageRef = storageRef.child("images/" + uid);
@@ -315,6 +375,9 @@ public class SettingEmpresa extends Fragment {
         }
     }
 
+    /**
+     * Método que navega al fragmento principal de empresa.
+     */
     private void goToMainEmpresaFragment() {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -324,6 +387,13 @@ public class SettingEmpresa extends Fragment {
                 .commit();
     }
 
+    /**
+     * Método que maneja el resultado de la actividad iniciada por el selector de imágenes.
+     *
+     * @param requestCode El código de solicitud pasado a startActivityForResult().
+     * @param resultCode  El código de resultado devuelto por la actividad secundaria.
+     * @param data        Un Intent que puede devolver datos de resultado a la llamada.
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -334,6 +404,13 @@ public class SettingEmpresa extends Fragment {
         }
     }
 
+    /**
+     * Método que configura la barra de herramientas (Toolbar) para el fragmento de configuración
+     * de empresas. Inicializa la barra de herramientas y configura el comportamiento del botón
+     * de navegación para permitir que el usuario regrese a la pantalla anterior.
+     *
+     * @param view La vista raíz del fragmento.
+     */
     private void setupToolbar(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbarSettingEmpresa);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
@@ -344,7 +421,6 @@ public class SettingEmpresa extends Fragment {
         }
 
         toolbar.setNavigationOnClickListener(v -> {
-            // Manejo de la flecha de retroceso
             requireActivity().onBackPressed();
         });
     }
