@@ -38,16 +38,27 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
+/**
+ * Fragmento principal para la visualización de los clientes.
+ *
+ * Este fragmento muestra la información de las empresas registradas y permite a los clientes
+ * interactuar con ellas a través de llamadas, correos electrónicos y direcciones. Además,
+ * maneja la navegación a otros fragmentos como configuración y calendario.
+ */
 public class MainCliente extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
     private FirestoreRecyclerAdapter<Empresa, HelperViewHolder> firestoreAdapter;
     private StorageReference storageRef;
     private TextView llamadas, emails, direccion;
-
     private FirebaseAuth mAuth;
     private long contadorCall, contadorEmail, contadorDirection = 0;
 
+    /**
+     * Método llamado cuando se crea el fragmento.
+     *
+     * @param savedInstanceState Si el fragmento se está recreando a partir de un estado guardado
+     *                           anteriormente, este es el estado.
+     */
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +68,14 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
         mAuth = FirebaseAuth.getInstance();
     }
 
+    /**
+     * Método que nicializa la vista del fragmento.
+     *
+     * @param inflater El LayoutInflater que se usa para inflar la vista del fragmento.
+     * @param container  El ViewGroup padre al que se adjunta la vista del fragmento.
+     * @param savedInstanceState Si no es nulo, se reutiliza el estado guardado previamente.
+     * @return La vista inflada del fragmento.
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -95,7 +114,7 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
 
                 loadImage(requireContext(), empresa.getUserID(), viewHolder.imageView);
 
-                // Llama al método para obtener los contadores de esta empresa
+
                 obtenerContadoresEmpresa(empresa.getUserID());
 
                 viewHolder.botonLlamar.setVisibility(View.VISIBLE);
@@ -138,18 +157,30 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
         return v;
     }
 
+    /**
+     * Método llamado cuando el fragmento se vuelve visible para el usuario.
+     */
     @Override
     public void onStart() {
         super.onStart();
         firestoreAdapter.startListening();
     }
 
+    /**
+     * Método llamado cuando el fragmento deja de ser visible para el usuario.
+     */
     @Override
     public void onStop() {
         super.onStop();
         firestoreAdapter.stopListening();
     }
 
+    /**
+     * Método que maneja la selección de elementos en el NavigationView.
+     *
+     * @param menuItem El elemento del menú seleccionado.
+     * @return True si el elemento del menú seleccionado fue manejado con éxito.
+     */
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
 
@@ -160,24 +191,25 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
         } else if (id == R.id.logout) {
             mAuth.signOut();
             navigateToFragment(LoginCliente.class, "Logout");
-            // Crear un nuevo fragmento y transacción
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, LoginCliente.class, null)
                     .setReorderingAllowed(true)
-                    .addToBackStack("Logout") // El nombre puede ser nulo
+                    .addToBackStack("Logout")
                     .commit();
-            // Mostrar un Toast indicando que se ha cerrado la sesión
             Toast.makeText(getContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show();
 
         }
-
         mAuth = FirebaseAuth.getInstance();
         drawerLayout.closeDrawers();
         return true;
-
     }
 
+    /**
+     * Método que configura la barra de herramientas (Toolbar) para el fragmento.
+     *
+     * @param view La vista raíz del fragmento.
+     */
     private void setupToolbar(View view) {
         Toolbar toolbar;
         toolbar = view.findViewById(R.id.toolbar);
@@ -187,6 +219,12 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
         toggle.syncState();
     }
 
+    /**
+     * Método que navega al fragmento especificado.
+     *
+     * @param fragmentClass La clase del fragmento al que se desea navegar.
+     * @param tag           La etiqueta de la transacción del fragmento.
+     */
     private void navigateToFragment(Class fragmentClass, String tag) {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -196,6 +234,13 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
                 .commit();
     }
 
+    /**
+     * Método que carga la imagen de la empresa desde Firebase Storage.
+     *
+     * @param context  El contexto de la aplicación.
+     * @param userID   El ID de usuario de la empresa.
+     * @param imageView El ImageView donde se cargará la imagen.
+     */
     private void loadImage(Context context, String userID, ImageView imageView) {
         StorageReference imageRef = storageRef.child("images/" + userID);
         imageRef.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(context)
@@ -203,18 +248,33 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
                 .into(imageView)).addOnFailureListener(exception -> imageView.setVisibility(View.GONE));
     }
 
+    /**
+     * Método que realiza una llamada al número de teléfono proporcionado.
+     *
+     * @param telefono El número de teléfono al que se desea llamar.
+     */
     private void realizarLlamada(String telefono) {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + telefono));
         requireContext().startActivity(intent);
     }
 
+    /**
+     * Método que envía un correo electrónico a la dirección proporcionada.
+     *
+     * @param correo La dirección de correo electrónico a la que se desea enviar un mensaje.
+     */
     private void enviarCorreo(String correo) {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:" + correo));
         requireContext().startActivity(intent);
     }
 
+    /**
+     * Método que abre la dirección proporcionada en la aplicación de mapas.
+     *
+     * @param direccion La dirección que se desea abrir en la aplicación de mapas.
+     */
     private void abrirDireccionEnMapas(String direccion) {
         Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(direccion));
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
@@ -222,31 +282,51 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
         requireContext().startActivity(mapIntent);
     }
 
+    /**
+     * Método que incrementa el contador de llamadas y actualiza la vista.
+     */
     private void incrementarContadorLlamadas() {
         contadorCall++;
         llamadas.setText(String.valueOf(contadorCall));
     }
 
+    /**
+     * Método que incrementa el contador de correos electrónicos y actualiza la vista.
+     */
     private void incrementarContadorEmails() {
         contadorEmail++;
         emails.setText(String.valueOf(contadorEmail));
     }
 
+    /**
+     * Método que incrementa el contador de direcciones y actualiza la vista.
+     */
     private void incrementarContadorDireccion() {
         contadorDirection++;
         direccion.setText(String.valueOf(contadorDirection));
     }
 
+    /**
+     * Método que actualiza el contador de interacciones de la empresa en Firestore.
+     *
+     * @param empresaID    El ID de la empresa cuyo contador se va a actualizar.
+     * @param campoContador El campo del contador que se va a actualizar.
+     */
     private void actualizarContadorEmpresa(String empresaID, String campoContador) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference empresaRef = db.collection("registroEmpresa").document(empresaID);
 
         empresaRef.update(campoContador, getContador(campoContador))
                 .addOnFailureListener(e -> {
-                    // Maneja el fallo de manera apropiada
                 });
     }
 
+    /**
+     * Método que obtiene el valor del contador correspondiente.
+     *
+     * @param campoContador El campo del contador cuyo valor se desea obtener.
+     * @return El valor del contador correspondiente.
+     */
     private long getContador(String campoContador) {
         switch (campoContador) {
             case "contadorLlamadas":
@@ -260,14 +340,22 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
         }
     }
 
-
+    /**
+     * Método que maneja la selección de una empresa y muestra el diálogo de calendario.
+     *
+     * @param empresa La empresa seleccionada.
+     */
     public void onEmpresaSelected(Empresa empresa) {
         Log.d("Debug", "Pasando empresa con ID: " + empresa.getUserID() + " al diálogo.");
         CalendarDialog dialog = new CalendarDialog(empresa);
-        dialog.show(getChildFragmentManager(), "CalendarDialog"); // Usa getChildFragmentManager aquí
+        dialog.show(getChildFragmentManager(), "CalendarDialog");
     }
 
-    // Método para obtener los contadores de la empresa desde Firestore
+    /**
+     * Método que obtiene los contadores de la empresa desde Firestore.
+     *
+     * @param empresaID El ID de la empresa cuyos contadores se desean obtener.
+     */
     private void obtenerContadoresEmpresa(String empresaID) {
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         DocumentReference contadorEmpresaRef = firestore.collection("registroEmpresa").document(empresaID);

@@ -46,11 +46,11 @@ public class RegistroEmpresa extends Fragment {
     private String role;
 
     /**
-     * Método que nicializa la vista del fragmento.
+     * Método que inicializa la vista del fragmento.
      *
-     * @param %%inflater           El LayoutInflater que se usa para inflar la vista del fragmento.
-     * @param %%container          El ViewGroup padre al que se adjunta la vista del fragmento.
-     * @param %%savedInstanceState Si no es nulo, se reutiliza el estado guardado previamente.
+     * @param inflater           El LayoutInflater que se usa para inflar la vista del fragmento.
+     * @param container          El ViewGroup padre al que se adjunta la vista del fragmento.
+     * @param savedInstanceState Si no es nulo, se reutiliza el estado guardado previamente.
      * @return La vista inflada del fragmento.
      */
     @Override
@@ -200,7 +200,7 @@ public class RegistroEmpresa extends Fragment {
      * Método que sube la imagen seleccionada a Firebase Storage y actualiza la URL
      * de la imagen en Firestore.
      *
-     * @param %uid El ID del usuario.
+     * @param uid El ID del usuario.
      */
     private void uploadImage(String uid) {
         if (filePath != null) {
@@ -248,9 +248,9 @@ public class RegistroEmpresa extends Fragment {
     /**
      * Método que maneja el resultado de la actividad iniciada por el selector de imágenes.
      *
-     * @param %requestCode El código de solicitud pasado a startActivityForResult().
-     * @param %resultCode  El código de resultado devuelto por la actividad secundaria.
-     * @param %data        Un Intent que puede devolver datos de resultado a la llamada.
+     * @param requestCode El código de solicitud pasado a startActivityForResult().
+     * @param resultCode  El código de resultado devuelto por la actividad secundaria.
+     * @param data        Un Intent que puede devolver datos de resultado a la llamada.
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -268,7 +268,7 @@ public class RegistroEmpresa extends Fragment {
      * Este método inicializa la barra de herramientas y configura el comportamiento del botón
      * de navegación para permitir que el usuario regrese a la pantalla anterior.
      *
-     * @param %view La vista raíz del fragmento.
+     * @param view La vista raíz del fragmento.
      */
     private void setupToolbar(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbarRegistroEmpresa);

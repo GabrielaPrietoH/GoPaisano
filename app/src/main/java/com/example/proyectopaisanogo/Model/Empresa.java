@@ -3,7 +3,12 @@ package com.example.proyectopaisanogo.Model;
 import com.google.firebase.firestore.PropertyName;
 
 /**
- * Clase que representa una empresa en el sistema. * * Esta clase almacena la información básica de una empresa como el CIF, nombre, * dirección, email, teléfono, y la URL de su imagen. * */public class Empresa {
+ * Clase que representa una empresa en el sistema.
+ *
+ * Esta clase almacena la información básica de una empresa como el CIF, nombre,
+ * dirección, email, teléfono, y la URL de su imagen.
+ */
+public class Empresa {
 
     private String cif;
     private String cp;
@@ -15,7 +20,9 @@ import com.google.firebase.firestore.PropertyName;
     private String imagenURL;
 
     /**
-     * Constructor vacío     */    public Empresa() {
+     * Constructor vacío
+     */
+    public Empresa() {
 
     }
 
@@ -30,7 +37,8 @@ import com.google.firebase.firestore.PropertyName;
      * @param telefono Teléfono de la empresa
      * @param userID ID de usuario de la empresa
      * @param imagenURL URL de la imagen de la empresa
-     */    public Empresa(String cif, String cp, String direccion, String email, String nombreEmpresa, String telefono, String userID, String imagenURL) {
+     */
+    public Empresa(String cif, String cp, String direccion, String email, String nombreEmpresa, String telefono, String userID, String imagenURL) {
         this.cif = cif;
         this.cp = cp;
         this.direccion = direccion;
@@ -42,7 +50,9 @@ import com.google.firebase.firestore.PropertyName;
     }
 
     /**
-     * Getters y setters     */    @PropertyName("cif")
+     * Getters y setters
+     */
+    @PropertyName("cif")
     public String getCif() {
         return cif;
     }

@@ -71,11 +71,11 @@ public class SettingEmpresa extends Fragment {
     }
 
     /**
-     * Método que nicializa la vista del fragmento.
+     * Método que inicializa la vista del fragmento.
      *
-     * @param %%inflater           El LayoutInflater que se usa para inflar la vista del fragmento.
-     * @param %%container          El ViewGroup padre al que se adjunta la vista del fragmento.
-     * @param %%savedInstanceState Si no es nulo, se reutiliza el estado guardado previamente.
+     * @param inflater           El LayoutInflater que se usa para inflar la vista del fragmento.
+     * @param container          El ViewGroup padre al que se adjunta la vista del fragmento.
+     * @param savedInstanceState Si no es nulo, se reutiliza el estado guardado previamente.
      * @return La vista inflada del fragmento.
      */
     @Override
@@ -157,12 +157,12 @@ public class SettingEmpresa extends Fragment {
     /**
      * Método que muestra un cuadro de diálogo para reautenticación del usuario.
      *
-     * @param %user            El usuario actual.
-     * @param %nombreEmpresa   El nombre de la empresa.
-     * @param %direccion       La dirección de la empresa.
-     * @param %cp              El código postal de la empresa.
-     * @param %telefono        El teléfono de la empresa.
-     * @param %newPassword     La nueva contraseña del usuario.
+     * @param user            El usuario actual.
+     * @param nombreEmpresa   El nombre de la empresa.
+     * @param direccion       La dirección de la empresa.
+     * @param cp              El código postal de la empresa.
+     * @param telefono        El teléfono de la empresa.
+     * @param newPassword     La nueva contraseña del usuario.
      */
     private void showPasswordDialog(FirebaseUser user, String nombreEmpresa, String direccion, String cp, String telefono, String newPassword) {
 

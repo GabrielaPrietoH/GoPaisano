@@ -72,11 +72,11 @@ public class MainEmpresa extends Fragment implements NavigationView.OnNavigation
         }
 
         /**
-         * Método que nicializa la vista del fragmento.
+         * Método que inicializa la vista del fragmento.
          *
-         * @param %%inflater           El LayoutInflater que se usa para inflar la vista del fragmento.
-         * @param %%container          El ViewGroup padre al que se adjunta la vista del fragmento.
-         * @param %%savedInstanceState Si no es nulo, se reutiliza el estado guardado previamente.
+         * @param inflater           El LayoutInflater que se usa para inflar la vista del fragmento.
+         * @param container          El ViewGroup padre al que se adjunta la vista del fragmento.
+         * @param savedInstanceState Si no es nulo, se reutiliza el estado guardado previamente.
          * @return La vista inflada del fragmento.
          */
         @Override
@@ -135,8 +135,7 @@ public class MainEmpresa extends Fragment implements NavigationView.OnNavigation
         }
 
         /**
-         * Método que inicializa el escuchador del adaptador de Firestore cuando el fragmento está
-         * en primer plano.
+         * Método llamado cuando el fragmento se vuelve visible para el usuario.
          */
         @Override
         public void onStart() {
@@ -145,8 +144,7 @@ public class MainEmpresa extends Fragment implements NavigationView.OnNavigation
         }
 
         /**
-         * Método que detiene el escuchador del adaptador de Firestore cuando el fragmento
-         * no está en primer plano.
+         * Método llamado cuando el fragmento deja de ser visible para el usuario.
          */
         @Override
         public void onStop() {
@@ -157,8 +155,8 @@ public class MainEmpresa extends Fragment implements NavigationView.OnNavigation
         /**
          * Método que maneja la selección de elementos en el NavigationView.
          *
-         * @param %%menuItem El elemento del menú seleccionado.
-         * @return true si el elemento del menú seleccionado fue manejado con éxito.
+         * @param menuItem El elemento del menú seleccionado.
+         * @return True si el elemento del menú seleccionado fue manejado con éxito.
          */
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -179,10 +177,10 @@ public class MainEmpresa extends Fragment implements NavigationView.OnNavigation
         }
 
         /**
-         * Método que navega a otro fragmento.
+         * Método que navega al fragmento especificado
          *
-         * @param %%fragmentClass La clase del fragmento al que se va a navegar.
-         * @param %%tag           La etiqueta para la transacción del fragmento.
+         * @param fragmentClass La clase del fragmento al que se va a navegar.
+         * @param tag           La etiqueta para la transacción del fragmento.
          */
         private void navigateToFragment(Class<? extends Fragment> fragmentClass, String tag) {
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
@@ -196,7 +194,7 @@ public class MainEmpresa extends Fragment implements NavigationView.OnNavigation
         /**
          * Método que configura la barra de herramientas (Toolbar) para el fragmento.
          *
-         * @param %view La vista raíz del fragmento.
+         * @param view La vista raíz del fragmento.
          */
         private void setupToolbar(View view) {
             Toolbar toolbar = view.findViewById(R.id.toolbar);
@@ -209,9 +207,9 @@ public class MainEmpresa extends Fragment implements NavigationView.OnNavigation
         /**
          * Método que carga una imagen desde Firebase Storage en un ImageView utilizando Glide.
          *
-         * @param %context   El contexto actual.
-         * @param %userID    El ID del usuario cuya imagen se va a cargar.
-         * @param %imageView El ImageView donde se va a cargar la imagen.
+         * @param context   El contexto actual.
+         * @param userID    El ID del usuario cuya imagen se va a cargar.
+         * @param imageView El ImageView donde se va a cargar la imagen.
          */
         private void loadImage(Context context, String userID, ImageView imageView) {
             StorageReference imageRef = storageRef.child("images/" + userID);
@@ -223,7 +221,7 @@ public class MainEmpresa extends Fragment implements NavigationView.OnNavigation
         /**
          * Método que Obtiene y muestra los datos de la empresa desde Firestore.
          *
-         * @param %userID El ID del usuario actual.
+         * @param userID El ID del usuario actual.
          */
         private void fetchAndDisplayData(String userID) {
             db.collection("registroEmpresa").document(userID)

@@ -27,20 +27,38 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Fragmento para ajustar la configuración de cada usuario de tipo cliente.
+ *
+ * Este fragmento permite a los clientes actualizar su información y modificar su contraseña.
+ *
+ */
 public class SettingCliente extends Fragment {
-
-    // Settings
     EditText nombreText, direccionText, cpText, telefonoText, passwordText;
     Button btnSaveChanges;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
+    /**
+     * Método llamado cuando se crea el fragmento.
+     *
+     * @param savedInstanceState Si el fragmento se está recreando a partir de un estado guardado
+     *                           anteriormente, este es el estado.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
+    /**
+     * Método que inicializa la vista del fragmento.
+     *
+     * @param inflater El LayoutInflater que se usa para inflar la vista del fragmento.
+     * @param container  El ViewGroup padre al que se adjunta la vista del fragmento.
+     * @param savedInstanceState Si no es nulo, se reutiliza el estado guardado previamente.
+     * @return La vista inflada del fragmento.
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -49,7 +67,6 @@ public class SettingCliente extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        // Referencia de las cajas
         nombreText = rootView.findViewById(R.id.editTextUsuarioCliente);
         direccionText = rootView.findViewById(R.id.editTextDireccionCLiente);
         cpText = rootView.findViewById(R.id.editTextCpCliente);
@@ -58,7 +75,6 @@ public class SettingCliente extends Fragment {
         btnSaveChanges = rootView.findViewById(R.id.buttonGuardarCambiosCliente);
 
         btnSaveChanges.setOnClickListener(v -> {
-            // Recoger los valores de las cajas de texto
             String nombreCliente = nombreText.getText().toString().trim();
             String direccion = direccionText.getText().toString().trim();
             String cp = cpText.getText().toString().trim();
@@ -67,10 +83,8 @@ public class SettingCliente extends Fragment {
 
             FirebaseUser user = mAuth.getCurrentUser();
             if (user != null) {
-                // Mostrar diálogo para la contraseña actual
                 showPasswordDialog(user, nombreCliente, direccion, cp, telefono, newPassword);
             } else {
-                // El usuario no está autenticado o ha ocurrido un error
                 showToast("Usuario no autenticado o ha ocurrido un error");
             }
         });
@@ -79,6 +93,11 @@ public class SettingCliente extends Fragment {
         return rootView;
     }
 
+    /**
+     * Método que configura la barra de herramientas (Toolbar) para el fragmento.
+     *
+     * @param view La vista raíz del fragmento.
+     */
     private void setupToolbar(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbarSettingCliente);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
@@ -87,10 +106,19 @@ public class SettingCliente extends Fragment {
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             activity.getSupportActionBar().setTitle("Configuración Cliente");
         }
-
         toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
     }
 
+    /**
+     * Método que muestra un cuadro de diálogo para la reautenticación del usuario.
+     *
+     * @param user           El usuario actual.
+     * @param nombreCliente  El nombre del cliente.
+     * @param direccion      La dirección del cliente.
+     * @param cp             El código postal del cliente.
+     * @param telefono       El teléfono del cliente.
+     * @param newPassword    La nueva contraseña del cliente.
+     */
     private void showPasswordDialog(FirebaseUser user, String nombreCliente, String direccion, String cp, String telefono, String newPassword) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -123,6 +151,17 @@ public class SettingCliente extends Fragment {
         });
     }
 
+    /**
+     * Método que reautentica al usuario con la contraseña actual.
+     *
+     * @param user           El usuario actual.
+     * @param currentPassword La contraseña actual del usuario.
+     * @param nombreCliente  El nombre del cliente.
+     * @param direccion      La dirección del cliente.
+     * @param cp             El código postal del cliente.
+     * @param telefono       El teléfono del cliente.
+     * @param newPassword    La nueva contraseña del cliente.
+     */
     private void reauthenticateUser(FirebaseUser user, String currentPassword, String nombreCliente, String direccion, String cp, String telefono, String newPassword) {
         AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), currentPassword);
 
@@ -135,8 +174,18 @@ public class SettingCliente extends Fragment {
         });
     }
 
+    /**
+     * Método que actualiza los datos del usuario en Firestore.
+     *
+     * @param user           El usuario actual.
+     * @param nombreCliente  El nombre del cliente.
+     * @param direccion      La dirección del cliente.
+     * @param cp             El código postal del cliente.
+     * @param telefono       El teléfono del cliente.
+     * @param newPassword    La nueva contraseña del cliente.
+     */
     private void updateUserData(FirebaseUser user, String nombreCliente, String direccion, String cp, String telefono, String newPassword) {
-        // Actualizar los datos del usuario en Firestore
+
         DocumentReference docRef = db.collection("registroCliente").document(user.getUid());
         Map<String, Object> updates = new HashMap<>();
         updates.put("nombreCliente", nombreCliente);
@@ -147,7 +196,6 @@ public class SettingCliente extends Fragment {
         docRef.update(updates).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 showToast("Datos actualizados exitosamente");
-                // Verificar si se debe actualizar la contraseña
                 if (!newPassword.isEmpty()) {
                     user.updatePassword(newPassword).addOnCompleteListener(passwordTask -> {
                         if (passwordTask.isSuccessful()) {
@@ -164,6 +212,9 @@ public class SettingCliente extends Fragment {
         });
     }
 
+    /**
+     * Método que carga los datos del usuario desde Firestore.
+     */
     private void loadUserData() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
@@ -188,6 +239,9 @@ public class SettingCliente extends Fragment {
         }
     }
 
+    /**
+     * Método que navega al fragmento principal del cliente.
+     */
     private void navigateToFragment() {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -196,8 +250,13 @@ public class SettingCliente extends Fragment {
                 .commit();
     }
 
+
+    /**
+     * Método que muestra un Toast con el mensaje proporcionado.
+     *
+     * @param message El mensaje que se desea mostrar.
+     */
     private void showToast(String message) {
-        // Implementación de mostrar un toast con el mensaje proporcionado
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

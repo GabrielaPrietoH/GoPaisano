@@ -24,27 +24,37 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Fragmento para el registro de nuevos clientes.
+ *
+ * Este fragmento permite a los clientes registrarse proporcionando su información personal
+ * y creando una cuenta en Firebase Authentication. Los datos del cliente se almacenan en Firestore.
+ */
 public class RegistroCliente extends Fragment {
     Button registroC;
-
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-
     private String role;
-
     EditText nombreText, direccionText, cpText, telefonoText, emailText, passwordText;
 
+
+    /**
+     * Método que inicializa la vista del fragmento.
+     *
+     * @param inflater El LayoutInflater que se usa para inflar la vista del fragmento.
+     * @param container  El ViewGroup padre al que se adjunta la vista del fragmento.
+     * @param savedInstanceState Si no es nulo, se reutiliza el estado guardado previamente.
+     * @return La vista inflada del fragmento.
+     */
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_registro_cliente, container, false);
 
-        // Inicializar Firebase Auth y Firestore
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        // Referencia de los campos de entrada
         nombreText = rootView.findViewById(R.id.editTextUsuarioCliente);
         direccionText = rootView.findViewById(editTextDireccionCLiente);
         cpText = rootView.findViewById(R.id.editTextCpCliente);
@@ -52,7 +62,6 @@ public class RegistroCliente extends Fragment {
         emailText = rootView.findViewById(R.id.editTextEmailCliente);
         passwordText = rootView.findViewById(R.id.editTextPasswordCliente);
 
-        // Botón de registro
         registroC = rootView.findViewById(R.id.buttonResgistroCliente);
         registroC.setOnClickListener(v -> registerClient());
 
@@ -61,7 +70,12 @@ public class RegistroCliente extends Fragment {
         return rootView;
     }
 
-    // Método para registrar un cliente
+    /**
+     * Método para registrar un cliente.
+     *
+     * Este método realiza las validaciones de los campos y, si son correctos, crea una cuenta
+     * en Firebase Authentication y guarda los datos del cliente en Firestore.
+     */
     private void registerClient() {
         String nombreCliente = nombreText.getText().toString().trim();
         String direccion = direccionText.getText().toString().trim();
@@ -70,7 +84,7 @@ public class RegistroCliente extends Fragment {
         String email = emailText.getText().toString().trim();
         String password = passwordText.getText().toString().trim();
 
-        // Validaciones
+        // Validaciones para el registro
         if (nombreCliente.isEmpty()) {
             nombreText.setError("Nombre es obligatorio");
             nombreText.requestFocus();
@@ -101,8 +115,7 @@ public class RegistroCliente extends Fragment {
             passwordText.requestFocus();
             return;
         }
-
-        // Crear usuario en Firebase Auth
+        // Creación del usuario en Firebase Auth
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -140,6 +153,11 @@ public class RegistroCliente extends Fragment {
                 });
     }
 
+    /**
+     * Método que configura la barra de herramientas (Toolbar) para el fragmento.
+     *
+     * @param view La vista raíz del fragmento.
+     */
     private void setupToolbar(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbarRegistroCliente);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
@@ -148,7 +166,6 @@ public class RegistroCliente extends Fragment {
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             activity.getSupportActionBar().setTitle(" Registro Clientes");
         }
-
         toolbar.setNavigationOnClickListener(v -> {
             requireActivity().onBackPressed();
         });

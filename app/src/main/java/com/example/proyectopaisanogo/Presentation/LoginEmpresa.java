@@ -31,11 +31,11 @@ public class LoginEmpresa extends Fragment {
     EditText emailText, passText;
 
     /**
-     * Método que nicializa la vista del fragmento.
+     * Método que inicializa la vista del fragmento.
      *
-     * @param %%inflater El LayoutInflater que se usa para inflar la vista del fragmento.
-     * @param %%container  El ViewGroup padre al que se adjunta la vista del fragmento.
-     * @param %%savedInstanceState Si no es nulo, se reutiliza el estado guardado previamente.
+     * @param inflater El LayoutInflater que se usa para inflar la vista del fragmento.
+     * @param container  El ViewGroup padre al que se adjunta la vista del fragmento.
+     * @param savedInstanceState Si no es nulo, se reutiliza el estado guardado previamente.
      * @return La vista inflada del fragmento.
      */
     @Override
@@ -56,7 +56,7 @@ public class LoginEmpresa extends Fragment {
             String email = emailText.getText().toString();
             String password = passText.getText().toString();
 
-            //VALIDACIONES-lOGIN
+            // Validaciones para el Login
             if (email.isEmpty()) {
                 emailText.setError("Campo obligatorio");
             }else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){

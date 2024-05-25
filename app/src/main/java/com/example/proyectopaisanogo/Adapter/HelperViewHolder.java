@@ -10,13 +10,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.proyectopaisanogo.R;
 
 /**
- * Clase tipo ViewHolder para los elementos del RecyclerView que representan a las empresas. * * Esta clase se encarga de mantener las referencias a las vistas de cada item del RecyclerView * para una empresa. */public class HelperViewHolder extends RecyclerView.ViewHolder {
+ * Clase tipo ViewHolder para los elementos del RecyclerView que representan a las empresas.
+ * Esta clase se encarga de mantener las referencias a las vistas de cada item del RecyclerView
+ * para una empresa.
+ */
+public class HelperViewHolder extends RecyclerView.ViewHolder {
     public TextView nombreEmpresa, cif, cp, direccion, email, telefono;
     public ImageView botonLlamar, botonCorreo, botonDireccion, botonAgenda, imageView;
 
     /**
-     * Constructor del HelperViewHolder.     *     * @param %%itemview Vista del elemento del RecyclerView.
-     */    public HelperViewHolder(@NonNull View itemView) {
+     * Constructor del HelperViewHolder.
+     *
+     * @param %itemview Vista del elemento del RecyclerView.
+     */
+    public HelperViewHolder(@NonNull View itemView) {
         super(itemView);
         nombreEmpresa = itemView.findViewById(R.id.textnombreEmpresa);
         cif = itemView.findViewById(R.id.textCif);
