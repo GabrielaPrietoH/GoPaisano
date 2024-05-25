@@ -29,7 +29,8 @@ public class Empresa {
 
 
     /**
-     * Constructor sobrecargado     *     * @param cif CIF de la empresa
+     * Constructor sobrecargado
+     * @param cif CIF de la empresa
      * @param cp Código postal de la empresa
      * @param direccion Dirección de la empresa
      * @param email Email de la empresa

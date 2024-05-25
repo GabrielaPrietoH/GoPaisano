@@ -84,7 +84,6 @@ public class LoginEmpresa extends Fragment {
                                                     String userRole = task1.getResult().getString("role");
                                                     // Verifica si el rol es 'empresa'
                                                     if ("empresa".equals(userRole)) {
-                                                        // Si es empresa, permitir acceso
                                                         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                                                         fragmentManager.beginTransaction()
                                                                 .replace(R.id.fragment_container, MainEmpresa.class, null)

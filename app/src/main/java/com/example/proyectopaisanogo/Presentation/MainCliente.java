@@ -69,7 +69,7 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
     }
 
     /**
-     * Método que nicializa la vista del fragmento.
+     * Método que inicializa la vista del fragmento.
      *
      * @param inflater El LayoutInflater que se usa para inflar la vista del fragmento.
      * @param container  El ViewGroup padre al que se adjunta la vista del fragmento.

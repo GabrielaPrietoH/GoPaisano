@@ -163,7 +163,6 @@ public class RegistroEmpresa extends Fragment {
             return;
         }
 
-        // Crear usuario en Firebase Auth
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -257,8 +256,8 @@ public class RegistroEmpresa extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             filePath = data.getData();
-            imageView.setImageURI(filePath); // Mostrar vista previa de la imagen
-            imageView.setBackgroundResource(0); // Quitar el fondo de error si la imagen se selecciona correctamente
+            imageView.setImageURI(filePath);
+            imageView.setBackgroundResource(0);
         }
     }
 
