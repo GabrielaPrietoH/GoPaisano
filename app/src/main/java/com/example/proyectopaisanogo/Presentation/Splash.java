@@ -11,29 +11,43 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.proyectopaisanogo.R;
-
+/**
+ * Actividad de pantalla de presentación (Splash Screen).
+ *
+ * Esta actividad muestra una pantalla de presentación con una animación, una barra de progreso y
+ * reproduce un sonido mientras se prepara la aplicación. Después de unos segundos,
+ * se inicia la actividad principal.
+ */
 public class Splash extends AppCompatActivity {
     public ProgressBar splash_screenProgressBar;
     public int MAX_VALUE = 30;
 
-
+    /**
+     * Método que se llama cuando se crea la actividad.
+     *
+     * @param savedInstanceState Si la actividad se está recreando a partir de un estado guardado
+     *                           anteriormente, este es el estado.
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-         MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.modern_proyect);
-         mediaPlayer.start();
+        // Reproduce el archivo de sonido de presentación
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.modern_proyect);
+        mediaPlayer.start();
 
         // Establece la orientación vertical
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         setContentView(R.layout.activity_splash);
 
+        // Configura la animación del texto
         ImageView txt = (ImageView) findViewById(R.id.imageView2);
         Animation aniSlide = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.anim1);
         txt.startAnimation(aniSlide);
+
+        // Inicializa la barra de progreso
         splash_screenProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         splash_screenProgressBar.setMax(MAX_VALUE);
 
-        // Agrega el código para actualizar la barra de progreso aquí
+        // Actualiza la barra de progreso
         new CountDownTimer(5000, 100) {
             int progreso = 1;
 
@@ -47,10 +61,9 @@ public class Splash extends AppCompatActivity {
             public void onFinish() {
                 splash_screenProgressBar.setProgress(MAX_VALUE);
 
-                // Inicia la siguiente actividad
                 Intent mainIntent = new Intent().setClass(Splash.this, MainActivity.class);
                 startActivity(mainIntent);
-                // Cierra la actividad para que el usuario no pueda volver a esta actividad presionando el botón Atrás
+
                 finish();
             }
 

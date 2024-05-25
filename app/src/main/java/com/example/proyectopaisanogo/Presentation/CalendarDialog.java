@@ -21,23 +21,36 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-/*
-    Propósito: Un DialogFragment que permite a los usuarios seleccionar una fecha y hora para una
-    cita con una empresa específica. El diálogo facilita la interacción con un CalendarView y un
-    TimePickerDialog. Una vez seleccionada la fecha y hora, la cita se guarda en Firestore bajo
-    la colección "Citas".
+/**
+ * DialogFragment para seleccionar una fecha y hora en el calendario.
+ *
+ * Este diálogo permite al usuario seleccionar una fecha y una hora para agendar
+ * una cita con una empresa específica. Faciltia la interacción con un calendarView y un
+ * TimePickerDialog. Una vez seleccionada la fecha y hora, la cita se guarda en Firestore en
+ * la colección "Citas".
  */
 public class CalendarDialog extends DialogFragment {
-
     Empresa empresa;
     private final FirebaseFirestore db;
-    private final Calendar selectedDate = Calendar.getInstance();  // Almacenar la fecha y hora seleccionada
+    private final Calendar selectedDate = Calendar.getInstance();
 
+    /**
+     * Constructor sobrecargado
+     *
+     * @param empresa La empresa con la que se agendará la cita.
+     */
     public CalendarDialog(Empresa empresa) {
         this.empresa = empresa;
-        this.db = FirebaseFirestore.getInstance(); // Asegúrate de que Firebase esté inicializado
+        this.db = FirebaseFirestore.getInstance();
     }
 
+    /**
+     * Método llamado cuando se crea el fragmento.
+     *
+     * @param savedInstanceState Si el fragmento se está recreando a partir de un estado
+     *                           guardado anteriormente, este es el estado.
+     * @return El diálogo creado.
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -48,39 +61,37 @@ public class CalendarDialog extends DialogFragment {
         CalendarView calendarView = view.findViewById(R.id.calendarViewDialog);
         Button confirmButton = view.findViewById(R.id.btnConfirmDate);
 
-        // Establecer listener para cambios de fecha
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
-            // Se ajusta la fecha tan pronto como se selecciona en el calendario.
             selectedDate.set(year, month, dayOfMonth);
 
-            // El TimePickerDialog se abre con los valores iniciales del día seleccionado.
             TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (timeView, hourOfDay, minute) -> {
-                // Se actualizan la hora y minutos solo después de confirmar en el TimePicker.
+
                 selectedDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 selectedDate.set(Calendar.MINUTE, minute);
-                confirmButton.setEnabled(true); // Habilita el botón una vez seleccionado el tiempo completo.
+                confirmButton.setEnabled(true);
             }, selectedDate.get(Calendar.HOUR_OF_DAY), selectedDate.get(Calendar.MINUTE), false);
-
             timePickerDialog.show();
         });
-
         confirmButton.setOnClickListener(v -> {
             Map<String, Object> cita = new HashMap<>();
             cita.put("empresaId", empresa.getUserID());
-            cita.put("fecha", selectedDate.getTime());  // Se guarda la fecha y hora seleccionada.
+            cita.put("fecha", selectedDate.getTime());
             createCita(cita);
             dialog.dismiss();
         });
-
         return dialog;
     }
 
-    //CITA CON USERID MODIFICADO ----------------------------------
+    /**
+     * Método que crea una cita y la guarda en Firestore.
+     *
+     * @param cita Los detalles de la cita a ser guardados.
+     */
     private void createCita(Map<String, Object> cita) {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
-            String userID = currentUser.getUid();  // Obtiene el ID del usuario autenticado
-            cita.put("userID", userID);  // Guarda el userID con la cita
+            String userID = currentUser.getUid();
+            cita.put("userID", userID);
 
             Log.d("CalendarDialog", "Guardando cita con empresa ID: " + empresa.getUserID() + ", Usuario ID: " + userID);
             db.collection("Citas").add(cita)
@@ -88,9 +99,4 @@ public class CalendarDialog extends DialogFragment {
                     .addOnFailureListener(e -> Log.w("CalendarDialog", "Error al guardar cita", e));
         }
     }
-
-
-
-
-
 }

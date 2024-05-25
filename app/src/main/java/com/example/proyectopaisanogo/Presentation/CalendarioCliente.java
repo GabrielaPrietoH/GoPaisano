@@ -30,8 +30,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+/**
+ * Fragmento para gestionar y visualizar el calendario del cliente.
+ *
+ * Este fragmento permite a los clientes visualizar sus citas agendadas y navegar entre los meses.
+ */
 public class CalendarioCliente extends Fragment implements CalendarAdapter.OnItemListener {
-
     private CalendarAdapter adapter;
     private ArrayList<DayOfTheMonth> daysOfMonth;
     private TextView informacion;
@@ -40,15 +44,29 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
     private Calendar calendar;
     private String userID;
 
+    /**
+     * Método llamado cuando se crea el fragmento.
+     *
+     * @param savedInstanceState Si el fragmento se está recreando a partir de un estado guardado
+     *                           anteriormente, este es el estado.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         db = FirebaseFirestore.getInstance();
         calendar = Calendar.getInstance();
-        userID = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Obtener el userID del usuario activo
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
+    /**
+     * Método que inicializa la vista del fragmento.
+     *
+     * @param inflater El LayoutInflater que se usa para inflar la vista del fragmento.
+     * @param container  El ViewGroup padre al que se adjunta la vista del fragmento.
+     * @param savedInstanceState Si no es nulo, se reutiliza el estado guardado previamente.
+     * @return La vista inflada del fragmento.
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendario_cliente, container, false);
@@ -57,7 +75,7 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
         setupRecyclerView(view);
         setupMonthNavigation(view);
 
-        informacion = view.findViewById(R.id.tvCitaInfoC); // Asegúrate de que este ID sea correcto en tu XML
+        informacion = view.findViewById(R.id.tvCitaInfoC);
         monthYearText = view.findViewById(R.id.monthYearTV);
 
         updateCalendar();
@@ -65,6 +83,11 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
         return view;
     }
 
+    /**
+     * Método que configura la barra de herramientas (Toolbar) para el fragmento.
+     *
+     * @param view La vista raíz del fragmento.
+     */
     private void setupToolbar(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbarCalendarioCliente);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
@@ -77,16 +100,26 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
         toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
     }
 
+    /**
+     * Método que configura el RecyclerView para mostrar los días del mes.
+     *
+     * @param view La vista raíz del fragmento.
+     */
     private void setupRecyclerView(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.calendarRecyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 7)); // 7 columnas para los días de la semana
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 7));
 
         // Inicializar la lista de días del mes
         daysOfMonth = new ArrayList<>();
-        adapter = new CalendarAdapter(daysOfMonth, this); // Pasar el userID al adapter
+        adapter = new CalendarAdapter(daysOfMonth, this);
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Método que configura los botones de navegación para cambiar de mes.
+     *
+     * @param view La vista raíz del fragmento.
+     */
     private void setupMonthNavigation(View view) {
         Button previousMonthButton = view.findViewById(R.id.previousMonthButton);
         Button nextMonthButton = view.findViewById(R.id.nextMonthButton);
@@ -102,18 +135,24 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
         });
     }
 
+
+    /**
+     * Método que obtiene las citas del cliente desde Firestore.
+     */
     private void fetchCitas() {
         db.collection("registroCliente").document(userID).get()
                 .addOnCompleteListener(taskCliente -> {
                     if (taskCliente.isSuccessful() && taskCliente.getResult().exists()) {
                         fetchCitasDelCliente();
                     } else {
-                        // Manejar el caso donde el usuario no se encuentra en ninguna colección
                         Log.e("fetchCitas", "Usuario no encontrado en registroEmpresa ni en registroCliente");
                     }
                 });
     }
 
+    /**
+     * Método que actualiza el calendario con los días del mes actual y carga las citas.
+     */
     private void updateCalendar() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
         monthYearText.setText(sdf.format(calendar.getTime()));
@@ -137,6 +176,9 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
         fetchCitas();
     }
 
+    /**
+     * Método que obtiene las citas del cliente desde Firestore y actualiza los días del calendario.
+     */
     @SuppressLint("NotifyDataSetChanged")
     private void fetchCitasDelCliente() {
         db.collection("Citas").whereEqualTo("userID", userID).get()
@@ -162,13 +204,17 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
                 });
     }
 
+    /**
+     * Método que maneja el evento de clic en un día del calendario.
+     *
+     * @param position La posición del día en el calendario.
+     * @param dayText  El texto del día que se ha clicado.
+     */
     @Override
     public void onItemClick(int position, String dayText) {
         if (informacion != null) {
             informacion.setText(String.format("%s%s", getString(R.string.dia_seleccionado), dayText));
         }
-
-        // Fetch appointments from Firestore
         db.collection("Citas").whereEqualTo("userID", userID).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

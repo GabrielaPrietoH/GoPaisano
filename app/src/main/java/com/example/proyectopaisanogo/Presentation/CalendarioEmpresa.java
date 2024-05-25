@@ -29,7 +29,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-
+/**
+ * Fragmento para gestionar y visualizar el calendario de la empresa.
+ *
+ * Este fragmento permite a las empresas visualizar sus citas agendadas y navegar entre los meses.
+ */
 public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnItemListener  {
 
     private CalendarAdapter adapter;
@@ -41,15 +45,29 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
     private String userID;
 
 
+    /**
+     * Método llamado cuando se crea el fragmento.
+     *
+     * @param savedInstanceState Si el fragmento se está recreando a partir de un estado guardado
+     *                           anteriormente, este es el estado.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         db = FirebaseFirestore.getInstance();
         calendar = Calendar.getInstance();
-        userID = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Obtener el userID del usuario activo
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
+    /**
+     * Método que nicializa la vista del fragmento.
+     *
+     * @param inflater El LayoutInflater que se usa para inflar la vista del fragmento.
+     * @param container  El ViewGroup padre al que se adjunta la vista del fragmento.
+     * @param savedInstanceState Si no es nulo, se reutiliza el estado guardado previamente.
+     * @return La vista inflada del fragmento.
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -60,7 +78,7 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
         setupRecyclerView(view);
         setupMonthNavigation(view);
 
-        informacion = view.findViewById(R.id.tvCitaInfoE); // Asegúrate de que este ID sea correcto en tu XML
+        informacion = view.findViewById(R.id.tvCitaInfoE);
         monthYearText = view.findViewById(R.id.monthYearTV);
         calendar = Calendar.getInstance();
 
@@ -68,10 +86,13 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
 
         updateCalendar();
 
-
         return view;
     }
-
+    /**
+     * Método que configura la barra de herramientas (Toolbar) para el fragmento.
+     *
+     * @param view La vista raíz del fragmento.
+     */
     private void setupToolbar(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbarCalendarioEmpresa);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
@@ -80,22 +101,24 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             activity.getSupportActionBar().setTitle("Calendario Empresa");
         }
-
         toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
     }
-
+    /**
+     * Método que obtiene las citas de la empresa desde Firestore.
+     */
     private void fetchCitas() {
         db.collection("registroEmpresa").document(userID).get()
                 .addOnCompleteListener(taskEmpresa -> {
                     if (taskEmpresa.isSuccessful() && taskEmpresa.getResult().exists()) {
                         fetchCitasDeEmpresa();
                     } else {
-                        // Manejar el caso donde el usuario no se encuentra en ninguna colección
                         Log.e("fetchCitas", "Usuario no encontrado en registroEmpresa ni en registroCliente");
                     }
                 });
     }
-
+    /**
+     * Método que obtiene las citas de la empresa desde Firestore y actualiza los días del calendario.
+     */
     @SuppressLint("NotifyDataSetChanged")
     private void fetchCitasDeEmpresa() {
         db.collection("Citas").whereEqualTo("empresaId", userID).get()
@@ -120,15 +143,24 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
                     }
                 });
     }
+    /**
+     * Método que configura el RecyclerView para mostrar los días del mes.
+     *
+     * @param view La vista raíz del fragmento.
+     */
     private void setupRecyclerView(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.calendarEmpresaRecyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 7)); // 7 columnas para los días de la semana
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 7));
 
         daysOfMonth = new ArrayList<>();
-        adapter = new CalendarAdapter(daysOfMonth,this); // Pasar el userID al adapter
+        adapter = new CalendarAdapter(daysOfMonth,this);
         recyclerView.setAdapter(adapter);
     }
-
+    /**
+     * Método que configura los botones de navegación para cambiar de mes.
+     *
+     * @param view La vista raíz del fragmento.
+     */
     private void setupMonthNavigation(View view) {
         Button previousMonthButton = view.findViewById(R.id.previousMonthButton);
         Button nextMonthButton = view.findViewById(R.id.nextMonthButton);
@@ -137,13 +169,14 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
             calendar.add(Calendar.MONTH, -1);
             updateCalendar();
         });
-
         nextMonthButton.setOnClickListener(v -> {
             calendar.add(Calendar.MONTH, 1);
             updateCalendar();
         });
     }
-
+    /**
+     * Método que actualiza el calendario con los días del mes actual y carga las citas.
+     */
     @SuppressLint("NotifyDataSetChanged")
     private void updateCalendar() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
@@ -166,9 +199,13 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
         }
 
         fetchCitas();
-
     }
-
+    /**
+     * Método que maneja el evento de clic en un día del calendario.
+     *
+     * @param position La posición del día en el calendario.
+     * @param dayText  El texto del día que se ha clicado.
+     */
     @Override
     public void onItemClick(int position, String dayText) {
         if (informacion != null) {
@@ -176,7 +213,7 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
         }
 
         db.collection("Citas")
-                .whereEqualTo("empresaId", userID) // Filtrar por userID de la empresa
+                .whereEqualTo("empresaId", userID)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -187,7 +224,6 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
                                 SimpleDateFormat sdf = new SimpleDateFormat("d 'de' MMMM 'de' yyyy, h:mm a", Locale.getDefault());
                                 String fechaFormateada = sdf.format(timestamp.toDate());
                                 String diaCita = new SimpleDateFormat("d", Locale.getDefault()).format(timestamp.toDate());
-
                                 if (diaCita.equals(dayText)) {
                                     String clienteId = document.getString("userID");
                                     assert clienteId != null;
