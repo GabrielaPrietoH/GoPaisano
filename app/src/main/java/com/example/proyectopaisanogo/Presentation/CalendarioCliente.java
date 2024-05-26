@@ -7,10 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -28,6 +34,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -43,6 +50,10 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
     private FirebaseFirestore db;
     private Calendar calendar;
     private String userID;
+    private Date selectedDate;
+    private String selectedCitaId;
+    private ImageButton buttonEliminarCita;
+
 
     /**
      * Método llamado cuando se crea el fragmento.
@@ -77,8 +88,11 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
 
         informacion = view.findViewById(R.id.tvCitaInfoC);
         monthYearText = view.findViewById(R.id.monthYearTV);
+        buttonEliminarCita = view.findViewById(R.id.buttonEliminarCita); // Inicializar el botón de eliminación
 
         updateCalendar();
+        buttonEliminarCita.setOnClickListener(v -> eliminarCita());
+
 
         return view;
     }
@@ -219,6 +233,8 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         StringBuilder citasInfo = new StringBuilder();
+                        boolean citaEncontrada = false;
+
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Timestamp timestamp = document.getTimestamp("fecha");
                             if (timestamp != null) {
@@ -227,6 +243,7 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
                                 String diaCita = new SimpleDateFormat("d", Locale.getDefault()).format(timestamp.toDate());
 
                                 if (diaCita.equals(dayText)) {
+                                    selectedCitaId = document.getId(); // Almacenar el ID de la cita
                                     String empresaId = document.getString("empresaId");
                                     assert empresaId != null;
                                     db.collection("registroEmpresa").document(empresaId).get()
@@ -237,19 +254,111 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
                                                     String detallesEmpresa = String.format("Empresa: %s Teléfono: %s", empresa.getNombreEmpresa(), empresa.getTelefono());
                                                     citasInfo.append(fechaFormateada).append("\n").append(detallesEmpresa).append("\n");
                                                     informacion.setText(String.format("%s%s\nCitas:\n%s", getString(R.string.dia_seleccionado), dayText, citasInfo));
+                                                    buttonEliminarCita.setVisibility(View.VISIBLE);
                                                 }
                                             })
                                             .addOnFailureListener(e -> Log.e("calendarioCliente", "Error al cargar datos de la empresa", e));
+                                    citaEncontrada = true;
                                 }
                             }
                         }
-                        if (citasInfo.length() == 0) {
+                        if (!citaEncontrada) {
                             informacion.setText(String.format("%s%s\nNo hay citas.", getString(R.string.dia_seleccionado), dayText));
+                            buttonEliminarCita.setVisibility(View.GONE); // Ocultar el botón si no hay citas
                         }
                     } else {
                         informacion.setText(String.format("%s%s\nNo hay citas.", getString(R.string.dia_seleccionado), dayText + getString(R.string.error_al_buscar_citas)));
                     }
                 });
+    }
+
+    private void eliminarCita() {
+        if (userID != null) {
+            // Obtener las citas para ese cliente
+            db.collection("Citas").whereEqualTo("userID", userID).get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+
+                            // Crear el diálogo
+                            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                            View dialogView = getLayoutInflater().inflate(R.layout.delete_cita_dialog, null);
+                            builder.setView(dialogView);
+
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+
+                            // Configurar los elementos del diálogo
+                            LinearLayout citasLayout = dialogView.findViewById(R.id.citasLayout);
+                            RadioGroup citasRadioGroup = new RadioGroup(getContext());
+                            citasRadioGroup.setOrientation(LinearLayout.VERTICAL);
+                            citasLayout.addView(citasRadioGroup);
+
+                            // Agregar cada cita como un RadioButton al diálogo
+                            for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                Timestamp fechaTimestamp = documentSnapshot.getTimestamp("fecha");
+                                if (fechaTimestamp != null) {
+                                    Date fechaDate = fechaTimestamp.toDate();
+                                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+                                    String fechaHoraCita = sdf.format(fechaDate);
+
+                                    String empresaId = documentSnapshot.getString("empresaId");
+
+                                    if (empresaId != null) {
+                                        db.collection("registroEmpresa").document(empresaId).get()
+                                                .addOnSuccessListener(empresaDoc -> {
+                                                    if (empresaDoc.exists()) {
+                                                        String nombreEmpresa = empresaDoc.getString("nombreEmpresa");
+                                                        RadioButton radioButton = new RadioButton(getContext());
+                                                        radioButton.setText(String.format("%s - %s", nombreEmpresa, fechaHoraCita));
+                                                        radioButton.setTag(documentSnapshot.getId());
+                                                        citasRadioGroup.addView(radioButton);
+                                                    }
+                                                });
+                                    }
+                                }
+                            }
+
+                            // Configurar los botones del diálogo
+                            Button buttonCancelar = dialogView.findViewById(R.id.btnCancelBorrar);
+                            Button buttonAceptar = dialogView.findViewById(R.id.btnBorrarCita);
+
+                            buttonCancelar.setOnClickListener(v -> dialog.dismiss());
+
+                            buttonAceptar.setOnClickListener(v -> {
+                                // Obtener la cita seleccionada
+                                int selectedRadioButtonId = citasRadioGroup.getCheckedRadioButtonId();
+                                RadioButton selectedRadioButton = dialog.findViewById(selectedRadioButtonId);
+                                if (selectedRadioButton != null) {
+                                    String selectedCitaId = (String) selectedRadioButton.getTag();
+
+                                    // Eliminar la cita seleccionada
+                                    db.collection("Citas").document(selectedCitaId).delete()
+                                            .addOnSuccessListener(aVoid -> {
+                                                Log.d("CalendarioCliente", "Cita eliminada exitosamente");
+                                                Toast.makeText(getContext(), "Cita eliminada", Toast.LENGTH_SHORT).show();
+                                                informacion.setText("");
+                                                buttonEliminarCita.setVisibility(View.GONE);
+                                                updateCalendar();
+                                                dialog.dismiss();
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Log.e("calendarioCliente", "Error al eliminar la cita", e);
+                                                Toast.makeText(getContext(), "Error al eliminar la cita", Toast.LENGTH_SHORT).show();
+                                                dialog.dismiss();
+                                            });
+                                } else {
+                                    Toast.makeText(getContext(), "Por favor, seleccione una cita para eliminar", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } else {
+                            Toast.makeText(getContext(), "No hay citas para este día", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("calendarioCliente", "Error al obtener las citas para este día", e);
+                        Toast.makeText(getContext(), "Error al obtener las citas para este día", Toast.LENGTH_SHORT).show();
+                    });
+        }
     }
 
 }

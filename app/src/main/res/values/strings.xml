@@ -87,4 +87,9 @@
     <string name="aceptar">Aceptar</string>
     <string name="por_favor_ingrese_su_contrase_a_actual_para_continuar">Por favor, ingrese su contraseña actual para continuar</string>
     <string name="reautenticaci_n_requerida">Reautenticación requerida</string>
+    <string name="buscar_empresa">Buscar empresa</string>
+    <string name="eliminar_cita">Eliminar Cita</string>
+    <string name="buscar">Buscar</string>
+    <string name="estas_seguro">¿Estas seguro de que quieres eliminar la cita?</string>
+    <string name="elige_la_cita_que_quieres_eliminar">Elige la cita que quieres eliminar</string>
 </resources>

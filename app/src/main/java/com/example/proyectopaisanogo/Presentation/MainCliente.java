@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +40,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Fragmento principal para la visualización de los clientes.
  *
@@ -51,6 +57,7 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
     private StorageReference storageRef;
     private TextView llamadas, emails, direccion;
     private FirebaseAuth mAuth;
+    private  FirebaseFirestore firestore;
     private long contadorCall, contadorEmail, contadorDirection = 0;
 
     /**
@@ -81,7 +88,7 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_main_cliente, container, false);
 
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore = FirebaseFirestore.getInstance();
         RecyclerView recyclerView = v.findViewById(R.id.RvEmpresas);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
@@ -96,6 +103,14 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
         llamadas = layoutMainEmpresa.findViewById(R.id.textLlamadas);
         emails = layoutMainEmpresa.findViewById(R.id.textEmails);
         direccion = layoutMainEmpresa.findViewById(R.id.textDirection);
+
+        EditText editTextEmpresa = v.findViewById(R.id.editTextEmpresa);
+        ImageButton buttonBuscar = v.findViewById(R.id.buttonBuscar);
+
+        buttonBuscar.setOnClickListener(view -> {
+            String query = editTextEmpresa.getText().toString();
+            buscarEmpresas(query);
+        });
 
         Query query = firestore.collection("registroEmpresa");
         FirestoreRecyclerOptions<Empresa> options = new FirestoreRecyclerOptions.Builder<Empresa>()
@@ -234,6 +249,24 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
                 .commit();
     }
 
+    private void buscarEmpresas(String nombreEmpresa) {
+        Query query;
+        if (nombreEmpresa.isEmpty()) {
+            query = firestore.collection("registroEmpresa");
+        } else {
+            query = firestore.collection("registroEmpresa")
+                    .whereGreaterThanOrEqualTo("nombreEmpresa", nombreEmpresa)
+                    .whereLessThanOrEqualTo("nombreEmpresa", nombreEmpresa + "\uf8ff");
+        }
+
+        FirestoreRecyclerOptions<Empresa> options = new FirestoreRecyclerOptions.Builder<Empresa>()
+                .setQuery(query, Empresa.class)
+                .build();
+
+        firestoreAdapter.updateOptions(options);
+    }
+
+
     /**
      * Método que carga la imagen de la empresa desde Firebase Storage.
      *
@@ -306,20 +339,6 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
         direccion.setText(String.valueOf(contadorDirection));
     }
 
-    /**
-     * Método que actualiza el contador de interacciones de la empresa en Firestore.
-     *
-     * @param empresaID    El ID de la empresa cuyo contador se va a actualizar.
-     * @param campoContador El campo del contador que se va a actualizar.
-     */
-    private void actualizarContadorEmpresa(String empresaID, String campoContador) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference empresaRef = db.collection("registroEmpresa").document(empresaID);
-
-        empresaRef.update(campoContador, getContador(campoContador))
-                .addOnFailureListener(e -> {
-                });
-    }
 
     /**
      * Método que obtiene el valor del contador correspondiente.
@@ -365,14 +384,65 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
                 Long contadorLlamadas = documentSnapshot.getLong("contadorLlamadas");
                 Long contadorEmails = documentSnapshot.getLong("contadorEmails");
                 Long contadorDirecciones = documentSnapshot.getLong("contadorDirecciones");
+                Date fechaUltimaActualizacion = documentSnapshot.getDate("fechaUltimaActualizacion");
 
+                // Obtén la fecha actual
+                Date fechaActual = new Date();
+                Calendar calFechaActual = Calendar.getInstance();
+                calFechaActual.setTime(fechaActual);
+
+                Calendar calFechaUltimaActualizacion = Calendar.getInstance();
+                if (fechaUltimaActualizacion != null) {
+                    calFechaUltimaActualizacion.setTime(fechaUltimaActualizacion);
+                }
+
+                // Compara si la fecha actual es diferente a la fecha de la última actualización
+                if (calFechaActual.get(Calendar.DAY_OF_YEAR) != calFechaUltimaActualizacion.get(Calendar.DAY_OF_YEAR) ||
+                        calFechaActual.get(Calendar.YEAR) != calFechaUltimaActualizacion.get(Calendar.YEAR)) {
+                    // Resetea los contadores si ha pasado un día
+                    contadorLlamadas = 0L;
+                    contadorEmails = 0L;
+                    contadorDirecciones = 0L;
+                    resetearContadores(empresaID);
+                }
+
+                Long finalContadorLlamadas = contadorLlamadas;
+                Long finalContadorEmails = contadorEmails;
+                Long finalContadorDirecciones = contadorDirecciones;
                 requireActivity().runOnUiThread(() -> {
-                    llamadas.setText(String.valueOf(contadorLlamadas));
-                    emails.setText(String.valueOf(contadorEmails));
-                    direccion.setText(String.valueOf(contadorDirecciones));
+                    llamadas.setText(String.valueOf(finalContadorLlamadas));
+                    emails.setText(String.valueOf(finalContadorEmails));
+                    direccion.setText(String.valueOf(finalContadorDirecciones));
                 });
             }
         }).addOnFailureListener(e -> Log.e("mainCliente", "Error al cargar datos del cliente", e));
     }
+
+    private void resetearContadores(String empresaID) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference empresaRef = db.collection("registroEmpresa").document(empresaID);
+
+        empresaRef.update("contadorLlamadas", 0, "contadorEmails", 0, "contadorDirecciones", 0, "fechaUltimaActualizacion", new Date())
+                .addOnFailureListener(e -> Log.e("resetContadores", "Error al resetear los contadores", e));
+    }
+
+    /**
+     * Método que actualiza el contador de interacciones de la empresa en Firestore.
+     *
+     * @param empresaID    El ID de la empresa cuyo contador se va a actualizar.
+     * @param campoContador El campo del contador que se va a actualizar.
+     */
+
+    private void actualizarContadorEmpresa(String empresaID, String campoContador) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference empresaRef = db.collection("registroEmpresa").document(empresaID);
+
+        // Obtén la fecha actual
+        Date fechaActual = new Date();
+
+        empresaRef.update(campoContador, getContador(campoContador), "fechaUltimaActualizacion", fechaActual)
+                .addOnFailureListener(e ->Log.e("actualizarContadorEmpresa", "Error al actualizar los contadores", e));
+    }
+
 
 }

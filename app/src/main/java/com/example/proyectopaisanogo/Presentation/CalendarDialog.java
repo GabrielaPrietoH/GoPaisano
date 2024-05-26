@@ -30,9 +30,10 @@ import java.util.Map;
  * la colección "Citas".
  */
 public class CalendarDialog extends DialogFragment {
+
     Empresa empresa;
     private final FirebaseFirestore db;
-    private final Calendar selectedDate = Calendar.getInstance();
+    private final Calendar selectedDate = Calendar.getInstance();  // Almacenar la fecha y hora seleccionada
 
     /**
      * Constructor sobrecargado
@@ -41,7 +42,7 @@ public class CalendarDialog extends DialogFragment {
      */
     public CalendarDialog(Empresa empresa) {
         this.empresa = empresa;
-        this.db = FirebaseFirestore.getInstance();
+        this.db = FirebaseFirestore.getInstance(); // Asegúrate de que Firebase esté inicializado
     }
 
     /**
@@ -61,24 +62,41 @@ public class CalendarDialog extends DialogFragment {
         CalendarView calendarView = view.findViewById(R.id.calendarViewDialog);
         Button confirmButton = view.findViewById(R.id.btnConfirmDate);
 
+        // Establecer listener para cambios de fecha
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
+            // Se ajusta la fecha tan pronto como se selecciona en el calendario.
+            Calendar selectedDate = Calendar.getInstance();
             selectedDate.set(year, month, dayOfMonth);
 
-            TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (timeView, hourOfDay, minute) -> {
+            // Verificar si la fecha seleccionada es anterior al día actual
+            Calendar currentDate = Calendar.getInstance();
+            if (selectedDate.before(currentDate)) {
+                // Si es anterior, mostrar un mensaje de error y deshabilitar el botón de confirmación.
+                confirmButton.setEnabled(false);
+                Log.d("CalendarDialog", "Fecha seleccionada anterior al día actual");
+            } else {
+                // Si es posterior o igual al día actual, habilitar el botón de confirmación.
+                confirmButton.setEnabled(true);
+            }
 
+            // El TimePickerDialog se abre con los valores iniciales del día seleccionado.
+            TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (timeView, hourOfDay, minute) -> {
+                // Se actualizan la hora y minutos solo después de confirmar en el TimePicker.
                 selectedDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 selectedDate.set(Calendar.MINUTE, minute);
-                confirmButton.setEnabled(true);
             }, selectedDate.get(Calendar.HOUR_OF_DAY), selectedDate.get(Calendar.MINUTE), false);
+
             timePickerDialog.show();
         });
+
         confirmButton.setOnClickListener(v -> {
             Map<String, Object> cita = new HashMap<>();
             cita.put("empresaId", empresa.getUserID());
-            cita.put("fecha", selectedDate.getTime());
+            cita.put("fecha", selectedDate.getTime());  // Se guarda la fecha y hora seleccionada.
             createCita(cita);
             dialog.dismiss();
         });
+
         return dialog;
     }
 
@@ -99,4 +117,9 @@ public class CalendarDialog extends DialogFragment {
                     .addOnFailureListener(e -> Log.w("CalendarDialog", "Error al guardar cita", e));
         }
     }
+
+
+
+
+
 }

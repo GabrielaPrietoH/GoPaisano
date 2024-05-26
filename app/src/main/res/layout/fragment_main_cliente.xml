@@ -9,14 +9,6 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.proyectopaisanogo.Presentation.MainCliente">
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="405dp"
-        android:layout_height="731dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/fono_main"
-        tools:ignore="ContentDescription" />
-
     <!-- Contenedor principal -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +23,33 @@
             android:background="@color/colorPrimaryDark"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
+        <EditText
+            android:id="@+id/editTextEmpresa"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/buscar_empresa"
+            android:importantForAutofill="no"
+            tools:ignore="TextFields,TouchTargetSizeCheck" />
+
+        <ImageButton
+            android:id="@+id/buttonBuscar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/buscar"
+            android:scaleType="centerInside"
+            android:src="@drawable/lupa"
+            tools:ignore="TouchTargetSizeCheck" />
+
+
+    </LinearLayout>
         <!-- Contenido principal -->
         <FrameLayout
             android:layout_width="match_parent"
