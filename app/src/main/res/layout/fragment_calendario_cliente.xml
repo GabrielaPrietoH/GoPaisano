@@ -6,25 +6,23 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context="com.example.proyectopaisanogo.Presentation.CalendarioCliente">
 
-    <!-- Contenedor principal -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:ignore="UselessParent">
 
-        <!-- Toolbar -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarCalendarioCliente"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimaryDark"
             android:theme="@style/ThemeOverlay.AppCompat.Dark"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -102,25 +100,37 @@
 
         <TextView
             android:id="@+id/tvCitaInfoC"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/typo_irregular"
             android:padding="@dimen/size_extra_small"
             android:text="@string/detalles_de_la_cita"
             android:textColor="@color/white" />
 
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/icon_size_medium"
+            android:layout_marginTop="@dimen/size_extra_extra_small"
+            android:layout_marginStart="@dimen/center_margin"
+            android:layout_marginEnd="@dimen/center_margin"
+            android:background="@drawable/round_corner"
+            android:layout_marginBottom="@dimen/size_extra_extra_small">
+
             <ImageButton
                 android:id="@+id/buttonEliminarCita"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/eliminar_cita"
                 android:src="@drawable/borrar"
                 tools:ignore="TouchTargetSizeCheck" />
 
-        </LinearLayout>
-
+        </androidx.cardview.widget.CardView>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -39,7 +39,6 @@ import java.util.Locale;
 
 /**
  * Fragmento para gestionar y visualizar el calendario del cliente.
- *
  * Este fragmento permite a los clientes visualizar sus citas agendadas y navegar entre los meses.
  */
 public class CalendarioCliente extends Fragment implements CalendarAdapter.OnItemListener {
@@ -64,7 +63,6 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         db = FirebaseFirestore.getInstance();
         calendar = Calendar.getInstance();
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();

@@ -46,7 +46,6 @@ import java.util.Date;
 
 /**
  * Fragmento principal para la visualización de los clientes.
- *
  * Este fragmento muestra la información de las empresas registradas y permite a los clientes
  * interactuar con ellas a través de llamadas, correos electrónicos y direcciones. Además,
  * maneja la navegación a otros fragmentos como configuración y calendario.
@@ -70,7 +69,6 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         storageRef = FirebaseStorage.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
     }
