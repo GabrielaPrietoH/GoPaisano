@@ -103,26 +103,33 @@ public class SettingEmpresa extends Fragment {
 
         // ASignación de listeners para los botones
         btnSaveChanges.setOnClickListener(v -> {
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    if (user != null) {
-                        // Obtener datos actualizados del formulario
-                        String cif = cifText.getText().toString().trim();
-                        String nombreEmpresa = nombreText.getText().toString().trim();
-                        String direccion = direccionText.getText().toString().trim();
-                        String cp = cpText.getText().toString().trim();
-                        String telefono = telefonoText.getText().toString().trim();
-                        String newPassword = passwordText.getText().toString().trim();
+            FirebaseUser user = mAuth.getCurrentUser();
+            if (user != null) {
+                saveChanges();
+            } else {
+                showToast("Usuario no autenticado o ha ocurrido un error");
+            }
+        });
 
-                        // Mostrar diálogo para la contraseña actual
-                        showPasswordDialog(user, nombreEmpresa, direccion, cp, telefono, newPassword);
-                    } else {
-                        showToast("Usuario no autenticado o ha ocurrido un error");
-                    }
-                });
 
         btnSelectImage.setOnClickListener(v -> selectImage());
         btnCancel.setOnClickListener(v -> cancelUpload());
-        saveChanges();
+
+        // Añadir OnFocusChangeListener al campo de contraseña
+        passwordText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                FirebaseUser user = mAuth.getCurrentUser();
+                if (user != null) {
+                    String cif = cifText.getText().toString().trim();
+                    String nombreEmpresa = nombreText.getText().toString().trim();
+                    String direccion = direccionText.getText().toString().trim();
+                    String cp = cpText.getText().toString().trim();
+                    String telefono = telefonoText.getText().toString().trim();
+                    String newPassword = passwordText.getText().toString().trim();
+                    showPasswordDialog(user, cif, nombreEmpresa, direccion, cp, telefono, newPassword);
+                }
+            }
+        });
         setupToolbar(rootView);
         return rootView;
     }
@@ -164,7 +171,7 @@ public class SettingEmpresa extends Fragment {
      * @param telefono        El teléfono de la empresa.
      * @param newPassword     La nueva contraseña del usuario.
      */
-    private void showPasswordDialog(FirebaseUser user, String nombreEmpresa, String direccion, String cp, String telefono, String newPassword) {
+    private void showPasswordDialog(FirebaseUser user, String cif, String nombreEmpresa, String direccion, String cp, String telefono, String newPassword) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -172,25 +179,22 @@ public class SettingEmpresa extends Fragment {
         builder.setView(dialogView);
 
         final EditText input = dialogView.findViewById(R.id.password_input);
-
-        builder.setPositiveButton("Aceptar", null);
-        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.cancel());
+        final Button btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+        final Button btnCancel = dialogView.findViewById(R.id.btnCancel);
 
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setOnClickListener(v -> {
+        btnConfirm.setOnClickListener(v -> {
             String currentPassword = input.getText().toString().trim();
             if (!currentPassword.isEmpty()) {
-                reauthenticateUser(user, currentPassword, nombreEmpresa, direccion, cp, telefono, newPassword);
+                reauthenticateUser(user, currentPassword, cif, nombreEmpresa, direccion, cp, telefono, newPassword);
                 dialog.dismiss();
             } else {
                 showToast("La contraseña no puede estar vacía");
             }
         });
-        negativeButton.setOnClickListener(v -> dialog.dismiss());
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
     }
 
     /**
@@ -205,12 +209,12 @@ public class SettingEmpresa extends Fragment {
      * @param telefono        El teléfono de la empresa.
      * @param newPassword     La nueva contraseña del usuario.
      */
-    private void reauthenticateUser(FirebaseUser user, String currentPassword, String nombreEmpresa, String direccion, String cp, String telefono, String newPassword) {
+    private void reauthenticateUser(FirebaseUser user, String currentPassword, String cif, String nombreEmpresa, String direccion, String cp, String telefono, String newPassword) {
         AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), currentPassword);
 
         user.reauthenticate(credential).addOnCompleteListener(reauthTask -> {
             if (reauthTask.isSuccessful()) {
-                updateCompanyData( user, nombreEmpresa, direccion, cp, telefono, newPassword);
+                updateCompanyData(user, cif, nombreEmpresa, direccion, cp, telefono, newPassword);
             } else {
                 showToast("Error de reautenticación: " + reauthTask.getException().getMessage());
             }
@@ -228,9 +232,10 @@ public class SettingEmpresa extends Fragment {
      * @param telefono        El teléfono de la empresa.
      * @param newPassword     La nueva contraseña del usuario.
      */
-    private void updateCompanyData(FirebaseUser user, String nombreEmpresa, String direccion, String cp, String telefono, String newPassword) {
+    private void updateCompanyData(FirebaseUser user, String cif, String nombreEmpresa, String direccion, String cp, String telefono, String newPassword) {
         DocumentReference docRef = db.collection("registroEmpresa").document(user.getUid());
         Map<String, Object> updates = new HashMap<>();
+        updates.put("cif", cif);
         updates.put("nombreEmpresa", nombreEmpresa);
         updates.put("direccion", direccion);
         updates.put("cp", cp);
@@ -242,7 +247,6 @@ public class SettingEmpresa extends Fragment {
                     if (!newPassword.isEmpty()) {
                         showToast("Contraseña actualizada correctamente");
                     }
-                    navigateToFragment();
                 })
                 .addOnFailureListener(e -> showToast("Error al actualizar los datos: " + e.getMessage()));
     }
@@ -375,7 +379,7 @@ public class SettingEmpresa extends Fragment {
     private void navigateToFragment() {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, MainCliente.class, null)
+                .replace(R.id.fragment_container, MainEmpresa.class, null)
                 .setReorderingAllowed(true)
                 .commit();
     }

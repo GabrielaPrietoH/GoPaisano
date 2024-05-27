@@ -75,17 +75,31 @@ public class SettingCliente extends Fragment {
         btnSaveChanges = rootView.findViewById(R.id.buttonGuardarCambiosCliente);
 
         btnSaveChanges.setOnClickListener(v -> {
+            FirebaseUser user = mAuth.getCurrentUser();
+            if (user != null) {
             String nombreCliente = nombreText.getText().toString().trim();
             String direccion = direccionText.getText().toString().trim();
             String cp = cpText.getText().toString().trim();
             String telefono = telefonoText.getText().toString().trim();
             String newPassword = passwordText.getText().toString().trim();
-
-            FirebaseUser user = mAuth.getCurrentUser();
-            if (user != null) {
-                showPasswordDialog(user, nombreCliente, direccion, cp, telefono, newPassword);
+            updateUserData(user, nombreCliente, direccion, cp, telefono, newPassword);
+                navigateToFragment();
             } else {
                 showToast("Usuario no autenticado o ha ocurrido un error");
+            }
+        });
+        // Añadir OnFocusChangeListener al campo de contraseña
+        passwordText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                FirebaseUser user = mAuth.getCurrentUser();
+                if (user != null) {
+                    String nombreCliente = nombreText.getText().toString().trim();
+                    String direccion = direccionText.getText().toString().trim();
+                    String cp = cpText.getText().toString().trim();
+                    String telefono = telefonoText.getText().toString().trim();
+                    String newPassword = passwordText.getText().toString().trim();
+                    showPasswordDialog(user, nombreCliente, direccion, cp, telefono, newPassword);
+                }
             }
         });
         setupToolbar(rootView);
@@ -138,7 +152,7 @@ public class SettingCliente extends Fragment {
             String currentPassword = input.getText().toString().trim();
             if (!currentPassword.isEmpty()) {
                 reauthenticateUser(user, currentPassword, nombreCliente, direccion, cp, telefono, newPassword);
-                showToast("Contraseña cambiada exitosamente");
+                showToast("Contraseña correcta");
             } else {
                 showToast("La contraseña no puede estar vacía");
             }
@@ -205,7 +219,6 @@ public class SettingCliente extends Fragment {
                         }
                     });
                 }
-                navigateToFragment();
             } else {
                 showToast("Error al actualizar los datos: " + task.getException().getMessage());
             }
