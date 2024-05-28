@@ -9,14 +9,12 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.proyectopaisanogo.Presentation.MainCliente">
 
-    <!-- Contenedor principal -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Toolbar -->
-        <androidx.appcompat.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -47,7 +45,6 @@
             android:scaleType="centerInside"
             android:src="@drawable/lupa"
             tools:ignore="TouchTargetSizeCheck" />
-
 
     </LinearLayout>
 

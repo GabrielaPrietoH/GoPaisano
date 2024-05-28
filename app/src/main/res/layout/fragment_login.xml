@@ -50,7 +50,7 @@
             android:padding="10dp"
             android:text="@string/eres_cliente_o_empresa_largo"
             android:textAlignment="center"
-            android:textColor="#FF9800"
+            android:textColor="@color/orange"
             android:textSize="@dimen/letter_big"
             android:textStyle="bold"
             tools:ignore="TextContrastCheck" />

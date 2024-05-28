@@ -6,8 +6,7 @@
     android:orientation="vertical"
     tools:context="com.example.proyectopaisanogo.Presentation.RegistroCliente">
 
-    <!-- Toolbar -->
-    <androidx.appcompat.widget.Toolbar
+<androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarRegistroCliente"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"

@@ -62,26 +62,19 @@ public class CalendarDialog extends DialogFragment {
         CalendarView calendarView = view.findViewById(R.id.calendarViewDialog);
         Button confirmButton = view.findViewById(R.id.btnConfirmDate);
 
-        // Establecer listener para cambios de fecha
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
-            // Se ajusta la fecha tan pronto como se selecciona en el calendario.
             Calendar selectedDate = Calendar.getInstance();
             selectedDate.set(year, month, dayOfMonth);
 
-            // Verificar si la fecha seleccionada es anterior al día actual
             Calendar currentDate = Calendar.getInstance();
             if (selectedDate.before(currentDate)) {
-                // Si es anterior, mostrar un mensaje de error y deshabilitar el botón de confirmación.
                 confirmButton.setEnabled(false);
                 Log.d("CalendarDialog", "Fecha seleccionada anterior al día actual");
             } else {
-                // Si es posterior o igual al día actual, habilitar el botón de confirmación.
                 confirmButton.setEnabled(true);
             }
 
-            // El TimePickerDialog se abre con los valores iniciales del día seleccionado.
             TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (timeView, hourOfDay, minute) -> {
-                // Se actualizan la hora y minutos solo después de confirmar en el TimePicker.
                 selectedDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 selectedDate.set(Calendar.MINUTE, minute);
             }, selectedDate.get(Calendar.HOUR_OF_DAY), selectedDate.get(Calendar.MINUTE), false);
@@ -117,9 +110,4 @@ public class CalendarDialog extends DialogFragment {
                     .addOnFailureListener(e -> Log.w("CalendarDialog", "Error al guardar cita", e));
         }
     }
-
-
-
-
-
 }

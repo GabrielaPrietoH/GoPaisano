@@ -28,14 +28,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Inicializa el fragmento de la vista principal del cliente
         MainCliente recycleviewfragment = new MainCliente();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction1 = fragmentManager.beginTransaction();
         fragmentTransaction1.add(R.id.fragment_container, recycleviewfragment);
         fragmentTransaction1.commit();
 
-        // Inicializa el fragmento de login
+
         FragmentLogin login = new FragmentLogin();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, login);

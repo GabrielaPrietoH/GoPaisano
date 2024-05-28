@@ -1,5 +1,3 @@
-import org.gradle.api.internal.artifacts.dsl.dependencies.DependenciesExtensionModule.module
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
 
 plugins {
     alias(libs.plugins.androidApplication)
@@ -41,26 +39,18 @@ dependencies {
     implementation ("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.google.firebase:firebase-firestore")
-    implementation("com.firebaseui:firebase-ui-firestore:7.1.1")
+    implementation(libs.firebase.ui.firestore)
 
     implementation(libs.recyclerview)
     implementation(libs.recyclerview.selection)
     implementation (libs.glide)
 
-// Java language implementation
-    //noinspection UseTomlInstead
-    implementation ("androidx.navigation:navigation-fragment:2.8.0-alpha07")
-    //noinspection UseTomlInstead
-    implementation ("androidx.navigation:navigation-ui:2.8.0-alpha07")
-
-    // Feature module Support
-    //noinspection UseTomlInstead
-    implementation("androidx.navigation:navigation-dynamic-features-fragment:2.8.0-alpha07")
+    implementation (libs.navigation.fragment)
+    implementation (libs.navigation.ui)
+    implementation(libs.navigation.dynamic.features.fragment)
     implementation(libs.play.services.maps)
 
-    // Testing Navigation
-    //noinspection UseTomlInstead
-    androidTestImplementation("androidx.navigation:navigation-testing:2.8.0-alpha07")
+    androidTestImplementation(libs.navigation.testing)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

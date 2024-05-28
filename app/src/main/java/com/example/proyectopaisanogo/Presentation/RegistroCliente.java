@@ -84,7 +84,6 @@ public class RegistroCliente extends Fragment {
         String email = emailText.getText().toString().trim();
         String password = passwordText.getText().toString().trim();
 
-        // Validaciones para el registro
         if (nombreCliente.isEmpty()) {
             nombreText.setError("Nombre es obligatorio");
             nombreText.requestFocus();
@@ -115,7 +114,7 @@ public class RegistroCliente extends Fragment {
             passwordText.requestFocus();
             return;
         }
-        // Creación del usuario en Firebase Auth
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

@@ -40,6 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@color/blueDark"
+            android:textColor="@color/white"
             android:text="@string/aceptar"
             tools:ignore="ButtonStyle" />
 
@@ -49,6 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:background="@color/red"
+            android:textColor="@color/white"
             android:text="@string/cancelar"
             tools:ignore="ButtonStyle" />
     </LinearLayout>

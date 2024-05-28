@@ -49,8 +49,6 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
     private FirebaseFirestore db;
     private Calendar calendar;
     private String userID;
-    private Date selectedDate;
-    private String selectedCitaId;
     private ImageButton buttonEliminarCita;
 
 
@@ -121,7 +119,6 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
         RecyclerView recyclerView = view.findViewById(R.id.calendarRecyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 7));
 
-        // Inicializar la lista de días del mes
         daysOfMonth = new ArrayList<>();
         adapter = new CalendarAdapter(daysOfMonth, this);
         recyclerView.setAdapter(adapter);
@@ -241,7 +238,6 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
                                 String diaCita = new SimpleDateFormat("d", Locale.getDefault()).format(timestamp.toDate());
 
                                 if (diaCita.equals(dayText)) {
-                                    selectedCitaId = document.getId(); // Almacenar el ID de la cita
                                     String empresaId = document.getString("empresaId");
                                     assert empresaId != null;
                                     db.collection("registroEmpresa").document(empresaId).get()
@@ -272,12 +268,10 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
 
     private void eliminarCita() {
         if (userID != null) {
-            // Obtener las citas para ese cliente
             db.collection("Citas").whereEqualTo("userID", userID).get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
                         if (!queryDocumentSnapshots.isEmpty()) {
 
-                            // Crear el diálogo
                             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                             View dialogView = getLayoutInflater().inflate(R.layout.delete_cita_dialog, null);
                             builder.setView(dialogView);
@@ -285,13 +279,11 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
                             AlertDialog dialog = builder.create();
                             dialog.show();
 
-                            // Configurar los elementos del diálogo
                             LinearLayout citasLayout = dialogView.findViewById(R.id.citasLayout);
                             RadioGroup citasRadioGroup = new RadioGroup(getContext());
                             citasRadioGroup.setOrientation(LinearLayout.VERTICAL);
                             citasLayout.addView(citasRadioGroup);
 
-                            // Agregar cada cita como un RadioButton al diálogo
                             for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                                 Timestamp fechaTimestamp = documentSnapshot.getTimestamp("fecha");
                                 if (fechaTimestamp != null) {
@@ -316,20 +308,18 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
                                 }
                             }
 
-                            // Configurar los botones del diálogo
                             Button buttonCancelar = dialogView.findViewById(R.id.btnCancelBorrar);
                             Button buttonAceptar = dialogView.findViewById(R.id.btnBorrarCita);
 
                             buttonCancelar.setOnClickListener(v -> dialog.dismiss());
 
                             buttonAceptar.setOnClickListener(v -> {
-                                // Obtener la cita seleccionada
+
                                 int selectedRadioButtonId = citasRadioGroup.getCheckedRadioButtonId();
                                 RadioButton selectedRadioButton = dialog.findViewById(selectedRadioButtonId);
                                 if (selectedRadioButton != null) {
                                     String selectedCitaId = (String) selectedRadioButton.getTag();
 
-                                    // Eliminar la cita seleccionada
                                     db.collection("Citas").document(selectedCitaId).delete()
                                             .addOnSuccessListener(aVoid -> {
                                                 Log.d("CalendarioCliente", "Cita eliminada exitosamente");

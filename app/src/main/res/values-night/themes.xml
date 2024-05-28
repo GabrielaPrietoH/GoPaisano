@@ -1,17 +1,15 @@
-<!-- res/values-night/themes.xml -->
+
 <resources>
     <style name="Base.Theme.ProyectoPaisanoGo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Color primario -->
+
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryVariant">@color/amarillo</item>
         <item name="colorOnPrimary">@color/white</item>
 
-        <!-- Color secundario -->
         <item name="colorSecondary">@color/blue</item>
         <item name="colorSecondaryVariant">@color/white</item>
         <item name="colorOnSecondary">@color/amarillo</item>
 
-        <!-- Fondo -->
         <item name="android:windowBackground">@color/white</item>
         <item name="android:colorBackground">@color/white</item>
     </style>

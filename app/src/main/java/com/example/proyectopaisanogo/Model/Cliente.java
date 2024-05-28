@@ -4,7 +4,6 @@ import com.google.firebase.firestore.PropertyName;
 
 /**
  * Clase que representa a un cliente.
- *
  * Esta clase almacena la información básica de un cliente, incluyendo su código postal, dirección,
  * email, nombre, teléfono y userID.
  */

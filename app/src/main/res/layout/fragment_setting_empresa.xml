@@ -9,7 +9,6 @@
     tools:context=".Presentation.SettingEmpresa"
     android:background="@color/white">
 
-    <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarSettingEmpresa"
         android:layout_width="match_parent"
@@ -20,7 +19,6 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:layout_alignParentTop="true" />
 
-    <!-- Cabecera -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -64,7 +62,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Campos de Entrada -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -77,7 +74,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- CIF -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,7 +102,6 @@
                     android:importantForAutofill="no" />
             </LinearLayout>
 
-            <!-- Nombre de la Empresa -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -135,7 +130,6 @@
                     android:importantForAutofill="no" />
             </LinearLayout>
 
-            <!-- Dirección -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -164,7 +158,6 @@
                     android:importantForAutofill="no" />
             </LinearLayout>
 
-            <!-- Código Postal -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -193,7 +186,6 @@
                     android:importantForAutofill="no" />
             </LinearLayout>
 
-            <!-- Teléfono -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -251,7 +243,6 @@
                     android:importantForAutofill="no" />
             </LinearLayout>
 
-            <!-- Imagen de la Empresa -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -281,7 +272,6 @@
                     tools:ignore="ContentDescription" />
             </LinearLayout>
 
-            <!-- Botones para Imagen -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -312,7 +302,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Botón de Guardar Cambios -->
     <LinearLayout
         android:id="@+id/buttonContainer"
         android:layout_width="match_parent"

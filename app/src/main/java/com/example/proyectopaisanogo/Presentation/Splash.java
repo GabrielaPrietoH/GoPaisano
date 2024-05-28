@@ -9,7 +9,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.proyectopaisanogo.R;
 /**
  * Actividad de pantalla de presentación (Splash Screen).
@@ -30,24 +32,19 @@ public class Splash extends AppCompatActivity {
      */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Reproduce el archivo de sonido de presentación
         MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.modern_proyect);
         mediaPlayer.start();
 
-        // Establece la orientación vertical
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         setContentView(R.layout.activity_splash);
 
-        // Configura la animación del texto
         ImageView txt = (ImageView) findViewById(R.id.imageView2);
         Animation aniSlide = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.anim1);
         txt.startAnimation(aniSlide);
 
-        // Inicializa la barra de progreso
         splash_screenProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         splash_screenProgressBar.setMax(MAX_VALUE);
 
-        // Actualiza la barra de progreso
         new CountDownTimer(5000, 100) {
             int progreso = 1;
 
@@ -60,7 +57,6 @@ public class Splash extends AppCompatActivity {
             @Override
             public void onFinish() {
                 splash_screenProgressBar.setProgress(MAX_VALUE);
-
                 Intent mainIntent = new Intent().setClass(Splash.this, MainActivity.class);
                 startActivity(mainIntent);
 

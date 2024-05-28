@@ -60,7 +60,6 @@ public class LoginCliente extends Fragment {
         loginC.setOnClickListener(v -> {
             String email = emailText.getText().toString();
             String password = passText.getText().toString();
-            // Validaciones para el Login
             if (email.isEmpty()) {
                 emailText.setError("Campo obligatorio");
             }else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
@@ -76,7 +75,6 @@ public class LoginCliente extends Fragment {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 if (user != null) {
                                     String uid = user.getUid();
-                                    // Consulta a Firestore para obtener el documento del usuario y su rol
                                     FirebaseFirestore.getInstance().collection("registroCliente").document(uid)
                                             .get()
                                             .addOnCompleteListener(task1 -> {
@@ -105,7 +103,7 @@ public class LoginCliente extends Fragment {
                         });
             }
         });
-        // Configuración del listener para el botón de registro
+
         registroC = rootView.findViewById(R.id.buttonRegistroC);
         registroC.setOnClickListener(v -> {
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
@@ -115,7 +113,7 @@ public class LoginCliente extends Fragment {
                     .addToBackStack("nombre")
                     .commit();
         });
-        // Configuración del listener para el botón de Logout
+
         botonLogout.setOnClickListener(v -> {
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction()

@@ -101,7 +101,6 @@ public class SettingEmpresa extends Fragment {
 
         loadCompanyData();
 
-        // ASignación de listeners para los botones
         btnSaveChanges.setOnClickListener(v -> {
             FirebaseUser user = mAuth.getCurrentUser();
             if (user != null) {
@@ -115,7 +114,6 @@ public class SettingEmpresa extends Fragment {
         btnSelectImage.setOnClickListener(v -> selectImage());
         btnCancel.setOnClickListener(v -> cancelUpload());
 
-        // Añadir OnFocusChangeListener al campo de contraseña
         passwordText.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 FirebaseUser user = mAuth.getCurrentUser();

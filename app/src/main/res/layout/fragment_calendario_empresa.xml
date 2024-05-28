@@ -10,14 +10,12 @@
     tools:context="com.example.proyectopaisanogo.Presentation.CalendarioEmpresa"
     android:orientation="vertical">
 
-    <!-- Contenedor principal -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:ignore="UselessParent">
 
-        <!-- Toolbar -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarCalendarioEmpresa"
             android:layout_width="match_parent"
@@ -171,14 +169,12 @@
             android:textColor="@color/blueDark"
             android:textSize="16sp" />
 
-
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendarEmpresaRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 
     </LinearLayout>
 </LinearLayout>

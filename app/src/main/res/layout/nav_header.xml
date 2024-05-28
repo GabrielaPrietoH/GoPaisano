@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="176dp"
-        android:background="@drawable/img_5"
+        android:background="@drawable/img_menu"
         android:gravity="bottom"
         android:orientation="vertical"
         android:padding="16dp"

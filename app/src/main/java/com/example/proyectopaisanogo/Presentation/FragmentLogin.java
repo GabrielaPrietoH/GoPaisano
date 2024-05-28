@@ -31,7 +31,6 @@ public class FragmentLogin extends Fragment {
      public View onCreateView(LayoutInflater inflater, ViewGroup container,
              Bundle savedInstanceState) {
          View rootView = inflater.inflate(R.layout.fragment_login, container, false);
-         // Botón para el usuario cliente
          Button cliente = rootView.findViewById(R.id.buttonCliente);
          cliente.setOnClickListener(v -> {
              FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
@@ -41,7 +40,6 @@ public class FragmentLogin extends Fragment {
                      .addToBackStack("nombre")
                      .commit();
          });
-         // Botón para el usuario empresa
          Button empresa = rootView.findViewById(R.id.buttonEmpresa);
          empresa.setOnClickListener(v -> {
              FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();

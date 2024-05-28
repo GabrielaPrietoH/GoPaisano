@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">PaisanoGo</string>
     <string name="setting_empresas">Setting Empresas</string>
     <string name="modificar_cif">Modificar CIF</string>

@@ -51,12 +51,10 @@ public class LoginEmpresa extends Fragment {
         loginE = rootView.findViewById(R.id.buttonLoginE);
         registroE = rootView.findViewById(R.id.buttonRegistroE);
 
-        // Configuración del listener para el botón de inicio de sesión
         loginE.setOnClickListener(v -> {
             String email = emailText.getText().toString();
             String password = passText.getText().toString();
 
-            // Validaciones para el Login
             if (email.isEmpty()) {
                 emailText.setError("Campo obligatorio");
             }else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
@@ -76,13 +74,11 @@ public class LoginEmpresa extends Fragment {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 if (user != null) {
                                     String uid = user.getUid();
-                                    // Consulta a Firestore para obtener el documento del usuario
                                     FirebaseFirestore.getInstance().collection("registroEmpresa").document(uid)
                                             .get()
                                             .addOnCompleteListener(task1 -> {
                                                 if (task1.isSuccessful() && task1.getResult() != null) {
                                                     String userRole = task1.getResult().getString("role");
-                                                    // Verifica si el rol es 'empresa'
                                                     if ("empresa".equals(userRole)) {
                                                         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                                                         fragmentManager.beginTransaction()
@@ -105,7 +101,7 @@ public class LoginEmpresa extends Fragment {
                         });
             }
         });
-        // Configuración del listener para el botón de registro
+
         registroE.setOnClickListener(v -> {
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction()
@@ -114,7 +110,7 @@ public class LoginEmpresa extends Fragment {
                     .addToBackStack("nombre")
                     .commit();
         });
-        // Configuración del listener para el botón de Logout
+
         botonLogout.setOnClickListener(v -> {
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction()

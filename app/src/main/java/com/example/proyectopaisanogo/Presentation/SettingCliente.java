@@ -88,7 +88,7 @@ public class SettingCliente extends Fragment {
                 showToast("Usuario no autenticado o ha ocurrido un error");
             }
         });
-        // Añadir OnFocusChangeListener al campo de contraseña
+
         passwordText.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 FirebaseUser user = mAuth.getCurrentUser();

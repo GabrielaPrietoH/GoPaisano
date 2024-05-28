@@ -9,7 +9,6 @@
     tools:context=".Presentation.SettingCliente"
     android:background="@color/white">
 
-    <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarSettingCliente"
         android:layout_width="match_parent"
@@ -20,7 +19,6 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:layout_alignParentTop="true" />
 
-    <!-- Cabecera -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -63,7 +61,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Campos de Entrada -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -76,7 +73,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Nombre -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -105,7 +101,6 @@
                     android:importantForAutofill="no" />
             </LinearLayout>
 
-            <!-- Dirección -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -134,7 +129,6 @@
                     android:importantForAutofill="no" />
             </LinearLayout>
 
-            <!-- Código Postal -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -163,7 +157,6 @@
                     android:importantForAutofill="no" />
             </LinearLayout>
 
-            <!-- Teléfono -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -192,7 +185,6 @@
                     android:importantForAutofill="no" />
             </LinearLayout>
 
-            <!-- Contraseña -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -224,7 +216,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Botón de Guardar Cambios -->
     <LinearLayout
         android:id="@+id/buttonContainer"
         android:layout_width="match_parent"
