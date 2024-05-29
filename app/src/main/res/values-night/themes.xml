@@ -4,13 +4,13 @@
 
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryVariant">@color/amarillo</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/colorPrimaryDark</item>
 
         <item name="colorSecondary">@color/blue</item>
-        <item name="colorSecondaryVariant">@color/white</item>
-        <item name="colorOnSecondary">@color/amarillo</item>
+        <item name="colorSecondaryVariant">@color/blueDark</item>
+        <item name="colorOnSecondary">@color/blue</item>
 
         <item name="android:windowBackground">@color/white</item>
-        <item name="android:colorBackground">@color/white</item>
+        <item name="android:colorBackground">@color/colorPrimaryDark</item>
     </style>
 </resources>

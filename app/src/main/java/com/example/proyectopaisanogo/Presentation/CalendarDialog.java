@@ -62,17 +62,13 @@ public class CalendarDialog extends DialogFragment {
         CalendarView calendarView = view.findViewById(R.id.calendarViewDialog);
         Button confirmButton = view.findViewById(R.id.btnConfirmDate);
 
+        Calendar currentDate = Calendar.getInstance();
+        calendarView.setMinDate(currentDate.getTimeInMillis());
+
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
-            Calendar selectedDate = Calendar.getInstance();
             selectedDate.set(year, month, dayOfMonth);
 
-            Calendar currentDate = Calendar.getInstance();
-            if (selectedDate.before(currentDate)) {
-                confirmButton.setEnabled(false);
-                Log.d("CalendarDialog", "Fecha seleccionada anterior al día actual");
-            } else {
-                confirmButton.setEnabled(true);
-            }
+            confirmButton.setEnabled(!selectedDate.before(currentDate));
 
             TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (timeView, hourOfDay, minute) -> {
                 selectedDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -85,7 +81,7 @@ public class CalendarDialog extends DialogFragment {
         confirmButton.setOnClickListener(v -> {
             Map<String, Object> cita = new HashMap<>();
             cita.put("empresaId", empresa.getUserID());
-            cita.put("fecha", selectedDate.getTime());  // Se guarda la fecha y hora seleccionada.
+            cita.put("fecha", selectedDate.getTime());
             createCita(cita);
             dialog.dismiss();
         });
@@ -104,7 +100,6 @@ public class CalendarDialog extends DialogFragment {
             String userID = currentUser.getUid();
             cita.put("userID", userID);
 
-            Log.d("CalendarDialog", "Guardando cita con empresa ID: " + empresa.getUserID() + ", Usuario ID: " + userID);
             db.collection("Citas").add(cita)
                     .addOnSuccessListener(documentReference -> Log.d("CalendarDialog", "Cita guardada con éxito"))
                     .addOnFailureListener(e -> Log.w("CalendarDialog", "Error al guardar cita", e));
