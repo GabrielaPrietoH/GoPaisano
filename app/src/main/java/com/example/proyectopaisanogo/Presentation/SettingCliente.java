@@ -82,6 +82,34 @@ public class SettingCliente extends Fragment {
             String cp = cpText.getText().toString().trim();
             String telefono = telefonoText.getText().toString().trim();
             String newPassword = passwordText.getText().toString().trim();
+
+                // Validaciones
+                if (nombreCliente.isEmpty()) {
+                    nombreText.setError("Nombre es obligatorio");
+                    nombreText.requestFocus();
+                    return;
+                }
+                if (direccion.isEmpty()) {
+                    direccionText.setError("Dirección es obligatoria");
+                    direccionText.requestFocus();
+                    return;
+                }
+                if (cp.isEmpty() || !cp.matches("\\d{5}")) {
+                    cpText.setError("Código Postal inválido");
+                    cpText.requestFocus();
+                    return;
+                }
+                if (telefono.isEmpty() || !telefono.matches("\\d{9}")) {
+                    telefonoText.setError("Teléfono inválido");
+                    telefonoText.requestFocus();
+                    return;
+                }
+                if (!newPassword.isEmpty() && newPassword.length() < 6) {
+                    passwordText.setError("La contraseña debe tener al menos 6 caracteres");
+                    passwordText.requestFocus();
+                    return;
+                }
+
             updateUserData(user, nombreCliente, direccion, cp, telefono, newPassword);
                 navigateToFragment();
             } else {
