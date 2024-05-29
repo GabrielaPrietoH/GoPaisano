@@ -247,14 +247,16 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
                 .commit();
     }
 
+    /*
     private void buscarEmpresas(String nombreEmpresa) {
         Query query;
         if (nombreEmpresa.isEmpty()) {
             query = firestore.collection("registroEmpresa");
         } else {
             query = firestore.collection("registroEmpresa")
-                    .whereGreaterThanOrEqualTo("nombreEmpresa", nombreEmpresa)
-                    .whereLessThanOrEqualTo("nombreEmpresa", nombreEmpresa + "\uf8ff");
+                    .orderBy("nombreEmpresa")
+                    .startAt(nombreEmpresa)
+                    .endAt(nombreEmpresa + "\uf8ff");
         }
 
         FirestoreRecyclerOptions<Empresa> options = new FirestoreRecyclerOptions.Builder<Empresa>()
@@ -263,6 +265,27 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
 
         firestoreAdapter.updateOptions(options);
     }
+
+     */
+    private void buscarEmpresas(String nombreEmpresa) {
+        Query query;
+        if (nombreEmpresa.isEmpty()) {
+            query = firestore.collection("registroEmpresa");
+        } else {
+            // Hacer la búsqueda insensible a mayúsculas y minúsculas
+            query = firestore.collection("registroEmpresa")
+                    .orderBy("nombreEmpresaLowerCase")
+                    .startAt(nombreEmpresa.toLowerCase())
+                    .endAt(nombreEmpresa.toLowerCase() + "\uf8ff");
+        }
+
+        FirestoreRecyclerOptions<Empresa> options = new FirestoreRecyclerOptions.Builder<Empresa>()
+                .setQuery(query, Empresa.class)
+                .build();
+
+        firestoreAdapter.updateOptions(options);
+    }
+
 
 
     /**

@@ -176,6 +176,7 @@ public class RegistroEmpresa extends Fragment {
                             Map<String, Object> empresa = new HashMap<>();
                             empresa.put("cif", cif);
                             empresa.put("nombreEmpresa", nombreEmpresa);
+                            empresa.put("nombreEmpresaLowerCase", nombreEmpresa.toLowerCase());
                             empresa.put("direccion", direccion);
                             empresa.put("cp", cp);
                             empresa.put("telefono", telefono);
@@ -193,7 +194,7 @@ public class RegistroEmpresa extends Fragment {
                                     });
                         }
                     } else {
-                        String errorMessage; 
+                        String errorMessage;
                         try {
                             throw task.getException();
                         } catch (FirebaseAuthInvalidCredentialsException e) {

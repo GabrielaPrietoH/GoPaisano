@@ -235,6 +235,7 @@ public class SettingEmpresa extends Fragment {
         Map<String, Object> updates = new HashMap<>();
         updates.put("cif", cif);
         updates.put("nombreEmpresa", nombreEmpresa);
+        updates.put("nombreEmpresaLowerCase", nombreEmpresa.toLowerCase());
         updates.put("direccion", direccion);
         updates.put("cp", cp);
         updates.put("telefono", telefono);
@@ -298,6 +299,7 @@ public class SettingEmpresa extends Fragment {
             Map<String, Object> updates = new HashMap<>();
             updates.put("cif", cif);
             updates.put("nombreEmpresa", nombreEmpresa);
+            updates.put("nombreEmpresaLowerCase", nombreEmpresa.toLowerCase());
             updates.put("direccion", direccion);
             updates.put("cp", cp);
             updates.put("telefono", telefono);
