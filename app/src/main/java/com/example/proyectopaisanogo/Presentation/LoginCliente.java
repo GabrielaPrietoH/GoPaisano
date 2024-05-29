@@ -98,7 +98,7 @@ public class LoginCliente extends Fragment {
                                 }
                             } else {
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(getContext(), "Error de autenticación", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Usuario no registrado", Toast.LENGTH_SHORT).show();
                             }
                         });
             }

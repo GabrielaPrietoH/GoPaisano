@@ -89,14 +89,9 @@ public class RegistroCliente extends Fragment {
             nombreText.requestFocus();
             return;
         }
-        if (direccion.isEmpty()) {
-            direccionText.setError("Dirección es obligatoria");
-            direccionText.requestFocus();
-            return;
-        }
-        if (cp.isEmpty() || !cp.matches("\\d{5}")) {
-            cpText.setError("Código Postal inválido");
-            cpText.requestFocus();
+        if (password.isEmpty() || password.length() < 6) {
+            passwordText.setError("La contraseña debe tener al menos 6 caracteres");
+            passwordText.requestFocus();
             return;
         }
         if (telefono.isEmpty() || !telefono.matches("\\d{9}")) {
@@ -109,9 +104,14 @@ public class RegistroCliente extends Fragment {
             emailText.requestFocus();
             return;
         }
-        if (password.isEmpty() || password.length() < 6) {
-            passwordText.setError("La contraseña debe tener al menos 6 caracteres");
-            passwordText.requestFocus();
+        if (direccion.isEmpty()) {
+            direccionText.setError("Dirección es obligatoria");
+            direccionText.requestFocus();
+            return;
+        }
+        if (cp.isEmpty() || !cp.matches("\\d{5}")) {
+            cpText.setError("Código Postal inválido");
+            cpText.requestFocus();
             return;
         }
 
