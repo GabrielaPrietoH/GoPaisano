@@ -20,6 +20,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.example.proyectopaisanogo.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -190,7 +193,21 @@ public class RegistroEmpresa extends Fragment {
                                     });
                         }
                     } else {
-                        Toast.makeText(getContext(), "Error al registrar el usuario", Toast.LENGTH_SHORT).show();
+                        String errorMessage; 
+                        try {
+                            throw task.getException();
+                        } catch (FirebaseAuthInvalidCredentialsException e) {
+                            errorMessage = "Correo electrónico inválido.";
+                            emailText.setError(errorMessage);
+                            emailText.requestFocus();
+                        } catch (FirebaseAuthUserCollisionException e) {
+                            errorMessage = "El correo electrónico ya está en uso.";
+                            emailText.setError(errorMessage);
+                            emailText.requestFocus();
+                        } catch (Exception e) {
+                            errorMessage = "Error al registrar: " + e.getMessage();
+                        }
+                        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
                     }
                 });
     }

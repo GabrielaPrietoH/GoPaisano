@@ -106,14 +106,6 @@ public class RegistroCliente extends Fragment {
             emailText.requestFocus();
             return;
         }
-        /*
-        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailText.setError("Correo electrónico inválido");
-            emailText.requestFocus();
-            return;
-        }
-
-         */
         if (direccion.isEmpty()) {
             direccionText.setError("Dirección es obligatoria");
             direccionText.requestFocus();
@@ -162,19 +154,17 @@ public class RegistroCliente extends Fragment {
                             throw task.getException();
                         } catch (FirebaseAuthInvalidCredentialsException e) {
                             errorMessage = "Correo electrónico inválido.";
+                            emailText.setError(errorMessage);
+                            emailText.requestFocus();
                         } catch (FirebaseAuthUserCollisionException e) {
                             errorMessage = "El correo electrónico ya está en uso.";
+                            emailText.setError(errorMessage);
+                            emailText.requestFocus();
                         } catch (Exception e) {
                             errorMessage = "Error al registrar: " + e.getMessage();
                         }
                         Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
                     }
-                        /*
-                    } else {
-                        Toast.makeText(getContext(), "Error al registrar", Toast.LENGTH_SHORT).show();
-                    }
-
-                         */
                 });
     }
 
