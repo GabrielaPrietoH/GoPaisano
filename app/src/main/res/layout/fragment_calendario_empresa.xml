@@ -90,17 +90,20 @@
             android:textStyle="bold" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tvCitaInfoE"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/typo_irregular"
-        android:padding="@dimen/size_extra_small"
-        android:text="@string/detalles_de_la_cita"
-        android:background="@color/blueDark"
-        android:textColor="@color/white" />
-
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:background="@color/blueDark">
+            <TextView
+                android:id="@+id/tvCitaInfoE"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/typo_irregular"
+                android:padding="@dimen/size_extra_small"
+                android:text="@string/detalles_de_la_cita"
+                android:background="@color/blueDark"
+                android:textColor="@color/white" />
+        </ScrollView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

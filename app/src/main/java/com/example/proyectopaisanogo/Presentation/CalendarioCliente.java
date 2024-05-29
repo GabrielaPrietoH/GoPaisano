@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -136,11 +137,13 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
         previousMonthButton.setOnClickListener(v -> {
             calendar.add(Calendar.MONTH, -1);
             updateCalendar();
+            informacion.setText("Detalles de la cita");
         });
 
         nextMonthButton.setOnClickListener(v -> {
             calendar.add(Calendar.MONTH, 1);
             updateCalendar();
+            informacion.setText("Detalles de la cita");
         });
     }
 
@@ -208,6 +211,10 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
                                 }
                             }
                         }
+                        if(!task.getResult().isEmpty())
+                        {
+                            buttonEliminarCita.setVisibility(View.VISIBLE);
+                        }
                         adapter.notifyDataSetChanged();
                     }
                 });
@@ -236,8 +243,9 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
                                 SimpleDateFormat sdf = new SimpleDateFormat("d 'de' MMMM 'de' yyyy, h:mm a", Locale.getDefault());
                                 String fechaFormateada = sdf.format(timestamp.toDate());
                                 String diaCita = new SimpleDateFormat("d", Locale.getDefault()).format(timestamp.toDate());
+                                String mesCita = new SimpleDateFormat("M", Locale.getDefault()).format(timestamp.toDate());
 
-                                if (diaCita.equals(dayText)) {
+                                if (diaCita.equals(dayText) && mesCita.equals(String.valueOf(calendar.get(Calendar.MONTH) + 1))) {
                                     String empresaId = document.getString("empresaId");
                                     assert empresaId != null;
                                     db.collection("registroEmpresa").document(empresaId).get()
@@ -245,10 +253,12 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
                                                 if (empresaDoc.exists()) {
                                                     Empresa empresa = empresaDoc.toObject(Empresa.class);
                                                     assert empresa != null;
-                                                    String detallesEmpresa = String.format("Empresa: %s Teléfono: %s", empresa.getNombreEmpresa(), empresa.getTelefono());
-                                                    citasInfo.append(fechaFormateada).append("\n").append(detallesEmpresa).append("\n");
+                                                    String detallesEmpresa = String.format("- Empresa: %s\n- Teléfono: %s", empresa.getNombreEmpresa(), empresa.getTelefono());
+                                                    citasInfo.append("\n--------------------------------------------------------------------------\n");
+                                                    citasInfo.append(fechaFormateada).append("\n").append(detallesEmpresa);
+                                                    citasInfo.append("\n--------------------------------------------------------------------------");
                                                     informacion.setText(String.format("%s%s\nCitas:\n%s", getString(R.string.dia_seleccionado), dayText, citasInfo));
-                                                    buttonEliminarCita.setVisibility(View.VISIBLE);
+
                                                 }
                                             })
                                             .addOnFailureListener(e -> Log.e("calendarioCliente", "Error al cargar datos de la empresa", e));
@@ -258,7 +268,6 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
                         }
                         if (!citaEncontrada) {
                             informacion.setText(String.format("%s%s\nNo hay citas.", getString(R.string.dia_seleccionado), dayText));
-                            buttonEliminarCita.setVisibility(View.GONE); // Ocultar el botón si no hay citas
                         }
                     } else {
                         informacion.setText(String.format("%s%s\nNo hay citas.", getString(R.string.dia_seleccionado), dayText + getString(R.string.error_al_buscar_citas)));
@@ -280,9 +289,11 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
                             dialog.show();
 
                             LinearLayout citasLayout = dialogView.findViewById(R.id.citasLayout);
+                            ScrollView scrollview = new ScrollView(getContext());
                             RadioGroup citasRadioGroup = new RadioGroup(getContext());
                             citasRadioGroup.setOrientation(LinearLayout.VERTICAL);
-                            citasLayout.addView(citasRadioGroup);
+                            scrollview.addView(citasRadioGroup);
+                            citasLayout.addView(scrollview);
 
                             for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                                 Timestamp fechaTimestamp = documentSnapshot.getTimestamp("fecha");

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -61,7 +62,7 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
     }
 
     /**
-     * Método que nicializa la vista del fragmento.
+     * Método que inicializa la vista del fragmento.
      *
      * @param inflater El LayoutInflater que se usa para inflar la vista del fragmento.
      * @param container  El ViewGroup padre al que se adjunta la vista del fragmento.
@@ -113,6 +114,8 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
                         fetchCitasDeEmpresa();
                     } else {
                         Log.e("fetchCitas", "Usuario no encontrado en registroEmpresa ni en registroCliente");
+                        // Toast para indicar que el usuario no fue encontrado
+                        Toast.makeText(getContext(), "Usuario no encontrado", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -140,6 +143,9 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
                             }
                         }
                         adapter.notifyDataSetChanged();
+                    } else {
+                        // Toast para indicar que no se pudieron obtener las citas
+                        Toast.makeText(getContext(), "Error al obtener citas", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -168,10 +174,12 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
         previousMonthButton.setOnClickListener(v -> {
             calendar.add(Calendar.MONTH, -1);
             updateCalendar();
+            informacion.setText("Detalles de la cita");
         });
         nextMonthButton.setOnClickListener(v -> {
             calendar.add(Calendar.MONTH, 1);
             updateCalendar();
+            informacion.setText("Detalles de la cita");
         });
     }
     /**
@@ -224,19 +232,27 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
                                 SimpleDateFormat sdf = new SimpleDateFormat("d 'de' MMMM 'de' yyyy, h:mm a", Locale.getDefault());
                                 String fechaFormateada = sdf.format(timestamp.toDate());
                                 String diaCita = new SimpleDateFormat("d", Locale.getDefault()).format(timestamp.toDate());
-                                if (diaCita.equals(dayText)) {
+                                String mesCita = new SimpleDateFormat("M", Locale.getDefault()).format(timestamp.toDate());
+
+                                if (diaCita.equals(dayText) && mesCita.equals(String.valueOf(calendar.get(Calendar.MONTH) + 1))) {
                                     String clienteId = document.getString("userID");
                                     assert clienteId != null;
                                     db.collection("registroCliente").document(clienteId).get().addOnSuccessListener(clienteDoc -> {
                                         if (clienteDoc.exists()) {
                                             Cliente cliente = clienteDoc.toObject(Cliente.class);
                                             assert cliente != null;
-                                            String detallesEmpresa = String.format("Cliente: %s\nTeléfono: %s",
+                                            String detallesEmpresa = String.format("- Cliente: %s\n- Teléfono: %s",
                                                     cliente.getNombreCliente(), cliente.getTelefono());
-                                            citasInfo.append(fechaFormateada).append("\n").append(detallesEmpresa).append("\n");
+                                            citasInfo.append("\n--------------------------------------------------------------------------\n");
+                                            citasInfo.append(fechaFormateada).append("\n").append(detallesEmpresa);
+                                            citasInfo.append("\n--------------------------------------------------------------------------");
                                             informacion.setText(String.format("%s%s\nCitas:\n%s", getString(R.string.dia_seleccionado), dayText, citasInfo));
                                         }
-                                    }).addOnFailureListener(e -> Log.e("calendarioEmpresa", "Error al cargar datos del cliente", e));
+                                    }).addOnFailureListener(e -> {
+                                        Log.e("calendarioEmpresa", "Error al cargar datos del cliente", e);
+                                        // Toast para indicar error al cargar los datos del cliente
+                                        Toast.makeText(getContext(), "Error al cargar datos del cliente", Toast.LENGTH_SHORT).show();
+                                    });
                                 }
                             }
                         }
@@ -245,7 +261,10 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
                         }
                     } else {
                         informacion.setText(String.format("%s%s\nNo hay citas.", getString(R.string.dia_seleccionado), dayText + getString(R.string.error_al_buscar_citas)));
+                        // Toast para indicar error al buscar las citas
+                        Toast.makeText(getContext(), "Error al buscar las citas", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 }
+
