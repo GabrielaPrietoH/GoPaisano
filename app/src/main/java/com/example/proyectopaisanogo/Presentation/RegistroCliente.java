@@ -19,6 +19,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.example.proyectopaisanogo.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
@@ -99,11 +101,19 @@ public class RegistroCliente extends Fragment {
             telefonoText.requestFocus();
             return;
         }
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() || !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            emailText.setError("Correo electrónico inválido");
+            emailText.requestFocus();
+            return;
+        }
+        /*
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailText.setError("Correo electrónico inválido");
             emailText.requestFocus();
             return;
         }
+
+         */
         if (direccion.isEmpty()) {
             direccionText.setError("Dirección es obligatoria");
             direccionText.requestFocus();
@@ -147,8 +157,24 @@ public class RegistroCliente extends Fragment {
                                     });
                         }
                     } else {
+                        String errorMessage;
+                        try {
+                            throw task.getException();
+                        } catch (FirebaseAuthInvalidCredentialsException e) {
+                            errorMessage = "Correo electrónico inválido.";
+                        } catch (FirebaseAuthUserCollisionException e) {
+                            errorMessage = "El correo electrónico ya está en uso.";
+                        } catch (Exception e) {
+                            errorMessage = "Error al registrar: " + e.getMessage();
+                        }
+                        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
+                    }
+                        /*
+                    } else {
                         Toast.makeText(getContext(), "Error al registrar", Toast.LENGTH_SHORT).show();
                     }
+
+                         */
                 });
     }
 
