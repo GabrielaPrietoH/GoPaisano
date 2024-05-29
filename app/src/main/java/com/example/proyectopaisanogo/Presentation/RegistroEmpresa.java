@@ -230,14 +230,13 @@ public class RegistroEmpresa extends Fragment {
                         db.collection("registroEmpresa").document(uid).update("imageUrl", imageUrl)
                                 .addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful()) {
-                                        Toast.makeText(getContext(), "Registro y subida de imagen exitosos", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
                                         goToMainEmpresaFragment();
                                     } else {
-                                        Toast.makeText(getContext(), "Error al guardar URL de la imagen", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(), "Error al subir la imagen", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     });
-                    Toast.makeText(getContext(), "Image uploaded successfully", Toast.LENGTH_SHORT).show();
                     goToMainEmpresaFragment();
                 } else {
                     Toast.makeText(getContext(), "Error al subir la imagen", Toast.LENGTH_SHORT).show();
