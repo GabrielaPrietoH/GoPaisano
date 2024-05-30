@@ -33,7 +33,6 @@ import java.util.Calendar;
 import java.util.Locale;
 /**
  * Fragmento para gestionar y visualizar el calendario de la empresa.
- *
  * Este fragmento permite a las empresas visualizar sus citas agendadas y navegar entre los meses.
  */
 public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnItemListener  {
@@ -74,7 +73,6 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendario_empresa, container, false);
-        View v = inflater.inflate(R.layout.calendar_dialog, container, false);
 
         setupToolbar(view);
         setupRecyclerView(view);
@@ -115,7 +113,6 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
                         fetchCitasDeEmpresa();
                     } else {
                         Log.e("fetchCitas", "Usuario no encontrado en registroEmpresa ni en registroCliente");
-                        // Toast para indicar que el usuario no fue encontrado
                         Toast.makeText(getContext(), "Usuario no encontrado", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -175,12 +172,12 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
         previousMonthButton.setOnClickListener(v -> {
             calendar.add(Calendar.MONTH, -1);
             updateCalendar();
-            informacion.setText("Detalles de la cita");
+            informacion.setText(R.string.detalles_de_la_cita);
         });
         nextMonthButton.setOnClickListener(v -> {
             calendar.add(Calendar.MONTH, 1);
             updateCalendar();
-            informacion.setText("Detalles de la cita");
+            informacion.setText(R.string.detalles_de_la_cita);
         });
     }
     /**
@@ -251,7 +248,6 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
                                         }
                                     }).addOnFailureListener(e -> {
                                         Log.e("calendarioEmpresa", "Error al cargar datos del cliente", e);
-                                        // Toast para indicar error al cargar los datos del cliente
                                         Toast.makeText(getContext(), "Error al cargar datos del cliente", Toast.LENGTH_SHORT).show();
                                     });
                                 }
@@ -262,7 +258,6 @@ public class CalendarioEmpresa extends Fragment  implements  CalendarAdapter.OnI
                         }
                     } else {
                         informacion.setText(String.format("%s%s\nNo hay citas.", getString(R.string.dia_seleccionado), dayText + getString(R.string.error_al_buscar_citas)));
-                        // Toast para indicar error al buscar las citas
                         Toast.makeText(getContext(), "Error al buscar las citas", Toast.LENGTH_SHORT).show();
                     }
                 });

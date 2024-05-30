@@ -1,5 +1,6 @@
 package com.example.proyectopaisanogo.Presentation;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -24,7 +25,6 @@ import java.util.Map;
 
 /**
  * DialogFragment para seleccionar una fecha y hora en el calendario.
- *
  * Este diálogo permite al usuario seleccionar una fecha y una hora para agendar
  * una cita con una empresa específica. Faciltia la interacción con un calendarView y un
  * TimePickerDialog. Una vez seleccionada la fecha y hora, la cita se guarda en Firestore en
@@ -57,7 +57,7 @@ public class CalendarDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        View view = getLayoutInflater().inflate(R.layout.calendar_dialog, null);
+        @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.calendar_dialog, null);
         dialog.setContentView(view);
 
         CalendarView calendarView = view.findViewById(R.id.calendarViewDialog);
@@ -109,14 +109,9 @@ public class CalendarDialog extends DialogFragment {
             cita.put("userID", userID);
 
             db.collection("Citas").add(cita)
-                    .addOnSuccessListener(documentReference -> {
-                        Log.d("CalendarDialog", "Cita guardada con éxito");
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.w("CalendarDialog", "Error al guardar cita", e);
-                    });
+                    .addOnSuccessListener(documentReference -> Log.d("CalendarDialog", "Cita guardada con éxito"))
+                    .addOnFailureListener(e -> Log.w("CalendarDialog", "Error al guardar cita", e));
         } else {
-            // Toast para indicar que el usuario no está autenticado
             Toast.makeText(getContext(), "Usuario no autenticado", Toast.LENGTH_SHORT).show();
         }
     }

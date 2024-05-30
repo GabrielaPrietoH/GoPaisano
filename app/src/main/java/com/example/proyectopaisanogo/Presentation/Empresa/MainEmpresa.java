@@ -99,7 +99,6 @@ public class MainEmpresa extends Fragment implements NavigationView.OnNavigation
             NavigationView navigationView = v.findViewById(R.id.navView);
             navigationView.setNavigationItemSelectedListener(this);
 
-            // Consulta para obtener la empresa del usuario actual.
             Query query = firestore.collection("registroEmpresa").whereEqualTo("userID", userID);
             FirestoreRecyclerOptions<Empresa> options = new FirestoreRecyclerOptions.Builder<Empresa>()
                     .setQuery(query, Empresa.class)

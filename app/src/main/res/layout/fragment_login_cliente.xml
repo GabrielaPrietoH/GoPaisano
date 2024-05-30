@@ -59,7 +59,7 @@
             tools:ignore="Autofill" />
 
         <Button
-            android:id="@+id/buttonLoginC"
+            android:id="@+id/buttonLoginCliente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/icon_size_medium"
@@ -81,7 +81,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/buttonRegistroC"
+            android:id="@+id/buttonRegistroCliente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/icon_size_medium"

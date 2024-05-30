@@ -11,24 +11,28 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
 import com.example.proyectopaisanogo.R;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Fragmento para el registro de nuevos clientes.
- *
  * Este fragmento permite a los clientes registrarse proporcionando su información personal
  * y creando una cuenta en Firebase Authentication. Los datos del cliente se almacenan en Firestore.
  */
@@ -74,7 +78,6 @@ public class RegistroCliente extends Fragment {
 
     /**
      * Método para registrar un cliente.
-     *
      * Este método realiza las validaciones de los campos y, si son correctos, crea una cuenta
      * en Firebase Authentication y guarda los datos del cliente en Firestore.
      */
@@ -86,34 +89,7 @@ public class RegistroCliente extends Fragment {
         String email = emailText.getText().toString().trim();
         String password = passwordText.getText().toString().trim();
 
-        if (nombreCliente.isEmpty()) {
-            nombreText.setError("Nombre es obligatorio");
-            nombreText.requestFocus();
-            return;
-        }
-        if (password.isEmpty() || password.length() < 6) {
-            passwordText.setError("La contraseña debe tener al menos 6 caracteres");
-            passwordText.requestFocus();
-            return;
-        }
-        if (telefono.isEmpty() || !telefono.matches("\\d{9}")) {
-            telefonoText.setError("Teléfono inválido");
-            telefonoText.requestFocus();
-            return;
-        }
-        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() || !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            emailText.setError("Correo electrónico inválido");
-            emailText.requestFocus();
-            return;
-        }
-        if (direccion.isEmpty()) {
-            direccionText.setError("Dirección es obligatoria");
-            direccionText.requestFocus();
-            return;
-        }
-        if (cp.isEmpty() || !cp.matches("\\d{5}")) {
-            cpText.setError("Código Postal inválido");
-            cpText.requestFocus();
+        if (!validateClientInputs(nombreCliente, direccion, cp, telefono, email, password)) {
             return;
         }
 
@@ -124,48 +100,113 @@ public class RegistroCliente extends Fragment {
                         if (user != null) {
                             String uid = user.getUid();
                             String userEmail = user.getEmail();
-                            Map<String, Object> cliente = new HashMap<>();
-                            cliente.put("nombreCliente", nombreCliente);
-                            cliente.put("direccion", direccion);
-                            cliente.put("cp", cp);
-                            cliente.put("telefono", telefono);
-                            cliente.put("email", userEmail);
-                            cliente.put("userID", uid);
-                            cliente.put("role", role);
+                            Map<String, Object> cliente = createClienteMap(nombreCliente, direccion, cp, telefono, userEmail, uid);
 
-                            db.collection("registroCliente").document(uid).set(cliente)
-                                    .addOnCompleteListener(task1 -> {
-                                        if (task1.isSuccessful()) {
-                                            Toast.makeText(getContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
-                                            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                                            fragmentManager.beginTransaction()
-                                                    .replace(R.id.fragment_container, new MainCliente())
-                                                    .setReorderingAllowed(true)
-                                                    .addToBackStack(null)
-                                                    .commit();
-                                        } else {
-                                            Toast.makeText(getContext(), "Error al registrar cliente", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                            registerClienteInFirestore(cliente, uid);
                         }
                     } else {
-                        String errorMessage;
-                        try {
-                            throw task.getException();
-                        } catch (FirebaseAuthInvalidCredentialsException e) {
-                            errorMessage = "Correo electrónico inválido.";
-                            emailText.setError(errorMessage);
-                            emailText.requestFocus();
-                        } catch (FirebaseAuthUserCollisionException e) {
-                            errorMessage = "El correo electrónico ya está en uso.";
-                            emailText.setError(errorMessage);
-                            emailText.requestFocus();
-                        } catch (Exception e) {
-                            errorMessage = "Error al registrar: " + e.getMessage();
-                        }
-                        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
+                        handleClientRegistrationFailure(task);
                     }
                 });
+    }
+    /**
+     * Método que realiza las validaciones
+     */
+    private boolean validateClientInputs(String nombreCliente, String direccion, String cp, String telefono, String email, String password) {
+        if (nombreCliente.isEmpty()) {
+            nombreText.setError("Nombre es obligatorio");
+            nombreText.requestFocus();
+            return false;
+        }
+        if (password.isEmpty() || password.length() < 6) {
+            passwordText.setError("La contraseña debe tener al menos 6 caracteres");
+            passwordText.requestFocus();
+            return false;
+        }
+        if (telefono.isEmpty() || !telefono.matches("\\d{9}")) {
+            telefonoText.setError("Teléfono inválido");
+            telefonoText.requestFocus();
+            return false;
+        }
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() || !email.matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            emailText.setError("Correo electrónico inválido");
+            emailText.requestFocus();
+            return false;
+        }
+        if (direccion.isEmpty()) {
+            direccionText.setError("Dirección es obligatoria");
+            direccionText.requestFocus();
+            return false;
+        }
+        if (cp.isEmpty() || !cp.matches("\\d{5}")) {
+            cpText.setError("Código Postal inválido");
+            cpText.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Método que crea un mapper con todos los campos del cliente.
+     */
+    private Map<String, Object> createClienteMap(String nombreCliente, String direccion, String cp, String telefono, String userEmail, String uid) {
+        Map<String, Object> cliente = new HashMap<>();
+        cliente.put("nombreCliente", nombreCliente);
+        cliente.put("direccion", direccion);
+        cliente.put("cp", cp);
+        cliente.put("telefono", telefono);
+        cliente.put("email", userEmail);
+        cliente.put("userID", uid);
+        cliente.put("role", role);
+        return cliente;
+    }
+
+    /**
+     * Método que registra un nuevo cliente en Firebase Authentication y Firestore.
+     */
+    private void registerClienteInFirestore(Map<String, Object> cliente, String uid) {
+        db.collection("registroCliente").document(uid).set(cliente)
+                .addOnCompleteListener(task1 -> {
+                    if (task1.isSuccessful()) {
+                        Toast.makeText(getContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
+                        goToMainClienteFragment();
+                    } else {
+                        Toast.makeText(getContext(), "Error al registrar cliente", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    /**
+     * Método que gestiona las posibles excepciones
+     */
+    private void handleClientRegistrationFailure(Task<AuthResult> task) {
+        String errorMessage;
+        try {
+            throw task.getException();
+        } catch (FirebaseAuthInvalidCredentialsException e) {
+            errorMessage = "Correo electrónico inválido.";
+            emailText.setError(errorMessage);
+            emailText.requestFocus();
+        } catch (FirebaseAuthUserCollisionException e) {
+            errorMessage = "El correo electrónico ya está en uso.";
+            emailText.setError(errorMessage);
+            emailText.requestFocus();
+        } catch (Exception e) {
+            errorMessage = "Error al registrar: " + e.getMessage();
+        }
+        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Método que navega al fragmento principal de empresa.
+     */
+    private void goToMainClienteFragment() {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, new MainCliente())
+                .setReorderingAllowed(true)
+                .addToBackStack("nombre")
+                .commit();
     }
 
     /**
@@ -181,8 +222,6 @@ public class RegistroCliente extends Fragment {
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             activity.getSupportActionBar().setTitle(" Registro Clientes");
         }
-        toolbar.setNavigationOnClickListener(v -> {
-            requireActivity().onBackPressed();
-        });
+        toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
     }
 }

@@ -265,7 +265,6 @@ public class SettingEmpresa extends Fragment {
         String telefono = telefonoText.getText().toString().trim();
         String newPassword = passwordText.getText().toString().trim();
 
-        // Validaciones
         if (cif.isEmpty()) {
             cifText.setError("CIF es obligatorio");
             cifText.requestFocus();
@@ -445,9 +444,7 @@ public class SettingEmpresa extends Fragment {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle("Confirmar eliminación")
                     .setMessage("¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.")
-                    .setPositiveButton("Sí", (dialog, which) -> {
-                        reauthenticateBeforeDelete(user);
-                    })
+                    .setPositiveButton("Sí", (dialog, which) -> reauthenticateBeforeDelete(user))
                     .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                     .create()
                     .show();

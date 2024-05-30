@@ -138,13 +138,13 @@ public class CalendarioCliente extends Fragment implements CalendarAdapter.OnIte
         previousMonthButton.setOnClickListener(v -> {
             calendar.add(Calendar.MONTH, -1);
             updateCalendar();
-            informacion.setText("Detalles de la cita");
+            informacion.setText(R.string.detalles_de_la_cita);
         });
 
         nextMonthButton.setOnClickListener(v -> {
             calendar.add(Calendar.MONTH, 1);
             updateCalendar();
-            informacion.setText("Detalles de la cita");
+            informacion.setText(R.string.detalles_de_la_cita);
         });
     }
 

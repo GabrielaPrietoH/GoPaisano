@@ -248,26 +248,6 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
                 .commit();
     }
 
-    /*
-    private void buscarEmpresas(String nombreEmpresa) {
-        Query query;
-        if (nombreEmpresa.isEmpty()) {
-            query = firestore.collection("registroEmpresa");
-        } else {
-            query = firestore.collection("registroEmpresa")
-                    .orderBy("nombreEmpresa")
-                    .startAt(nombreEmpresa)
-                    .endAt(nombreEmpresa + "\uf8ff");
-        }
-
-        FirestoreRecyclerOptions<Empresa> options = new FirestoreRecyclerOptions.Builder<Empresa>()
-                .setQuery(query, Empresa.class)
-                .build();
-
-        firestoreAdapter.updateOptions(options);
-    }
-
-     */
     private void buscarEmpresas(String nombreEmpresa) {
         Query query;
         if (nombreEmpresa.isEmpty()) {
@@ -459,7 +439,6 @@ public class MainCliente extends Fragment implements NavigationView.OnNavigation
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference empresaRef = db.collection("registroEmpresa").document(empresaID);
 
-        // Obtén la fecha actual
         Date fechaActual = new Date();
 
         empresaRef.update(campoContador, getContador(campoContador), "fechaUltimaActualizacion", fechaActual)
