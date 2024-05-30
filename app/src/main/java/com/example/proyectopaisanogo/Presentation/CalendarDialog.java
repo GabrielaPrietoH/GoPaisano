@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -68,8 +69,6 @@ public class CalendarDialog extends DialogFragment {
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
             selectedDate.set(year, month, dayOfMonth);
 
-            confirmButton.setEnabled(!selectedDate.before(currentDate));
-
             TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (timeView, hourOfDay, minute) -> {
                 selectedDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 selectedDate.set(Calendar.MINUTE, minute);
@@ -79,11 +78,20 @@ public class CalendarDialog extends DialogFragment {
         });
 
         confirmButton.setOnClickListener(v -> {
-            Map<String, Object> cita = new HashMap<>();
-            cita.put("empresaId", empresa.getUserID());
-            cita.put("fecha", selectedDate.getTime());
-            createCita(cita);
-            dialog.dismiss();
+
+            if(selectedDate.before(Calendar.getInstance())){
+                Toast.makeText(getContext(), "Seleccione una fecha/hora futura", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                confirmButton.setEnabled(true);
+                Map<String, Object> cita = new HashMap<>();
+                cita.put("empresaId", empresa.getUserID());
+                cita.put("fecha", selectedDate.getTime());
+
+                createCita(cita);
+                dialog.dismiss();
+                Toast.makeText(getContext(), "Cita creada correctamente", Toast.LENGTH_SHORT).show();
+            }
         });
 
         return dialog;
@@ -101,8 +109,16 @@ public class CalendarDialog extends DialogFragment {
             cita.put("userID", userID);
 
             db.collection("Citas").add(cita)
-                    .addOnSuccessListener(documentReference -> Log.d("CalendarDialog", "Cita guardada con éxito"))
-                    .addOnFailureListener(e -> Log.w("CalendarDialog", "Error al guardar cita", e));
+                    .addOnSuccessListener(documentReference -> {
+                        Log.d("CalendarDialog", "Cita guardada con éxito");
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.w("CalendarDialog", "Error al guardar cita", e);
+                    });
+        } else {
+            // Toast para indicar que el usuario no está autenticado
+            Toast.makeText(getContext(), "Usuario no autenticado", Toast.LENGTH_SHORT).show();
         }
     }
 }
+
