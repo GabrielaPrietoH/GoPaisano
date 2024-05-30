@@ -1,4 +1,4 @@
-package com.example.proyectopaisanogo.Presentation;
+package com.example.proyectopaisanogo.Presentation.Empresa;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
+import com.example.proyectopaisanogo.Presentation.FragmentLogin;
 import com.example.proyectopaisanogo.R;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -53,6 +54,7 @@ public class SettingEmpresa extends Fragment {
     private Uri filePath;
     private boolean imageUpdated = false;
     private String currentImageUrl;
+
 
     /**
      * Constructor por defecto.
@@ -98,6 +100,7 @@ public class SettingEmpresa extends Fragment {
         btnSaveChanges = rootView.findViewById(R.id.buttonResgistroEmpresa);
         btnSelectImage = rootView.findViewById(R.id.subirImagen);
         btnCancel = rootView.findViewById(R.id.cancelarImagen);
+        Button btnEliminarCuentaEmpresa = rootView.findViewById(R.id.buttonEliminarCuentaEmpresa);
 
         loadCompanyData();
 
@@ -113,6 +116,7 @@ public class SettingEmpresa extends Fragment {
 
         btnSelectImage.setOnClickListener(v -> selectImage());
         btnCancel.setOnClickListener(v -> cancelUpload());
+        btnEliminarCuentaEmpresa.setOnClickListener(v -> deleteAccount());
 
         passwordText.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
@@ -321,7 +325,7 @@ public class SettingEmpresa extends Fragment {
             if (imageUpdated) {
                 uploadImage(user.getUid());
             } else {
-                navigateToFragment();
+                navigateToFragment(MainEmpresa.class);
             }
         } else {
             showToast("El usuario no está autenticado");
@@ -360,7 +364,7 @@ public class SettingEmpresa extends Fragment {
                                 .addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful()) {
                                         showToast("Imagen subida exitosamente");
-                                        navigateToFragment();
+                                        navigateToFragment(MainEmpresa.class);
                                     } else {
                                         showToast("Error al guardar URL de la imagen");
                                     }
@@ -376,13 +380,25 @@ public class SettingEmpresa extends Fragment {
     /**
      * Método que navega al fragmento principal de empresa.
      */
-    private void navigateToFragment() {
+    private void navigateToFragment(Class<? extends Fragment> fragmentClass) {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, MainEmpresa.class, null)
-                .setReorderingAllowed(true)
-                .commit();
+        Fragment fragment = null;
+        try {
+            fragment = fragmentClass.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+            showToast("Error al crear instancia del fragmento");
+        } catch (java.lang.InstantiationException e) {
+            throw new RuntimeException(e);
+        }
+        if (fragment != null) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .setReorderingAllowed(true)
+                    .commit();
+        }
     }
+
 
     /**
      * Método que maneja el resultado de la actividad iniciada por el selector de imágenes.
@@ -418,6 +434,83 @@ public class SettingEmpresa extends Fragment {
         }
 
         toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
+    }
+
+    /**
+     * Método que elimina la cuenta del usuario actual.
+     */
+    private void deleteAccount() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Confirmar eliminación")
+                    .setMessage("¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.")
+                    .setPositiveButton("Sí", (dialog, which) -> {
+                        reauthenticateBeforeDelete(user);
+                    })
+                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                    .create()
+                    .show();
+        } else {
+            showToast("El usuario no está autenticado");
+        }
+    }
+
+    /**
+     * Re-authenticacion previa a la eliminación del usuario
+     */
+    private void reauthenticateBeforeDelete(FirebaseUser user) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View dialogView = inflater.inflate(R.layout.password_dialog, null);
+        builder.setView(dialogView);
+
+        final EditText input = dialogView.findViewById(R.id.password_input);
+        final Button btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+        final Button btnCancel = dialogView.findViewById(R.id.btnCancel);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        btnConfirm.setOnClickListener(v -> {
+            String currentPassword = input.getText().toString().trim();
+            if (!currentPassword.isEmpty()) {
+                AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), currentPassword);
+                user.reauthenticate(credential).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        deleteUserAccount(user);
+                        dialog.dismiss();
+                    } else {
+                        showToast("Error de reautenticación: " + task.getException().getMessage());
+                    }
+                });
+            } else {
+                showToast("La contraseña no puede estar vacía");
+            }
+        });
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+    }
+
+    /**
+     * Eliminar cuenta del usuario en Firebase Authentication y Firestore.
+     */
+    private void deleteUserAccount(FirebaseUser user) {
+        String uid = user.getUid();
+
+        db.collection("registroEmpresa").document(uid).delete().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                user.delete().addOnCompleteListener(task1 -> {
+                    if (task1.isSuccessful()) {
+                        showToast("Cuenta eliminada correctamente");
+                       navigateToFragment(FragmentLogin.class);
+                    } else {
+                        showToast("Error al eliminar la cuenta");
+                    }
+                });
+            } else {
+                showToast("Error al eliminar los datos de la empresa");
+            }
+        });
     }
 
     private void showToast(String message) {

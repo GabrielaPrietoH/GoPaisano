@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.proyectopaisanogo.Presentation.Cliente.MainCliente;
 import com.example.proyectopaisanogo.R;
 /**
  * Actividad principal de la aplicación.

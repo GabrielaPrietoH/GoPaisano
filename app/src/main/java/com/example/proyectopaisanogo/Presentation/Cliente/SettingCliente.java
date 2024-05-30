@@ -1,4 +1,4 @@
-package com.example.proyectopaisanogo.Presentation;
+package com.example.proyectopaisanogo.Presentation.Cliente;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -16,12 +16,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.proyectopaisanogo.Presentation.FragmentLogin;
 import com.example.proyectopaisanogo.R;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -73,7 +75,7 @@ public class SettingCliente extends Fragment {
         telefonoText = rootView.findViewById(R.id.editTextPhoneCliente);
         passwordText = rootView.findViewById(R.id.editTextPasswordCliente);
         btnSaveChanges = rootView.findViewById(R.id.buttonGuardarCambiosCliente);
-
+        Button btnEliminarCuentaEmpresa = rootView.findViewById(R.id.buttonEliminarCuentaCliente);
         btnSaveChanges.setOnClickListener(v -> {
             FirebaseUser user = mAuth.getCurrentUser();
             if (user != null) {
@@ -111,12 +113,12 @@ public class SettingCliente extends Fragment {
                 }
 
             updateUserData(user, nombreCliente, direccion, cp, telefono, newPassword);
-                navigateToFragment();
+                navigateToFragment(MainCliente.class);
             } else {
                 showToast("Usuario no autenticado o ha ocurrido un error");
             }
         });
-
+        btnEliminarCuentaEmpresa.setOnClickListener(v -> deleteAccount());
         passwordText.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 FirebaseUser user = mAuth.getCurrentUser();
@@ -283,14 +285,119 @@ public class SettingCliente extends Fragment {
     /**
      * Método que navega al fragmento principal del cliente.
      */
-    private void navigateToFragment() {
+
+    private void navigateToFragment(Class<? extends Fragment> fragmentClass) {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, MainCliente.class, null)
-                .setReorderingAllowed(true)
-                .commit();
+        Fragment fragment = null;
+        try {
+            fragment = fragmentClass.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+            showToast("Error al crear instancia del fragmento");
+        } catch (java.lang.InstantiationException e) {
+            throw new RuntimeException(e);
+        }
+        if (fragment != null) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .setReorderingAllowed(true)
+                    .commit();
+        }
     }
 
+    /**
+     * Método que elimina la cuenta del usuario actual.
+     */
+    private void deleteAccount() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Confirmar eliminación")
+                    .setMessage("¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.")
+                    .setPositiveButton("Sí", (dialog, which) -> {
+                        reauthenticateBeforeDelete(user);
+                    })
+                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                    .create()
+                    .show();
+        } else {
+            showToast("El usuario no está autenticado");
+        }
+    }
+
+    /**
+     * Método que comprueba si es el usuario antes de eliminar la cuenta.
+     */
+    private void reauthenticateBeforeDelete(FirebaseUser user) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View dialogView = inflater.inflate(R.layout.password_dialog, null);
+        builder.setView(dialogView);
+
+        final EditText input = dialogView.findViewById(R.id.password_input);
+        final Button btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+        final Button btnCancel = dialogView.findViewById(R.id.btnCancel);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        btnConfirm.setOnClickListener(v -> {
+            String currentPassword = input.getText().toString().trim();
+            if (!currentPassword.isEmpty()) {
+                AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), currentPassword);
+                user.reauthenticate(credential).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        deleteUserAccount(user);
+                        dialog.dismiss();
+                    } else {
+                        showToast("Error de reautenticación: " + task.getException().getMessage());
+                    }
+                });
+            } else {
+                showToast("La contraseña no puede estar vacía");
+            }
+        });
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+    }
+
+    /**
+     * Método que elimina la cuenta de usuario de Firebase Authentication y Firestore.
+     */
+    private void deleteUserAccount(FirebaseUser user) {
+        String uid = user.getUid();
+
+        db.collection("registroCliente").document(uid).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    String documentUid = document.getId();
+                    if (documentUid.equals(uid)) {
+                        db.collection("registroCliente").document(uid).delete().addOnCompleteListener(deleteTask -> {
+                            if (deleteTask.isSuccessful()) {
+                                user.delete().addOnCompleteListener(deleteAuthTask -> {
+                                    if (deleteAuthTask.isSuccessful()) {
+                                        showToast("Cuenta eliminada correctamente");
+                                        navigateToFragment(FragmentLogin.class);
+                                    } else {
+                                        showToast("Error al eliminar la cuenta: " + deleteAuthTask.getException().getMessage());
+                                    }
+                                });
+                            } else {
+                                showToast("Error al eliminar los datos del cliente: " + deleteTask.getException().getMessage());
+                            }
+                        });
+                    } else {
+                        showToast("El UID del documento no coincide con el UID del usuario autenticado.");
+                    }
+                } else {
+                    showToast("El documento no existe.");
+                }
+            } else {
+                showToast("Error al obtener el documento: " + task.getException().getMessage());
+            }
+        });
+
+    }
 
     /**
      * Método que muestra un Toast con el mensaje proporcionado.
@@ -300,5 +407,6 @@ public class SettingCliente extends Fragment {
     private void showToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
+
 }
 

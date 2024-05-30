@@ -9,6 +9,8 @@ import android.widget.Button;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.proyectopaisanogo.Presentation.Cliente.LoginCliente;
+import com.example.proyectopaisanogo.Presentation.Empresa.LoginEmpresa;
 import com.example.proyectopaisanogo.R;
 
 /**

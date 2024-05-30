@@ -1,4 +1,4 @@
-package com.example.proyectopaisanogo.Presentation;
+package com.example.proyectopaisanogo.Presentation.Empresa;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

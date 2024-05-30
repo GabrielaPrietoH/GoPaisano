@@ -93,4 +93,5 @@
     <string name="buscar">Buscar</string>
     <string name="estas_seguro">¿Estas seguro de que quieres eliminar la cita?</string>
     <string name="elige_la_cita_que_quieres_eliminar">Elige la cita que quieres eliminar</string>
+    <string name="eliminar_cuenta">Eliminar Cuenta</string>
 </resources>

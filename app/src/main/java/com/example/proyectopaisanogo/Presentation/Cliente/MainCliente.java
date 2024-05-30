@@ -1,4 +1,4 @@
-package com.example.proyectopaisanogo.Presentation;
+package com.example.proyectopaisanogo.Presentation.Cliente;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.proyectopaisanogo.Adapter.HelperViewHolder;
 import com.example.proyectopaisanogo.Model.Empresa;
+import com.example.proyectopaisanogo.Presentation.CalendarDialog;
 import com.example.proyectopaisanogo.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;

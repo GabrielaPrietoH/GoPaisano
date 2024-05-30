@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".Presentation.SettingEmpresa"
+    tools:context=".Presentation.Empresa.SettingEmpresa"
     android:background="@color/white">
 
     <androidx.appcompat.widget.Toolbar
@@ -318,5 +318,16 @@
             android:text="@string/guardar_cambios"
             android:textColor="@color/white"
             android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/buttonEliminarCuentaEmpresa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/icon_size_medium"
+            android:background="@color/red"
+            android:textColor="@color/white"
+            android:text="@string/eliminar_cuenta"
+            android:layout_marginTop="16dp"/>
+
     </LinearLayout>
 </RelativeLayout>

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Presentation.RegistroEmpresa">
+    tools:context=".Presentation.Empresa.RegistroEmpresa">
 
 <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarRegistroEmpresa"

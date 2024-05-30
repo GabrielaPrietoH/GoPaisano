@@ -1,4 +1,4 @@
-package com.example.proyectopaisanogo.Presentation;
+package com.example.proyectopaisanogo.Presentation.Cliente;
 
 import static com.example.proyectopaisanogo.R.id.editTextDireccionCLiente;
 
