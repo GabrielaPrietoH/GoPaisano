@@ -112,21 +112,22 @@
             </LinearLayout>
         </ScrollView>
         <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="@dimen/icon_size_medium"
             android:layout_marginTop="@dimen/size_extra_extra_small"
-            android:layout_marginStart="@dimen/center_margin"
-            android:layout_marginEnd="@dimen/center_margin"
+            android:layout_marginStart="@dimen/center_extra_margin"
             android:background="@drawable/round_corner"
             android:layout_marginBottom="@dimen/size_extra_extra_small">
 
             <ImageButton
                 android:id="@+id/buttonEliminarCita"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:visibility="gone"
+                android:layout_marginStart="@dimen/size_extra_small"
+                android:layout_marginEnd="@dimen/size_extra_small"
+                android:visibility="visible"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/eliminar_cita"
                 android:src="@drawable/borrar"

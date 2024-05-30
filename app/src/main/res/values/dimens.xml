@@ -5,6 +5,7 @@
     <dimen name="letter_extra_big">32sp</dimen>
     <dimen name="buttom_letter">18sp</dimen>
     <dimen name="center_margin">125dp</dimen>
+    <dimen name="center_extra_margin">160dp</dimen>
     <dimen name="size_extra_small">10dp</dimen>
     <dimen name="size_extra_extra_small">7dp</dimen>
     <dimen name="size_small">14dp</dimen>
